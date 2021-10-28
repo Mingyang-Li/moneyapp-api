@@ -7,8 +7,8 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
 
   const options = new DocumentBuilder()
-    .setTitle('Money App API')
-    .setDescription('Personal use ')
+    .setTitle('MoneyApp API')
+    .setDescription('Personal use')
     .setVersion('1.0.0')
     .addBearerAuth(
       { type: 'http', scheme: 'bearer', bearerFormat: 'Token' },
