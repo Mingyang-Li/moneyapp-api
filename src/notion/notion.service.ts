@@ -9,14 +9,21 @@ export class NotionService {
   private notionClient = new Client({ auth: process.env.NOTION_TOKEN });
 
   async findAllIncome(): Promise<IncomeRow[]> {
-    const incomeRow = new IncomeRow();
-    incomeRow.id = 'test1';
     const response = await this.notionClient.databases.query({
       database_id: process.env.NOTION_INCOME_DATABASE_ID,
     });
+    const income = [];
+    let incomeId = 0;
     response.results.forEach((row) => {
-      console.table(row.properties);
+      console.log(row.properties);
+      const incomeRow = new IncomeRow();
+      incomeRow.id = incomeId;
+      //   incomeRow.paymentMethod = row.properties['Payment Method']['select']['name'];
+      //   incomeRow.amount = row.properties['Amount (NZD)'].number;
+      //   incomeRow.date = row.properties['Date'].date.start;
+      income.push(incomeRow);
+      incomeId += 1;
     });
-    return [incomeRow];
+    return income;
   }
 }
