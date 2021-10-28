@@ -1,0 +1,11 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type IncomeRow {
+  id: String!
+}
+
+type Query {
+  income: [IncomeRow!]!
+}
