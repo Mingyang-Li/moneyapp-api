@@ -1,9 +1,7 @@
-import { Currency } from './notion.entity';
-
 export interface IncomeRow {
   date?: Date;
   amount?: number;
-  currency?: Currency;
+  currency?: string;
   paymentMethod?: string;
   paidBy?: string;
   incomeType?: string;
@@ -12,7 +10,7 @@ export interface IncomeRow {
 export interface ExpensesRow {
   date?: Date;
   amount?: number;
-  currency?: Currency;
+  currency?: string;
   item?: string;
   type?: string;
   subType?: string;

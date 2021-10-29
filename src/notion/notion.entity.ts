@@ -18,7 +18,7 @@ export class IncomeRow {
   amount?: number;
 
   @Field()
-  currency?: Currency;
+  currency?: string;
 }
 
 @ObjectType()
@@ -33,7 +33,7 @@ export class ExpensesRow {
   amount?: number;
 
   @Field()
-  currency?: Currency;
+  currency?: string;
 
   @Field()
   type?: string;
@@ -44,5 +44,3 @@ export class ExpensesRow {
   @Field()
   paymentType?: string;
 }
-
-export type Currency = 'NZD' | 'USD';
