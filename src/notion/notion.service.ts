@@ -14,17 +14,15 @@ export class NotionService {
     });
     const income = [];
     response.results.forEach((row) => {
-      console.log(row.properties);
       const incomeRow = new IncomeRow();
       incomeRow.paymentMethod = row.properties['Payment Method']['select'].name;
       incomeRow.amount = row.properties['Amount']['number'];
       incomeRow.incomeType = row.properties['Income Type']['select'].name;
-      incomeRow.date = row.properties['Date']['date']['start'];
-      // incomeRow.currency = row.properties['Currency']['select'].name
-      //   ? row.properties['Currency']['select'].name
-      //   : 'NZD';
+      incomeRow.date = new Date(row.properties['Date']['date']['start']);
+      incomeRow.currency = row.properties['Currency']['select'].name;
       income.push(incomeRow);
     });
+    // console.table(income);
     return income;
   }
 
@@ -35,7 +33,6 @@ export class NotionService {
 
     const expenses = [];
     response.results.forEach((row) => {
-      // console.log(row.properties['Item']['title'][0].plain_text);
       const expensesRow = new ExpensesRow();
       expensesRow.type = row.properties['Type']['select'].name;
       expensesRow.subType = row.properties['Sub-type']['select'].name;
@@ -44,7 +41,7 @@ export class NotionService {
       expensesRow.item = row.properties['Item']['title'][0].plain_text;
       expenses.push(expensesRow);
     });
-    console.table(expenses);
+    // console.table(expenses);
     return expenses;
   }
 }
