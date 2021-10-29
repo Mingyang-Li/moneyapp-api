@@ -3,12 +3,12 @@
 # ------------------------------------------------------
 
 type IncomeRow {
-  id: Float!
   paymentMethod: String!
   paidBy: String!
   incomeType: String!
   date: DateTime!
   amount: Float!
+  currency: String!
 }
 
 """

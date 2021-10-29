@@ -17,10 +17,8 @@ export class NotionService {
     response.results.forEach((row) => {
       console.log(row.properties);
       const incomeRow = new IncomeRow();
-      incomeRow.id = incomeId;
-      //   incomeRow.paymentMethod = row.properties['Payment Method']['select']['name'];
-      //   incomeRow.amount = row.properties['Amount (NZD)'].number;
-      //   incomeRow.date = row.properties['Date'].date.start;
+      incomeRow.paymentMethod = incomeId.toString();
+      incomeRow.currency = 'NZD';
       income.push(incomeRow);
       incomeId += 1;
     });

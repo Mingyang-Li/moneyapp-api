@@ -3,9 +3,6 @@ import { Field, ObjectType } from '@nestjs/graphql';
 @ObjectType()
 export class IncomeRow {
   @Field()
-  id: number;
-
-  @Field()
   paymentMethod?: string;
 
   @Field()
@@ -19,4 +16,33 @@ export class IncomeRow {
 
   @Field()
   amount?: number;
+
+  @Field()
+  currency?: Currency;
 }
+
+@ObjectType()
+export class ExpensesRow {
+  @Field()
+  date?: Date;
+
+  @Field()
+  item?: string;
+
+  @Field()
+  amount?: number;
+
+  @Field()
+  currency?: Currency;
+
+  @Field()
+  type?: string;
+
+  @Field()
+  subType?: string;
+
+  @Field()
+  paymentType?: string;
+}
+
+export type Currency = 'NZD' | 'USD';
