@@ -11,7 +11,7 @@ export class IncomeRow {
   @Field()
   incomeType?: string;
 
-  @Field()
+  @Field({ nullable: true })
   date?: Date;
 
   @Field()

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { IncomeRow } from './notion.entity';
+import { ExpensesRow, IncomeRow } from './notion.entity';
 import { Client } from '@notionhq/client';
 import * as dotenv from 'dotenv';
 dotenv.config({ path: __dirname + '/.env' });
@@ -13,15 +13,35 @@ export class NotionService {
       database_id: process.env.NOTION_INCOME_DATABASE_ID,
     });
     const income = [];
-    let incomeId = 0;
     response.results.forEach((row) => {
       console.log(row.properties);
       const incomeRow = new IncomeRow();
-      incomeRow.paymentMethod = incomeId.toString();
-      incomeRow.currency = 'NZD';
+      incomeRow.paymentMethod = row.properties['Payment Method']['select'].name;
+      incomeRow.amount = row.properties['Amount']['number'];
+      incomeRow.incomeType = row.properties['Income Type']['select'].name;
+      incomeRow.date = row.properties['Date']['date']['start'];
+      // incomeRow.currency = row.properties['Currency']['select'].name
+      //   ? row.properties['Currency']['select'].name
+      //   : 'NZD';
       income.push(incomeRow);
-      incomeId += 1;
     });
     return income;
+  }
+
+  async findAllExpenses(): Promise<ExpensesRow[]> {
+    const response = await this.notionClient.databases.query({
+      database_id: process.env.NOTION_EXPENSES_DATABASE_ID,
+    });
+
+    const expenses = [];
+    response.results.forEach((row) => {
+      console.log(row.properties);
+      const expensesRow = new ExpensesRow();
+      expensesRow.type = row.properties['Type']['select'].name;
+      expensesRow.amount = row.properties['Amount']['number'];
+      expensesRow.date = row.properties['Date']['date']['start'];
+      expenses.push(expensesRow);
+    });
+    return expenses;
   }
 }
