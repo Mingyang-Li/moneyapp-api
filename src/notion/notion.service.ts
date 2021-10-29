@@ -35,13 +35,16 @@ export class NotionService {
 
     const expenses = [];
     response.results.forEach((row) => {
-      console.log(row.properties);
+      // console.log(row.properties['Item']['title'][0].plain_text);
       const expensesRow = new ExpensesRow();
       expensesRow.type = row.properties['Type']['select'].name;
+      expensesRow.subType = row.properties['Sub-type']['select'].name;
       expensesRow.amount = row.properties['Amount']['number'];
       expensesRow.date = row.properties['Date']['date']['start'];
+      expensesRow.item = row.properties['Item']['title'][0].plain_text;
       expenses.push(expensesRow);
     });
+    console.table(expenses);
     return expenses;
   }
 }
