@@ -23,7 +23,7 @@ export class IncomeRow {
 
 @ObjectType()
 export class ExpensesRow {
-  @Field()
+  @Field({ nullable: true })
   date?: Date;
 
   @Field()

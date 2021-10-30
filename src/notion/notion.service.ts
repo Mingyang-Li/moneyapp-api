@@ -41,7 +41,6 @@ export class NotionService {
       expensesRow.item = row.properties['Item']['title'][0].plain_text;
       expenses.push(expensesRow);
     });
-    // console.table(expenses);
     return expenses;
   }
 }
