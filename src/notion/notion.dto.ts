@@ -7,7 +7,7 @@ export interface IncomeRow {
   incomeType?: string;
 }
 
-export interface ExpensesRow {
+export interface ExpenseRow {
   date?: Date;
   amount?: number;
   currency?: string;

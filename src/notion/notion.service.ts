@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { ExpensesRow, IncomeRow } from './notion.entity';
+import { ExpenseRow, IncomeRow } from './notion.entity';
 import { Client } from '@notionhq/client';
 import * as dotenv from 'dotenv';
 dotenv.config({ path: __dirname + '/.env' });
@@ -26,14 +26,14 @@ export class NotionService {
     return income;
   }
 
-  async findAllExpenses(): Promise<ExpensesRow[]> {
+  async findAllExpenses(): Promise<ExpenseRow[]> {
     const response = await this.notionClient.databases.query({
       database_id: process.env.NOTION_EXPENSES_DATABASE_ID,
     });
 
     const expenses = [];
     response.results.forEach((row) => {
-      const expensesRow = new ExpensesRow();
+      const expensesRow = new ExpenseRow();
       expensesRow.type = row.properties['Type']['select'].name;
       expensesRow.subType = row.properties['Sub-type']['select'].name;
       expensesRow.amount = row.properties['Amount']['number'];
