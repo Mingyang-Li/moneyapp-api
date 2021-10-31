@@ -46,6 +46,8 @@ export class NotionService {
         expenseRow.amount = row.properties['Amount']['number'];
         expenseRow.date = new Date(row.properties['Date']['date']['start']);
         expenseRow.item = row.properties['Item']['title'][0].plain_text;
+        expenseRow.currency = row.properties['Currency']['select'].name;
+        expenseRow.paymentType = row.properties['Payment Type']['select'].name;
         expenses.push(expenseRow);
         // console.log(typeof expensesRow.item);
       });

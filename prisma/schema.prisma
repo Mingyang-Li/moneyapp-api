@@ -11,21 +11,21 @@ datasource db {
 }
 
 model Income {
-  id                  Int   @id @default(autoincrement())
+  id                  Int       @id @default(autoincrement())
   paymentMethod       String
   paidBy              String
   incomeType          String
   amount              Float
   currency            String
   date                DateTime
-  dateCreated         DateTime @default(now())
-  dateLastUpdatedDate DateTime
+  dateCreated         DateTime  @default(now())
+  dateLastUpdated     DateTime  @updatedAt
   dateDeleted         DateTime?
-  deleted             Boolean
+  deleted             Boolean   @default(false)
 }
 
 model Expense {
-  id               Int @id @default(autoincrement())
+  id               Int @id      @default(autoincrement())
   item             String
   amount           Float
   currency         String
@@ -33,8 +33,8 @@ model Expense {
   subType          String
   paymentType      String
   date             DateTime
-  dateCreated      DateTime @default(now())
-  dateLastUpdated  DateTime
+  dateCreated      DateTime     @default(now())
+  dateLastUpdated  DateTime     @updatedAt
   dateDeleted      DateTime?
-  deleted          Boolean
+  deleted          Boolean      @default(false)
 }
