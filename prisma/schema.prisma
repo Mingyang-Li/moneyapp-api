@@ -20,7 +20,7 @@ model Income {
   date                DateTime
   dateCreated         DateTime
   dateLastUpdatedDate DateTime
-  DateDeleted         DateTime
+  dateDeleted         DateTime
   deleted             Boolean
 }
 
