@@ -29,6 +29,9 @@ model Expense {
   item             String
   amount           Float
   currency         String
+  type             String
+  subType          String
+  paymentType      String
   date             DateTime
   dateCreated      DateTime @default(now())
   dateLastUpdated  DateTime
