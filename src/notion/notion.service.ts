@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ExpenseRow, IncomeRow } from './notion.entity';
 import { Client } from '@notionhq/client';
 import * as dotenv from 'dotenv';
+import { PrismaClient } from '.prisma/client';
 dotenv.config({ path: __dirname + '/.env' });
 
 @Injectable()
@@ -10,6 +11,7 @@ export class NotionService {
   private notionIncomeDbId = process.env.NOTION_INCOME_DATABASE_ID;
   private notionExpensesDbId = process.env.NOTION_EXPENSES_DATABASE_ID;
   private notionCrmDbId = process.env.NOTION_CRM_DATABASE_ID;
+  private prisma = new PrismaClient();
 
   async findAllIncome(): Promise<IncomeRow[]> {
     const response = await this.notionClient.databases.query({
@@ -56,8 +58,9 @@ export class NotionService {
       }
       cursor = next_cursor;
     }
-    // console.log(expenses);
-    console.log(expenses.length);
+    const allExpenses = await this.prisma.expense.findMany();
+    console.log(allExpenses);
+    // console.log(expenses.length);
     return expenses;
   }
 }
