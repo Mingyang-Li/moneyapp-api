@@ -5,11 +5,45 @@ dotenv.config({ path: __dirname + '/.env' });
 
 const prisma = new PrismaClient();
 const notionClient = new Client({ auth: process.env.NOTION_TOKEN });
-const notionExpensesDbId = process.env.NOTION_EXPENSES_DATABASE_ID;
 
-async function main() {
+async function seedIncomeTable() {
+  const notionIncomeDbId = process.env.NOTION_INCOME_DATABASE_ID;
   let cursor = undefined;
-  const allExpenses = [];
+  const allIncome = [];
+  while (true) {
+    const { results, next_cursor } = await notionClient.databases.query({
+      database_id: notionIncomeDbId,
+      start_cursor: cursor,
+    });
+
+    results.forEach(async (row) => {
+      const incomeItem = {
+        paymentMethod: 'Cash',
+        paidBy: 'Me',
+        incomeType: 'Ad rev',
+        amount: 100,
+        currency: 'NZD',
+        date: new Date(),
+      };
+      console.log(row);
+      allIncome.push(incomeItem);
+    });
+    if (!next_cursor) {
+      break;
+    }
+    cursor = next_cursor;
+  }
+  const seeding = allIncome.map(
+    async (e) => await prisma.income.create({ data: e }),
+  );
+  const promisedSeeding = Promise.all(seeding);
+  console.log(promisedSeeding);
+}
+
+async function seedExpensesTable() {
+  const notionExpensesDbId = process.env.NOTION_EXPENSES_DATABASE_ID;
+  let cursor = undefined;
+  const allIncome = [];
   while (true) {
     const { results, next_cursor } = await notionClient.databases.query({
       database_id: notionExpensesDbId,
@@ -26,21 +60,21 @@ async function main() {
         paymentType: row.properties['Payment Type']['select'].name,
         date: new Date(row.properties['Date']['date']['start']),
       };
-      allExpenses.push(expenseItem);
+      allIncome.push(expenseItem);
     });
     if (!next_cursor) {
       break;
     }
     cursor = next_cursor;
   }
-  const seeding = allExpenses.map(
+  const seeding = allIncome.map(
     async (e) => await prisma.expense.create({ data: e }),
   );
   const promisedSeeding = Promise.all(seeding);
   console.log(promisedSeeding);
 }
 
-main()
+seedIncomeTable()
   .catch((e) => {
     console.error(e);
     process.exit(1);
