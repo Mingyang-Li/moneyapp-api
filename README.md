@@ -12,9 +12,9 @@
 GraphQL API built on top of [Nest.js](https://github.com/nestjs/nest) framework using TypeScript, Notion API and a bunch of small tools.
 
 ## Purpose
-1. Provide a flexible way for a data-vis tool to consume database content from Notion
-2. Learn about NestJS without following along boring tutorials
-
+1. Acting an the API for a finance management app (personal use)
+2. Provide a flexible way for the front-end to interact with data
+3. Learn about NestJS & GraphQL without following along boring tutorials
 
 ## Features
 1. Retrieve specified database tables from Notion API
@@ -25,7 +25,7 @@ GraphQL API built on top of [Nest.js](https://github.com/nestjs/nest) framework 
 
 ## Development steps
 1. Setup project structure including essential tools including <br>
-  a) NestJS: `CLI`, `graphql`, `Swagger` <br>
+  a) NestJS: CLI, graphql, Swagger <br>
   b) Notion Client API <br>
   c) Apollo Server <br>
   d) dotenv <br>
