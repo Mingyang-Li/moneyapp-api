@@ -9,6 +9,10 @@ type IncomeRow {
   date: DateTime
   amount: Float!
   currency: String!
+  dateCreated: DateTime
+  dateLastUpdated: DateTime
+  dateDeleted: DateTime
+  delated: Boolean
 }
 
 """
@@ -17,6 +21,7 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 scalar DateTime
 
 type ExpenseRow {
+  id: Float!
   date: DateTime
   item: String!
   amount: Float!
@@ -24,9 +29,13 @@ type ExpenseRow {
   type: String!
   subType: String!
   paymentType: String!
+  dateCreated: DateTime
+  dateLastUpdated: DateTime
+  dateDeleted: DateTime
+  delated: Boolean
 }
 
 type Query {
   income: [IncomeRow!]!
-  expense: [ExpenseRow!]!
+  expense(paymentType: String, subType: String, type: String, item: String, currency: String, amount: Int, date: DateTime, id: Int): [ExpenseRow!]!
 }

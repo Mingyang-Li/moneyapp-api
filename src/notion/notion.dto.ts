@@ -1,13 +1,19 @@
-export interface IncomeRow {
+export interface IncomeQueryParams {
+  id?: number;
   date?: Date;
   amount?: number;
   currency?: string;
   paymentMethod?: string;
   paidBy?: string;
   incomeType?: string;
+  dateCreated?: Date;
+  dateLastUpdated?: Date;
+  dateDeleted?: Date;
+  delated?: boolean;
 }
 
-export interface ExpenseRow {
+export interface ExpenseQueryParams {
+  id?: number;
   date?: Date;
   amount?: number;
   currency?: string;
@@ -15,4 +21,8 @@ export interface ExpenseRow {
   type?: string;
   subType?: string;
   paymentType?: string;
+  dateCreated?: Date;
+  dateLastUpdated?: Date;
+  dateDeleted?: Date;
+  delated?: boolean;
 }

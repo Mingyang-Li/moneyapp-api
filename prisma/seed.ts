@@ -40,39 +40,39 @@ async function seedIncomeTable() {
   console.log(promisedSeeding);
 }
 
-async function seedExpensesTable() {
-  const notionExpensesDbId = process.env.NOTION_EXPENSES_DATABASE_ID;
-  let cursor = undefined;
-  const allIncome = [];
-  while (true) {
-    const { results, next_cursor } = await notionClient.databases.query({
-      database_id: notionExpensesDbId,
-      start_cursor: cursor,
-    });
+// async function seedExpensesTable() {
+//   const notionExpensesDbId = process.env.NOTION_EXPENSES_DATABASE_ID;
+//   let cursor = undefined;
+//   const allIncome = [];
+//   while (true) {
+//     const { results, next_cursor } = await notionClient.databases.query({
+//       database_id: notionExpensesDbId,
+//       start_cursor: cursor,
+//     });
 
-    results.forEach(async (row) => {
-      const expenseItem = {
-        item: row.properties['Item']['title'][0].plain_text,
-        amount: row.properties['Amount']['number'],
-        currency: row.properties['Currency']['select'].name,
-        type: row.properties['Type']['select'].name,
-        subType: row.properties['Sub-type']['select'].name,
-        paymentType: row.properties['Payment Type']['select'].name,
-        date: new Date(row.properties['Date']['date']['start']),
-      };
-      allIncome.push(expenseItem);
-    });
-    if (!next_cursor) {
-      break;
-    }
-    cursor = next_cursor;
-  }
-  const seeding = allIncome.map(
-    async (e) => await prisma.expense.create({ data: e }),
-  );
-  const promisedSeeding = Promise.all(seeding);
-  console.log(promisedSeeding);
-}
+//     results.forEach(async (row) => {
+//       const expenseItem = {
+//         item: row.properties['Item']['title'][0].plain_text,
+//         amount: row.properties['Amount']['number'],
+//         currency: row.properties['Currency']['select'].name,
+//         type: row.properties['Type']['select'].name,
+//         subType: row.properties['Sub-type']['select'].name,
+//         paymentType: row.properties['Payment Type']['select'].name,
+//         date: new Date(row.properties['Date']['date']['start']),
+//       };
+//       allIncome.push(expenseItem);
+//     });
+//     if (!next_cursor) {
+//       break;
+//     }
+//     cursor = next_cursor;
+//   }
+//   const seeding = allIncome.map(
+//     async (e) => await prisma.expense.create({ data: e }),
+//   );
+//   const promisedSeeding = Promise.all(seeding);
+//   console.log(promisedSeeding);
+// }
 
 seedIncomeTable()
   .catch((e) => {
