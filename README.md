@@ -32,17 +32,18 @@ GraphQL API built on top of [Nest.js](https://github.com/nestjs/nest) framework 
   e) nodemon <br>
   f) Prisma ORM
 2. Setup `code-first` GraphQL module for Notion service, include it into main app module
-3. Setting up controllers and services
-4. Set up basic filtering on columns with type `string`
-5. Working on sorting and searching
-6. Next: Date-range filtering
+3. Setting up controllers, resolvers, services and DTOs using built-in `dependency injection`.
+4. Seeding local `PostgreSQL` DB using `Notion API`
+5. Set up basic filtering on columns with type `string`
+6. Working on sorting and searching
+7. Next: Date-range filtering
 
 ## Challenges & workarounds
 1. Rate limit from Notion API => migrate table to real DB (Done)
 2. Updating notion table doesn't update DB data => setup triggers to post/update data to DB in realtime (In progress)
 3. API is accessible to public (not safe as it contains personal finance data) => Setup authorisation for access
 
-## Infrastructure
+## Infrastructure (TBD)
 1. Database: PostgreSQL
 2. Platform: AWS
 
