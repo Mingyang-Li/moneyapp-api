@@ -18,14 +18,15 @@ async function seedIncomeTable() {
 
     results.forEach(async (row) => {
       const incomeItem = {
-        paymentMethod: 'Cash',
-        paidBy: 'Me',
-        incomeType: 'Ad rev',
-        amount: 100,
-        currency: 'NZD',
-        date: new Date(),
+        notionId: row.id,
+        paymentMethod: row.properties['Payment Method']['select'].name,
+        paidBy: row.properties['Paid By']['select'].name,
+        incomeType: row.properties['Income Type']['select'].name,
+        amount: row.properties['Amount']['number'],
+        currency: row.properties['Currency']['select'].name,
+        date: row.created_time,
       };
-      console.log(row);
+      console.log(incomeItem);
       allIncome.push(incomeItem);
     });
     if (!next_cursor) {
@@ -39,40 +40,6 @@ async function seedIncomeTable() {
   const promisedSeeding = Promise.all(seeding);
   console.log(promisedSeeding);
 }
-
-// async function seedExpensesTable() {
-//   const notionExpensesDbId = process.env.NOTION_EXPENSES_DATABASE_ID;
-//   let cursor = undefined;
-//   const allIncome = [];
-//   while (true) {
-//     const { results, next_cursor } = await notionClient.databases.query({
-//       database_id: notionExpensesDbId,
-//       start_cursor: cursor,
-//     });
-
-//     results.forEach(async (row) => {
-//       const expenseItem = {
-//         item: row.properties['Item']['title'][0].plain_text,
-//         amount: row.properties['Amount']['number'],
-//         currency: row.properties['Currency']['select'].name,
-//         type: row.properties['Type']['select'].name,
-//         subType: row.properties['Sub-type']['select'].name,
-//         paymentType: row.properties['Payment Type']['select'].name,
-//         date: new Date(row.properties['Date']['date']['start']),
-//       };
-//       allIncome.push(expenseItem);
-//     });
-//     if (!next_cursor) {
-//       break;
-//     }
-//     cursor = next_cursor;
-//   }
-//   const seeding = allIncome.map(
-//     async (e) => await prisma.expense.create({ data: e }),
-//   );
-//   const promisedSeeding = Promise.all(seeding);
-//   console.log(promisedSeeding);
-// }
 
 seedIncomeTable()
   .catch((e) => {

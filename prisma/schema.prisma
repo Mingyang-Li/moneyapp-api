@@ -12,6 +12,7 @@ datasource db {
 
 model Income {
   id                  Int       @id @default(autoincrement())
+  notionId            String
   paymentMethod       String
   paidBy              String
   incomeType          String
@@ -26,6 +27,7 @@ model Income {
 
 model Expense {
   id               Int @id      @default(autoincrement())
+  notionId         String
   item             String
   amount           Float
   currency         String
