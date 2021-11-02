@@ -7,23 +7,23 @@
 
 
 
-# Description
+# About
 
 GraphQL API built on top of [Nest.js](https://github.com/nestjs/nest) framework using TypeScript, Notion API and a bunch of small tools.
 
-## Purpose
+## 📍 Purpose
 1. Acting an the API for a finance management app (personal use)
 2. Provide a flexible way for the front-end to interact with data
 3. Learn about NestJS & GraphQL without following along boring tutorials
 
-## Features
+## 💥 Features
 1. Read, create, update and delete all personal finance data hosted in cloud DB
 2. Filter all tables by each column
 3. Sorting, pagination, searching
 4. Date range filter on all date-type fields for both tables (Very important)
 
 
-## Development steps
+## 📝 Development steps
 1. Setup project structure including essential tools including <br>
   a) NestJS: CLI, graphql, Swagger <br>
   b) Notion Client API <br>
@@ -38,16 +38,16 @@ GraphQL API built on top of [Nest.js](https://github.com/nestjs/nest) framework 
 6. Working on sorting and searching
 7. Next: Date-range filtering
 
-## Challenges & workarounds
+## ⁉️ Challenges & workarounds
 1. Rate limit from Notion API => migrate table to real DB (Done)
 2. Updating notion table doesn't update DB data => setup triggers to post/update data to DB in realtime (In progress)
 3. API is accessible to public (not safe as it contains personal finance data) => Setup authorisation for access
 
-## Infrastructure (TBD)
+## 🛠️ Infrastructure (TBD)
 1. Database: PostgreSQL
 2. Platform: AWS
 
-## Running the app
+## 🛫 Running the app
 
 ```bash
 # Installation
