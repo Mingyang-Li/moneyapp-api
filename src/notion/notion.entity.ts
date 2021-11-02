@@ -2,22 +2,28 @@ import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class IncomeRow {
-  @Field()
+  @Field({ nullable: true })
+  id?: number;
+
+  @Field({ nullable: true })
+  notionId?: string;
+
+  @Field({ nullable: true })
   paymentMethod?: string;
 
-  @Field()
+  @Field({ nullable: true })
   paidBy?: string;
 
-  @Field()
+  @Field({ nullable: true })
   incomeType?: string;
 
   @Field({ nullable: true })
   date?: Date;
 
-  @Field()
+  @Field({ nullable: true })
   amount?: number;
 
-  @Field()
+  @Field({ nullable: true })
   currency?: string;
 
   @Field({ nullable: true })
@@ -35,28 +41,31 @@ export class IncomeRow {
 
 @ObjectType()
 export class ExpenseRow {
-  @Field()
-  id: number;
+  @Field({ nullable: true })
+  id?: number;
+
+  @Field({ nullable: true })
+  notionId?: string;
 
   @Field({ nullable: true })
   date?: Date;
 
-  @Field()
+  @Field({ nullable: true })
   item?: string;
 
-  @Field()
+  @Field({ nullable: true })
   amount?: number;
 
-  @Field()
+  @Field({ nullable: true })
   currency?: string;
 
-  @Field()
+  @Field({ nullable: true })
   type?: string;
 
-  @Field()
+  @Field({ nullable: true })
   subType?: string;
 
-  @Field()
+  @Field({ nullable: true })
   paymentType?: string;
 
   @Field({ nullable: true })

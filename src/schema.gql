@@ -3,12 +3,14 @@
 # ------------------------------------------------------
 
 type IncomeRow {
-  paymentMethod: String!
-  paidBy: String!
-  incomeType: String!
+  id: Float
+  notionId: String
+  paymentMethod: String
+  paidBy: String
+  incomeType: String
   date: DateTime
-  amount: Float!
-  currency: String!
+  amount: Float
+  currency: String
   dateCreated: DateTime
   dateLastUpdated: DateTime
   dateDeleted: DateTime
@@ -21,14 +23,15 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 scalar DateTime
 
 type ExpenseRow {
-  id: Float!
+  id: Float
+  notionId: String
   date: DateTime
-  item: String!
-  amount: Float!
-  currency: String!
-  type: String!
-  subType: String!
-  paymentType: String!
+  item: String
+  amount: Float
+  currency: String
+  type: String
+  subType: String
+  paymentType: String
   dateCreated: DateTime
   dateLastUpdated: DateTime
   dateDeleted: DateTime
@@ -36,6 +39,6 @@ type ExpenseRow {
 }
 
 type Query {
-  income: [IncomeRow!]!
+  income(currency: String, date: DateTime, incomeType: String, paidBy: String, paymentMethod: String): [IncomeRow!]!
   expense(paymentType: String, subType: String, type: String, item: String, currency: String, amount: Int, date: DateTime, id: Int): [ExpenseRow!]!
 }
