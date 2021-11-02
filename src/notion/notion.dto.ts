@@ -1,5 +1,7 @@
 export interface IncomeQueryParams {
+  // dataAttributes
   id?: number;
+  notionId?: string;
   date?: Date;
   amount?: number;
   currency?: string;
@@ -14,6 +16,7 @@ export interface IncomeQueryParams {
 
 export interface ExpenseQueryParams {
   id?: number;
+  notionId?: string;
   date?: Date;
   amount?: number;
   currency?: string;

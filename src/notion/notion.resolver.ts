@@ -7,8 +7,22 @@ export class NotionResolver {
   constructor(private notionService: NotionService) {}
 
   @Query(() => [IncomeRow])
-  income(): Promise<IncomeRow[]> {
-    return this.notionService.findAllIncome();
+  income(
+    @Args('paymentMethod', { type: () => String, nullable: true })
+    paymentMethod: string,
+    @Args('paidBy', { type: () => String, nullable: true }) paidBy: string,
+    @Args('incomeType', { type: () => String, nullable: true })
+    incomeType: string,
+    @Args('date', { type: () => Date, nullable: true }) date: Date,
+    @Args('currency', { type: () => String, nullable: true }) currency: string,
+  ): Promise<IncomeRow[]> {
+    return this.notionService.findAllIncome({
+      paymentMethod,
+      paidBy,
+      incomeType,
+      date,
+      currency,
+    });
   }
 
   @Query(() => [ExpenseRow])

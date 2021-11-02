@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { ExpenseRow } from './notion.entity';
-import { ExpenseQueryParams } from './notion.dto';
+import { ExpenseRow, IncomeRow } from './notion.entity';
+import { ExpenseQueryParams, IncomeQueryParams } from './notion.dto';
 import * as dotenv from 'dotenv';
 import { PrismaClient } from '.prisma/client';
 dotenv.config({ path: __dirname + '/.env' });
@@ -9,8 +9,16 @@ dotenv.config({ path: __dirname + '/.env' });
 export class NotionService {
   private prisma = new PrismaClient();
 
-  async findAllIncome(): Promise<[]> {
-    return [];
+  async findAllIncome(params: IncomeQueryParams): Promise<IncomeRow[]> {
+    return await this.prisma.income.findMany({
+      where: {
+        paymentMethod: params.paymentMethod,
+        paidBy: params.paidBy,
+        incomeType: params.incomeType,
+        date: params.date,
+        currency: params.currency,
+      },
+    });
   }
 
   async findAllExpenses(params: ExpenseQueryParams): Promise<ExpenseRow[]> {
