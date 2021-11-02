@@ -19,10 +19,25 @@ export class IncomeRow {
 
   @Field()
   currency?: string;
+
+  @Field({ nullable: true })
+  dateCreated?: Date;
+
+  @Field({ nullable: true })
+  dateLastUpdated?: Date;
+
+  @Field({ nullable: true })
+  dateDeleted?: Date;
+
+  @Field({ nullable: true })
+  delated?: boolean;
 }
 
 @ObjectType()
-export class ExpensesRow {
+export class ExpenseRow {
+  @Field()
+  id: number;
+
   @Field({ nullable: true })
   date?: Date;
 
@@ -43,4 +58,16 @@ export class ExpensesRow {
 
   @Field()
   paymentType?: string;
+
+  @Field({ nullable: true })
+  dateCreated?: Date;
+
+  @Field({ nullable: true })
+  dateLastUpdated?: Date;
+
+  @Field({ nullable: true })
+  dateDeleted?: Date;
+
+  @Field({ nullable: true })
+  delated?: boolean;
 }
