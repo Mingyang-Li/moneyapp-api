@@ -12,17 +12,16 @@
 GraphQL API built on top of [Nest.js](https://github.com/nestjs/nest) framework using TypeScript, Notion API and a bunch of small tools.
 
 ## Purpose
-```
 1. Provide a flexible way for a data-vis tool to consume database content from Notion
 2. Learn about NestJS without following along boring tutorials
-```
+
 
 ## Features
-```
 1. Retrieve specified database tables from Notion API
 2. Filter all tables by each column
-3. Sorting pagination, searching
-```
+3. Sorting, pagination, searching
+4. Date range filter on all date-type fields for both tables (Very important)
+
 
 ## Development steps
 1. Setup project structure including essential tools including <br>
@@ -36,16 +35,13 @@ GraphQL API built on top of [Nest.js](https://github.com/nestjs/nest) framework 
 4. Currently working on implementing filtering, sorting and searching features on controllers
 
 ## Challenges & workarounds
-```
-1. Rate limit from Notion API => migrate table to real DB
-2. Updating notion table doesn't update DB data => setup triggers to post data to DB
-```
+1. Rate limit from Notion API => migrate table to real DB (Done)
+2. Updating notion table doesn't update DB data => setup triggers to post/update data to DB in realtime (In progress)
+3. API is accessible to public (not safe as it contains personal finance data) => Setup authorisation for access
 
 ## CD/CD
-```
 1. Platform: Heroku
 2. Process TBA
-```
 
 ## Running the app
 
