@@ -12,6 +12,9 @@ export interface IncomeQueryParams {
   dateLastUpdated?: Date;
   dateDeleted?: Date;
   delated?: boolean;
+
+  // functionAttributes
+  orderBy?: orderByType;
 }
 
 export interface ExpenseQueryParams {
@@ -28,4 +31,9 @@ export interface ExpenseQueryParams {
   dateLastUpdated?: Date;
   dateDeleted?: Date;
   delated?: boolean;
+}
+
+export interface orderByType {
+  DATE_ASC;
+  DATE_DESC;
 }

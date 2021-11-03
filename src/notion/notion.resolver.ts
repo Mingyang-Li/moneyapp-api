@@ -1,6 +1,7 @@
 import { Resolver, Query, Args, Int } from '@nestjs/graphql';
 import { IncomeRow, ExpenseRow } from './notion.entity';
 import { NotionService } from './notion.service';
+import { orderByType } from './notion.dto';
 
 @Resolver(() => IncomeRow)
 export class NotionResolver {
@@ -15,6 +16,8 @@ export class NotionResolver {
     incomeType: string,
     @Args('date', { type: () => Date, nullable: true }) date: Date,
     @Args('currency', { type: () => String, nullable: true }) currency: string,
+    @Args('orderBy', { type: () => String, nullable: true })
+    orderBy: orderByType,
   ): Promise<IncomeRow[]> {
     return this.notionService.findAllIncome({
       paymentMethod,
@@ -22,6 +25,7 @@ export class NotionResolver {
       incomeType,
       date,
       currency,
+      orderBy,
     });
   }
 
