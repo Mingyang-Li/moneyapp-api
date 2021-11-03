@@ -80,3 +80,12 @@ export class ExpenseRow {
   @Field({ nullable: true })
   delated?: boolean;
 }
+
+@ObjectType()
+export class ClassForOrderBy {
+  @Field()
+  dataField: string;
+
+  @Field()
+  sortOrder: 'desc' | 'asc';
+}

@@ -14,7 +14,7 @@ export interface IncomeQueryParams {
   delated?: boolean;
 
   // functionAttributes
-  orderBy?: orderByType;
+  orderBy?: OrderByType;
 }
 
 export interface ExpenseQueryParams {
@@ -33,7 +33,33 @@ export interface ExpenseQueryParams {
   delated?: boolean;
 }
 
-export interface orderByType {
-  DATE_ASC;
-  DATE_DESC;
-}
+export type OrderByType = {
+  dataField: OrderByFields;
+  sortOrder: 'asc' | 'desc';
+};
+
+export type OrderByFields = {
+  // common
+  id: 'id';
+  notionId: 'notionId';
+  date: 'date';
+  amount: 'amount';
+  currency: 'currency';
+
+  // income_only
+  paymentMethod: 'paymentMethod';
+  paidBy: 'paidBy';
+  incomeType: 'incomeType';
+
+  // expense_only;
+  item: 'item';
+  type: 'type';
+  subTyoe: 'subType';
+  paymentType: 'paymentType';
+
+  // db_specific
+  dateCreated: 'dateCreated';
+  dateLastUpdated: 'dateLastUpdated';
+  dateDeleted: 'dateDeleted';
+  deleted: 'deleted';
+};

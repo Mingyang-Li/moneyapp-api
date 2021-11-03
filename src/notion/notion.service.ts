@@ -10,7 +10,6 @@ export class NotionService {
   private prisma = new PrismaClient();
 
   async findAllIncome(params: IncomeQueryParams): Promise<IncomeRow[]> {
-    const { DATE_ASC, DATE_DESC } = params.orderBy;
     return await this.prisma.income.findMany({
       where: {
         paymentMethod: params.paymentMethod,
@@ -20,7 +19,7 @@ export class NotionService {
         currency: params.currency,
       },
       orderBy: {
-        date: DATE_ASC.orderBy || DATE_DESC.orderBy,
+        date: params.orderBy.sortOrder || 'desc',
       },
     });
   }
