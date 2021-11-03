@@ -1,5 +1,5 @@
 import { Resolver, Query, Args, Int } from '@nestjs/graphql';
-import { IncomeRow, ExpenseRow } from './notion.entity';
+import { IncomeRow, ExpenseRow, ClassForOrderBy } from './notion.entity';
 import { NotionService } from './notion.service';
 import { OrderByType } from './notion.dto';
 
@@ -16,7 +16,7 @@ export class NotionResolver {
     incomeType: string,
     @Args('date', { type: () => Date, nullable: true }) date: Date,
     @Args('currency', { type: () => String, nullable: true }) currency: string,
-    @Args('ORDERBY', { type: () => String, nullable: true })
+    @Args('ORDERBY', { type: () => ClassForOrderBy, nullable: true })
     orderBy: OrderByType,
   ): Promise<IncomeRow[]> {
     return this.notionService.findAllIncome({

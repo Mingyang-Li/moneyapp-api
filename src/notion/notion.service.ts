@@ -19,7 +19,7 @@ export class NotionService {
         currency: params.currency,
       },
       orderBy: {
-        date: params.orderBy.sortOrder || 'desc',
+        date: 'desc',
       },
     });
   }
@@ -33,6 +33,7 @@ export class NotionService {
         currency: params.currency,
         item: {
           contains: params.item,
+          mode: 'insensitive',
         },
         type: params.type,
         subType: params.subType,

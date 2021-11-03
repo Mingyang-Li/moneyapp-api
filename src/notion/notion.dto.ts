@@ -38,7 +38,7 @@ export type OrderByType = {
   sortOrder: 'asc' | 'desc';
 };
 
-export type OrderByFields = {
+export interface OrderByFields {
   // common
   id: 'id';
   notionId: 'notionId';
@@ -62,4 +62,4 @@ export type OrderByFields = {
   dateLastUpdated: 'dateLastUpdated';
   dateDeleted: 'dateDeleted';
   deleted: 'deleted';
-};
+}
