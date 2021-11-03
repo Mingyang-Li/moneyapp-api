@@ -12,9 +12,13 @@ export interface IncomeQueryParams {
   dateLastUpdated?: Date;
   dateDeleted?: Date;
   delated?: boolean;
+
+  // functionAttributes
+  sortDateBy?: OrderByType;
 }
 
 export interface ExpenseQueryParams {
+  // dataAttributes
   id?: number;
   notionId?: string;
   date?: Date;
@@ -28,4 +32,9 @@ export interface ExpenseQueryParams {
   dateLastUpdated?: Date;
   dateDeleted?: Date;
   delated?: boolean;
+
+  // functionAttributes
+  sortDateBy?: OrderByType;
 }
+
+export type OrderByType = 'asc' | 'desc';

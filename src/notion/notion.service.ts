@@ -12,11 +12,26 @@ export class NotionService {
   async findAllIncome(params: IncomeQueryParams): Promise<IncomeRow[]> {
     return await this.prisma.income.findMany({
       where: {
-        paymentMethod: params.paymentMethod,
-        paidBy: params.paidBy,
-        incomeType: params.incomeType,
+        paymentMethod: {
+          equals: params.paymentMethod,
+          mode: 'insensitive',
+        },
+        paidBy: {
+          equals: params.paidBy,
+          mode: 'insensitive',
+        },
+        incomeType: {
+          equals: params.incomeType,
+          mode: 'insensitive',
+        },
         date: params.date,
-        currency: params.currency,
+        currency: {
+          equals: params.currency,
+          mode: 'insensitive',
+        },
+      },
+      orderBy: {
+        date: params.sortDateBy,
       },
     });
   }
@@ -27,16 +42,29 @@ export class NotionService {
         id: params.id,
         date: params.date,
         amount: params.amount,
-        currency: params.currency,
+        currency: {
+          equals: params.currency,
+          mode: 'insensitive',
+        },
         item: {
           contains: params.item,
+          mode: 'insensitive',
         },
-        type: params.type,
-        subType: params.subType,
-        paymentType: params.paymentType,
+        type: {
+          equals: params.type,
+          mode: 'insensitive',
+        },
+        subType: {
+          equals: params.subType,
+          mode: 'insensitive',
+        },
+        paymentType: {
+          equals: params.paymentType,
+          mode: 'insensitive',
+        },
       },
       orderBy: {
-        id: 'desc',
+        date: params.sortDateBy,
       },
     });
   }
