@@ -14,7 +14,7 @@ export interface IncomeQueryParams {
   delated?: boolean;
 
   // functionAttributes
-  orderBy?: OrderByType;
+  sortDateBy?: OrderByType;
 }
 
 export interface ExpenseQueryParams {
@@ -33,33 +33,30 @@ export interface ExpenseQueryParams {
   delated?: boolean;
 }
 
-export type OrderByType = {
-  dataField: OrderByFields;
-  sortOrder: 'asc' | 'desc';
-};
+export type OrderByType = 'asc' | 'desc';
 
-export interface OrderByFields {
-  // common
-  id: 'id';
-  notionId: 'notionId';
-  date: 'date';
-  amount: 'amount';
-  currency: 'currency';
+// export interface OrderByFields {
+//   // common
+//   id: 'id';
+//   notionId: 'notionId';
+//   date: 'date';
+//   amount: 'amount';
+//   currency: 'currency';
 
-  // income_only
-  paymentMethod: 'paymentMethod';
-  paidBy: 'paidBy';
-  incomeType: 'incomeType';
+//   // income_only
+//   paymentMethod: 'paymentMethod';
+//   paidBy: 'paidBy';
+//   incomeType: 'incomeType';
 
-  // expense_only;
-  item: 'item';
-  type: 'type';
-  subTyoe: 'subType';
-  paymentType: 'paymentType';
+//   // expense_only;
+//   item: 'item';
+//   type: 'type';
+//   subTyoe: 'subType';
+//   paymentType: 'paymentType';
 
-  // db_specific
-  dateCreated: 'dateCreated';
-  dateLastUpdated: 'dateLastUpdated';
-  dateDeleted: 'dateDeleted';
-  deleted: 'deleted';
-}
+//   // db_specific
+//   dateCreated: 'dateCreated';
+//   dateLastUpdated: 'dateLastUpdated';
+//   dateDeleted: 'dateDeleted';
+//   deleted: 'deleted';
+// }

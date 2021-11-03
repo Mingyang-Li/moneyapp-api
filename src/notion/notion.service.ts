@@ -31,7 +31,7 @@ export class NotionService {
         },
       },
       orderBy: {
-        date: 'desc' || params.orderBy.sortOrder,
+        date: params.sortDateBy,
       },
     });
   }

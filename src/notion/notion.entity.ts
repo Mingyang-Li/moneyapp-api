@@ -1,4 +1,4 @@
-import { Field, InputType, ObjectType } from '@nestjs/graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class IncomeRow {
@@ -79,13 +79,4 @@ export class ExpenseRow {
 
   @Field({ nullable: true })
   delated?: boolean;
-}
-
-@InputType()
-export class ClassForOrderBy {
-  @Field()
-  dataField: string;
-
-  @Field()
-  sortOrder: 'desc' | 'asc';
 }
