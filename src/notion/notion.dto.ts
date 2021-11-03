@@ -38,29 +38,3 @@ export interface ExpenseQueryParams {
 }
 
 export type OrderByType = 'asc' | 'desc';
-
-// export interface OrderByFields {
-//   // common
-//   id: 'id';
-//   notionId: 'notionId';
-//   date: 'date';
-//   amount: 'amount';
-//   currency: 'currency';
-
-//   // income_only
-//   paymentMethod: 'paymentMethod';
-//   paidBy: 'paidBy';
-//   incomeType: 'incomeType';
-
-//   // expense_only;
-//   item: 'item';
-//   type: 'type';
-//   subTyoe: 'subType';
-//   paymentType: 'paymentType';
-
-//   // db_specific
-//   dateCreated: 'dateCreated';
-//   dateLastUpdated: 'dateLastUpdated';
-//   dateDeleted: 'dateDeleted';
-//   deleted: 'deleted';
-// }
