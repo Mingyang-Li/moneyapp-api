@@ -40,6 +40,8 @@ export class NotionResolver {
     @Args('subType', { type: () => String, nullable: true }) subType: string,
     @Args('paymentType', { type: () => String, nullable: true })
     paymentType: string,
+    @Args('sortDateBy', { type: () => String, nullable: true })
+    sortDateBy: OrderByType,
   ): Promise<ExpenseRow[]> {
     return await this.notionService.findAllExpenses({
       id,
@@ -50,6 +52,7 @@ export class NotionResolver {
       type,
       subType,
       paymentType,
+      sortDateBy,
     });
   }
 }

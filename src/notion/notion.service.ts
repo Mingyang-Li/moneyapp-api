@@ -64,7 +64,7 @@ export class NotionService {
         },
       },
       orderBy: {
-        id: 'desc',
+        date: params.sortDateBy,
       },
     });
   }
