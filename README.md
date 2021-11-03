@@ -42,8 +42,8 @@ GraphQL API built on top of [NestJS](https://github.com/nestjs/nest) framework u
 
 ## ⁉️ Challenges & workarounds
 1. Rate limit from Notion API => migrate table to real DB (Done)
-2. Updating notion table doesn't update DB data => setup triggers to post/update data to DB in realtime (In progress)
-3. API is accessible to public (not safe as it contains personal finance data) => Setup authorisation for access
+2. DB data isn't in sync with data from Notion => need Notion webhook to setup triggers but none available
+3. API is accessible to public (not safe as it contains personal finance data) => Setup authorisation for access (in progress)
 
 ## 🛠️ Infrastructure (TBD)
 1. Database: PostgreSQL
