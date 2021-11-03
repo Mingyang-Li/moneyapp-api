@@ -9,7 +9,7 @@
 
 # About
 
-GraphQL API built on top of [Nest.js](https://github.com/nestjs/nest) framework using TypeScript, Notion API and a bunch of small tools.
+GraphQL API built on top of [NestJS](https://github.com/nestjs/nest) framework using TypeScript, Notion API and a bunch of small tools.
 
 ## 📍 Purpose
 1. Acting an the API for a finance management app (personal use)
@@ -23,7 +23,7 @@ GraphQL API built on top of [Nest.js](https://github.com/nestjs/nest) framework 
 4. Date range filter on all date-type fields for both tables (Very important)
 
 
-## 📝 Development steps
+## 📝 Development process
 1. Setup project structure including essential tools including <br>
   a) NestJS: CLI, graphql, Swagger <br>
   b) Notion Client API <br>
@@ -35,8 +35,10 @@ GraphQL API built on top of [Nest.js](https://github.com/nestjs/nest) framework 
 3. Setting up controllers, resolvers, services and DTOs using built-in `dependency injection`.
 4. Seeding local `PostgreSQL` DB using `Notion API`
 5. Set up basic filtering on columns with type `string`
-6. Working on sorting and searching
+6. Setup sorting by date as query param
 7. Next: Date-range filtering
+8. MUST: Authorisation (Guards & interceptors)
+9. Nice-to-have: search (user typing on frontend, triggers search query onChange => every new character)
 
 ## ⁉️ Challenges & workarounds
 1. Rate limit from Notion API => migrate table to real DB (Done)
