@@ -8,13 +8,15 @@
 
 
 # About
-
 GraphQL API built on top of [NestJS](https://github.com/nestjs/nest) framework using TypeScript, Notion API and a bunch of small tools.
 
 ## 📍 Purpose
 1. Acting an the API for a finance management app (personal use)
 2. Provide a flexible way for the front-end to interact with data
 3. Learn about NestJS & GraphQL without following along boring tutorials
+
+## 📚 Frontend repository
+- [HERE](https://github.com/Mingyang-Li/moneyapp-client)
 
 ## 💥 Features
 1. Read, create, update and delete all personal finance data hosted in cloud DB
