@@ -1,12 +1,15 @@
+import { UseGuards } from '@nestjs/common';
 import { Resolver, Query, Args, Int } from '@nestjs/graphql';
 import { IncomeRow, ExpenseRow } from './notion.entity';
 import { NotionService } from './notion.service';
 import { OrderByType } from './notion.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Resolver(() => [])
 export class NotionResolver {
   constructor(private notionService: NotionService) {}
 
+  @UseGuards(AuthGuard('jwt'))
   @Query(() => [IncomeRow])
   async income(
     @Args('paymentMethod', { type: () => String, nullable: true })
