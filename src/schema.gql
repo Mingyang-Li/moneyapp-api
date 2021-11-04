@@ -38,7 +38,26 @@ type ExpenseRow {
   delated: Boolean
 }
 
+type GroupByQuery {
+  incomePaidBy: String
+  incomePaymentMethod: String
+  incomeType: String
+  expenseType: String
+  expenseSubType: String
+  expensePaymentType: String
+  currency: String
+  date: String
+  dateCreated: String
+  dateLastUpdated: String
+  dateDeleted: String
+  deleted: String
+  sum: Float
+  average: Float
+  count: Float
+}
+
 type Query {
   income(count: Int, sortDateBy: String, currency: String, date: DateTime, incomeType: String, paidBy: String, paymentMethod: String): [IncomeRow!]!
   expense(count: Int, sortDateBy: String, paymentType: String, subType: String, type: String, item: String, currency: String, amount: Int, date: DateTime, id: Int): [ExpenseRow!]!
+  groupedQuery(dateStartInc: DateTime, valueType: String!, categoryType: String!, table: String!): [GroupByQuery!]!
 }

@@ -22,7 +22,7 @@ export interface BaseQueryParam {
   dateCreated?: Date;
   dateLastUpdated?: Date;
   dateDeleted?: Date;
-  delated?: boolean;
+  deleted?: boolean;
 
   // functionAttributes
   sortDateBy?: OrderByType;
@@ -37,7 +37,7 @@ export interface BaseGroupingType {
   dateCreated?: 'dateCreated';
   dateLastUpdated?: 'dateLastUpdated';
   dateDeleted?: 'dateDeleted';
-  delated?: 'delated';
+  deleted?: 'delated';
 }
 
 export interface IncomeGroupingType extends BaseGroupingType {
@@ -52,4 +52,30 @@ export interface ExpenseGroupingType extends BaseGroupingType {
   paymentType?: 'paymentType';
 }
 
-export type ValueType = 'count' | 'sum' | 'avg';
+export type ValueType = 'count' | 'sum' | 'average';
+
+export type TableType = 'Income' | 'Expense';
+
+export interface GroupQueryParam {
+  table: TableType;
+  categoryType: GroupByQueryReturnField;
+  valueType: ValueType;
+  dateStartInc?: Date;
+  dateEndInc?: Date;
+}
+
+export type GroupByQueryReturnField =
+  | 'incomePaidBy'
+  | 'incomePaymentMethod'
+  | 'incomeType'
+  | 'expenseType'
+  | 'expenseSubType'
+  | 'expensePaymentType'
+
+  // global global_group_by_fields fields
+  | 'currency'
+  | 'date'
+  | 'dateCreated'
+  | 'dateLastUpdated'
+  | 'dateDeleted'
+  | 'deleted';

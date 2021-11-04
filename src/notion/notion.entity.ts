@@ -1,9 +1,4 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-// import {
-//   IncomeGroupingType,
-//   ExpenseGroupingType,
-//   ValueType,
-// } from './notion.dto';
 
 @ObjectType()
 export class IncomeRow {
@@ -86,43 +81,174 @@ export class ExpenseRow {
   delated?: boolean;
 }
 
-// @ObjectType()
-// export class IncomeGroupByQuery {
-//   @Field()
-//   fieldName: IncomeGroupingType;
+@ObjectType()
+export class GroupByQuery {
+  // income_specific
+  @Field({ nullable: true })
+  incomePaidBy?: string;
 
-//   @Field()
-//   value: ValueType;
-// }
+  @Field({ nullable: true })
+  incomePaymentMethod?: string;
 
-// @ObjectType()
-// export class ExpenseGroupByQuery {
-//   @Field()
-//   fieldName: ExpenseGroupingType;
+  @Field({ nullable: true })
+  incomeType?: string;
 
-//   @Field()
-//   value: ValueType;
-// }
+  // expense_specific
+  @Field({ nullable: true })
+  expenseType?: string;
 
-export const incomeBySource = [
+  @Field({ nullable: true })
+  expenseSubType?: string;
+
+  @Field({ nullable: true })
+  expensePaymentType?: string;
+
+  // global_group_by_category
+  @Field({ nullable: true })
+  currency?: string;
+
+  @Field({ nullable: true })
+  date?: string;
+
+  @Field({ nullable: true })
+  dateCreated?: string;
+
+  @Field({ nullable: true })
+  dateLastUpdated?: string;
+
+  @Field({ nullable: true })
+  dateDeleted?: string;
+
+  @Field({ nullable: true })
+  deleted?: string;
+
+  // aggregated_value_types
+  @Field({ nullable: true })
+  sum?: number;
+
+  @Field({ nullable: true })
+  average?: number;
+
+  @Field({ nullable: true })
+  count?: number;
+}
+
+// sample_responses
+export const incomePaidBy = [
   {
-    field: 'google',
-    value: 200000,
+    incomePaidBy: 'google',
+    sum: 200000,
   },
   {
-    field: 'amazon',
-    value: 100000,
+    incomePaidBy: 'amazon',
+    sum: 100000,
   },
   {
-    field: 'netflix',
-    value: 232000,
+    incomePaidBy: 'netflix',
+    sum: 232000,
   },
   {
-    field: 'microsoft',
-    value: 190280,
+    incomePaidBy: 'microsoft',
+    sum: 190280,
   },
   {
-    field: 'metaverse',
-    value: 190280,
+    incomePaidBy: 'metaverse',
+    sum: 190280,
+  },
+];
+
+export const incomeByPaymentMethod = [
+  {
+    incomePaymentMethod: 'cash',
+    currency: 'NZD',
+    sum: 2670000,
+  },
+  {
+    incomePaymentMethod: 'stripe',
+    currency: 'USD',
+    sum: 108000,
+  },
+  {
+    incomePaymentMethod: 'bitcoin',
+    currency: 'BTC',
+    sum: 232000,
+  },
+];
+
+export const incomeType = [
+  {
+    incomeType: 'commission',
+    sum: 2670000,
+  },
+  {
+    incomeType: 'wage',
+    sum: 108000,
+  },
+  {
+    incomeType: 'investment cashout',
+    sum: 232000,
+  },
+];
+
+export const expenseType = [
+  {
+    expenseType: 'transport',
+    sum: 1000,
+  },
+  {
+    expenseType: 'sports',
+    sum: 5000,
+  },
+  {
+    expenseType: 'bills',
+    sum: 900,
+  },
+];
+
+export const expenseSubType = [
+  {
+    expenseSubType: 'food',
+    sum: 1000,
+  },
+  {
+    expenseSubType: 'running gears',
+    sum: 5000,
+  },
+  {
+    expenseSubType: 'pc accessories',
+    sum: 900,
+  },
+];
+
+export const expensePaymentType = [
+  {
+    expensePaymentType: 'cash',
+    sum: 100000,
+    currency: 'NZD',
+  },
+  {
+    expensePaymentType: 'credit card',
+    sum: 100000,
+    currency: 'USD',
+  },
+  {
+    expensePaymentType: 'bitcoin',
+    sum: 100000,
+    currency: 'BTC',
+  },
+];
+
+export const incomeByCurrency = [
+  {
+    currency: 'NZD',
+    sum: 100000,
+  },
+  {
+    currency: 'USD',
+    sum: 100000,
+  },
+  {
+    currency: 'DOT',
+    sum: 100000,
   },
 ];
