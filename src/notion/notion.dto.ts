@@ -15,6 +15,7 @@ export interface IncomeQueryParams {
 
   // functionAttributes
   sortDateBy?: OrderByType;
+  count?: number;
 }
 
 export interface ExpenseQueryParams {
@@ -35,6 +36,7 @@ export interface ExpenseQueryParams {
 
   // functionAttributes
   sortDateBy?: OrderByType;
+  count?: number;
 }
 
 export type OrderByType = 'asc' | 'desc';

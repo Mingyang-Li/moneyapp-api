@@ -39,6 +39,6 @@ type ExpenseRow {
 }
 
 type Query {
-  income(sortDateBy: String, currency: String, date: DateTime, incomeType: String, paidBy: String, paymentMethod: String): [IncomeRow!]!
-  expense(sortDateBy: String, paymentType: String, subType: String, type: String, item: String, currency: String, amount: Int, date: DateTime, id: Int): [ExpenseRow!]!
+  income(count: Int, sortDateBy: String, currency: String, date: DateTime, incomeType: String, paidBy: String, paymentMethod: String): [IncomeRow!]!
+  expense(count: Int, sortDateBy: String, paymentType: String, subType: String, type: String, item: String, currency: String, amount: Int, date: DateTime, id: Int): [ExpenseRow!]!
 }

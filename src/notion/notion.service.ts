@@ -33,6 +33,7 @@ export class NotionService {
       orderBy: {
         date: params.sortDateBy,
       },
+      take: params.count,
     });
   }
 
@@ -66,6 +67,7 @@ export class NotionService {
       orderBy: {
         date: params.sortDateBy,
       },
+      take: params.count,
     });
   }
 }

@@ -1,15 +1,12 @@
-import { UseGuards } from '@nestjs/common';
 import { Resolver, Query, Args, Int } from '@nestjs/graphql';
 import { IncomeRow, ExpenseRow } from './notion.entity';
 import { NotionService } from './notion.service';
 import { OrderByType } from './notion.dto';
-import { AuthGuard } from '@nestjs/passport';
 
 @Resolver(() => [])
 export class NotionResolver {
   constructor(private notionService: NotionService) {}
 
-  @UseGuards(AuthGuard('jwt'))
   @Query(() => [IncomeRow])
   async income(
     @Args('paymentMethod', { type: () => String, nullable: true })
@@ -21,6 +18,7 @@ export class NotionResolver {
     @Args('currency', { type: () => String, nullable: true }) currency: string,
     @Args('sortDateBy', { type: () => String, nullable: true })
     sortDateBy: OrderByType,
+    @Args('count', { type: () => Int, nullable: true }) count: number,
   ): Promise<IncomeRow[]> {
     return this.notionService.findAllIncome({
       paymentMethod,
@@ -29,6 +27,7 @@ export class NotionResolver {
       date,
       currency,
       sortDateBy,
+      count,
     });
   }
 
@@ -45,6 +44,7 @@ export class NotionResolver {
     paymentType: string,
     @Args('sortDateBy', { type: () => String, nullable: true })
     sortDateBy: OrderByType,
+    @Args('count', { type: () => Int, nullable: true }) count: number,
   ): Promise<ExpenseRow[]> {
     return await this.notionService.findAllExpenses({
       id,
@@ -56,6 +56,7 @@ export class NotionResolver {
       subType,
       paymentType,
       sortDateBy,
+      count,
     });
   }
 }
