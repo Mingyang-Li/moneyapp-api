@@ -1,6 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { ExpenseRow, IncomeRow } from './notion.entity';
-import { ExpenseQueryParams, IncomeQueryParams } from './notion.dto';
+import { ExpenseRow, GroupByQuery, IncomeRow } from './notion.entity';
+import {
+  ExpenseQueryParams,
+  GroupQueryParam,
+  IncomeQueryParams,
+} from './notion.dto';
 import * as dotenv from 'dotenv';
 import { PrismaClient } from '.prisma/client';
 dotenv.config({ path: __dirname + '/.env' });
@@ -33,6 +37,7 @@ export class NotionService {
       orderBy: {
         date: params.sortDateBy,
       },
+      take: params.count,
     });
   }
 
@@ -66,6 +71,12 @@ export class NotionService {
       orderBy: {
         date: params.sortDateBy,
       },
+      take: params.count,
     });
+  }
+
+  async queryByGroup(params: GroupQueryParam): Promise<GroupByQuery[]> {
+    console.table(params);
+    return;
   }
 }

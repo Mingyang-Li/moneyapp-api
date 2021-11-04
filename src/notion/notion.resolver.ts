@@ -1,7 +1,12 @@
 import { Resolver, Query, Args, Int } from '@nestjs/graphql';
-import { IncomeRow, ExpenseRow } from './notion.entity';
+import { IncomeRow, ExpenseRow, GroupByQuery } from './notion.entity';
 import { NotionService } from './notion.service';
-import { OrderByType } from './notion.dto';
+import {
+  GroupByQueryReturnField,
+  OrderByType,
+  TableType,
+  ValueType,
+} from './notion.dto';
 
 @Resolver(() => [])
 export class NotionResolver {
@@ -18,6 +23,7 @@ export class NotionResolver {
     @Args('currency', { type: () => String, nullable: true }) currency: string,
     @Args('sortDateBy', { type: () => String, nullable: true })
     sortDateBy: OrderByType,
+    @Args('count', { type: () => Int, nullable: true }) count: number,
   ): Promise<IncomeRow[]> {
     return this.notionService.findAllIncome({
       paymentMethod,
@@ -26,6 +32,7 @@ export class NotionResolver {
       date,
       currency,
       sortDateBy,
+      count,
     });
   }
 
@@ -38,10 +45,14 @@ export class NotionResolver {
     @Args('item', { type: () => String, nullable: true }) item: string,
     @Args('type', { type: () => String, nullable: true }) type: string,
     @Args('subType', { type: () => String, nullable: true }) subType: string,
+
     @Args('paymentType', { type: () => String, nullable: true })
     paymentType: string,
+
     @Args('sortDateBy', { type: () => String, nullable: true })
     sortDateBy: OrderByType,
+
+    @Args('count', { type: () => Int, nullable: true }) count: number,
   ): Promise<ExpenseRow[]> {
     return await this.notionService.findAllExpenses({
       id,
@@ -53,6 +64,32 @@ export class NotionResolver {
       subType,
       paymentType,
       sortDateBy,
+      count,
+    });
+  }
+
+  @Query(() => [GroupByQuery])
+  async groupedQuery(
+    @Args('table', { type: () => String }) table: TableType,
+
+    @Args('categoryType', { type: () => String })
+    categoryType: GroupByQueryReturnField,
+
+    @Args('valueType', { type: () => String })
+    valueType: ValueType,
+
+    @Args('dateStartInc', { type: () => Date, nullable: true })
+    dateStartInc: Date,
+
+    @Args('dateStartInc', { type: () => Date, nullable: true })
+    dateEndInc: Date,
+  ): Promise<GroupByQuery[]> {
+    return await this.notionService.queryByGroup({
+      table,
+      categoryType,
+      valueType,
+      dateStartInc,
+      dateEndInc,
     });
   }
 }
