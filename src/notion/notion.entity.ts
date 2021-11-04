@@ -1,4 +1,9 @@
 import { Field, ObjectType } from '@nestjs/graphql';
+// import {
+//   IncomeGroupingType,
+//   ExpenseGroupingType,
+//   ValueType,
+// } from './notion.dto';
 
 @ObjectType()
 export class IncomeRow {
@@ -80,3 +85,44 @@ export class ExpenseRow {
   @Field({ nullable: true })
   delated?: boolean;
 }
+
+// @ObjectType()
+// export class IncomeGroupByQuery {
+//   @Field()
+//   fieldName: IncomeGroupingType;
+
+//   @Field()
+//   value: ValueType;
+// }
+
+// @ObjectType()
+// export class ExpenseGroupByQuery {
+//   @Field()
+//   fieldName: ExpenseGroupingType;
+
+//   @Field()
+//   value: ValueType;
+// }
+
+export const incomeBySource = [
+  {
+    field: 'google',
+    value: 200000,
+  },
+  {
+    field: 'amazon',
+    value: 100000,
+  },
+  {
+    field: 'netflix',
+    value: 232000,
+  },
+  {
+    field: 'microsoft',
+    value: 190280,
+  },
+  {
+    field: 'metaverse',
+    value: 190280,
+  },
+];

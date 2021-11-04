@@ -1,34 +1,24 @@
-export interface IncomeQueryParams {
+export interface IncomeQueryParams extends BaseQueryParam {
   // dataAttributes
-  id?: number;
-  notionId?: string;
-  date?: Date;
-  amount?: number;
-  currency?: string;
   paymentMethod?: string;
   paidBy?: string;
   incomeType?: string;
-  dateCreated?: Date;
-  dateLastUpdated?: Date;
-  dateDeleted?: Date;
-  delated?: boolean;
-
-  // functionAttributes
-  sortDateBy?: OrderByType;
-  count?: number;
 }
 
-export interface ExpenseQueryParams {
+export interface ExpenseQueryParams extends BaseQueryParam {
   // dataAttributes
-  id?: number;
-  notionId?: string;
-  date?: Date;
-  amount?: number;
-  currency?: string;
   item?: string;
   type?: string;
   subType?: string;
   paymentType?: string;
+}
+
+export interface BaseQueryParam {
+  id?: number;
+  notionId?: string;
+  amount?: number;
+  currency?: string;
+  date?: Date;
   dateCreated?: Date;
   dateLastUpdated?: Date;
   dateDeleted?: Date;
@@ -40,3 +30,26 @@ export interface ExpenseQueryParams {
 }
 
 export type OrderByType = 'asc' | 'desc';
+
+export interface BaseGroupingType {
+  currency?: 'currency';
+  date?: 'date';
+  dateCreated?: 'dateCreated';
+  dateLastUpdated?: 'dateLastUpdated';
+  dateDeleted?: 'dateDeleted';
+  delated?: 'delated';
+}
+
+export interface IncomeGroupingType extends BaseGroupingType {
+  paymentMethod?: 'paymentMethod';
+  paidBy?: 'paidBy';
+  incomeType?: 'incomeType';
+}
+
+export interface ExpenseGroupingType extends BaseGroupingType {
+  type?: 'type';
+  subType?: 'subType';
+  paymentType?: 'paymentType';
+}
+
+export type ValueType = 'count' | 'sum' | 'avg';
