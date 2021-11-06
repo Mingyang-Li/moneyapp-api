@@ -1,12 +1,7 @@
 import { Resolver, Query, Args, Int } from '@nestjs/graphql';
-import { IncomeRow, ExpenseRow, GroupByQuery } from './notion.entity';
+import { IncomeRow, ExpenseRow, IncomeGroupByQuery } from './notion.entity';
 import { NotionService } from './notion.service';
-import {
-  GroupByQueryReturnField,
-  OrderByType,
-  TableType,
-  ValueType,
-} from './notion.dto';
+import { IncomeQueryParams, OrderByType, ValueType } from './notion.dto';
 
 @Resolver(() => [])
 export class NotionResolver {
@@ -68,12 +63,10 @@ export class NotionResolver {
     });
   }
 
-  @Query(() => [GroupByQuery])
-  async groupedQuery(
-    @Args('table', { type: () => String }) table: TableType,
-
-    @Args('categoryType', { type: () => String })
-    categoryType: GroupByQueryReturnField,
+  @Query(() => [IncomeGroupByQuery])
+  async incomeGroupBy(
+    @Args('field', { type: () => String })
+    field: IncomeQueryParams,
 
     @Args('valueType', { type: () => String })
     valueType: ValueType,
@@ -83,10 +76,9 @@ export class NotionResolver {
 
     @Args('dateStartInc', { type: () => Date, nullable: true })
     dateEndInc: Date,
-  ): Promise<GroupByQuery[]> {
-    return await this.notionService.queryByGroup({
-      table,
-      categoryType,
+  ): Promise<IncomeGroupByQuery[]> {
+    return await this.notionService.incomeQueryByGroup({
+      field,
       valueType,
       dateStartInc,
       dateEndInc,

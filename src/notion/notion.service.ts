@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { ExpenseRow, GroupByQuery, IncomeRow } from './notion.entity';
+import { ExpenseRow, IncomeGroupByQuery, IncomeRow } from './notion.entity';
 import {
   ExpenseQueryParams,
-  GroupQueryParam,
+  IncomeGroupQueryParam,
   IncomeQueryParams,
 } from './notion.dto';
 import * as dotenv from 'dotenv';
@@ -75,8 +75,13 @@ export class NotionService {
     });
   }
 
-  async queryByGroup(params: GroupQueryParam): Promise<GroupByQuery[]> {
+  async incomeQueryByGroup(params: IncomeGroupQueryParam): Promise<[]> {
     console.table(params);
+    const { field, valueType } = params;
     return;
+    // switch (field) {
+    //   case 'paymentmethod':
+    //     return await this.prisma.income.groupBy=
+    // }
   }
 }
