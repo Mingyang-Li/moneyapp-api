@@ -75,13 +75,24 @@ export class NotionService {
     });
   }
 
-  async incomeQueryByGroup(params: IncomeGroupQueryParam): Promise<[]> {
+  async incomeQueryByGroup(params: IncomeGroupQueryParam): Promise<IncomeGroupByQuery[]> {
     console.table(params);
     const { field, valueType } = params;
-    return;
-    // switch (field) {
-    //   case 'paymentmethod':
-    //     return await this.prisma.income.groupBy=
-    // }
+    switch (field) {
+      case 'paymentMethod':
+        if (valueType === 'sum') {
+          return await this.prisma.income.groupBy({
+            by: ['paymentMethod'],
+            _sum: {
+              paymentMethod: true,
+            },
+          });
+        } else if (valueType === 'count') {
+          return;
+        } else if (valueType === 'average') {
+          return;
+        }
+      case 'incomePaidBy'
+    }
   }
 }
