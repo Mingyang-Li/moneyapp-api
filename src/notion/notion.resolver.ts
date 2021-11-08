@@ -102,7 +102,11 @@ export class NotionResolver {
             return {
               incomePaidBy: income.paidBy,
               incomePaymentMethod: income.paymentMethod,
-              count: income._count.paymentMethod,
+              incomeType: income.incomeType,
+              count:
+                income._count.paymentMethod |
+                income._count.paidBy |
+                income._count.incomeType,
             };
           });
         return groupedIncomeReturnCount;

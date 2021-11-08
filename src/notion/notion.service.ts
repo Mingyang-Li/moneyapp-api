@@ -119,7 +119,7 @@ export class NotionService {
           return await this.prisma.income.groupBy({
             by: ['paidBy'],
             _count: {
-              paymentMethod: true,
+              paidBy: true,
             },
           });
         } else if (valueType === 'average') {
@@ -134,7 +134,12 @@ export class NotionService {
             },
           });
         } else if (valueType === 'count') {
-          return;
+          return await this.prisma.income.groupBy({
+            by: ['incomeType'],
+            _count: {
+              incomeType: true,
+            },
+          });
         } else if (valueType === 'average') {
           return;
         }
