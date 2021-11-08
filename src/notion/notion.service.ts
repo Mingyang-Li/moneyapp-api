@@ -116,7 +116,12 @@ export class NotionService {
             },
           });
         } else if (valueType === 'count') {
-          return;
+          return await this.prisma.income.groupBy({
+            by: ['paidBy'],
+            _count: {
+              paymentMethod: true,
+            },
+          });
         } else if (valueType === 'average') {
           return;
         }
