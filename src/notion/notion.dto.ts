@@ -56,26 +56,28 @@ export type ValueType = 'count' | 'sum' | 'average';
 
 export type TableType = 'Income' | 'Expense';
 
-export interface GroupQueryParam {
-  table: TableType;
-  categoryType: GroupByQueryReturnField;
+export interface IncomeGroupQueryParam {
+  field: IncomeQueryParams;
   valueType: ValueType;
   dateStartInc?: Date;
   dateEndInc?: Date;
 }
 
-export type GroupByQueryReturnField =
-  | 'incomePaidBy'
-  | 'incomePaymentMethod'
-  | 'incomeType'
-  | 'expenseType'
-  | 'expenseSubType'
-  | 'expensePaymentType'
-
-  // global global_group_by_fields fields
+// global global_group_by_fields fields
+export type GlobalGroupByReturnField =
   | 'currency'
   | 'date'
   | 'dateCreated'
   | 'dateLastUpdated'
   | 'dateDeleted'
   | 'deleted';
+
+export type IncomeGroupByReturnField =
+  | 'incomePaidBy'
+  | 'incomePaymentMethod'
+  | 'incomeType';
+
+export type ExpenseGroupByReturnField =
+  | 'expenseType'
+  | 'expenseSubType'
+  | 'expensePaymentType';

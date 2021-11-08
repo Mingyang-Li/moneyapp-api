@@ -82,27 +82,7 @@ export class ExpenseRow {
 }
 
 @ObjectType()
-export class GroupByQuery {
-  // income_specific
-  @Field({ nullable: true })
-  incomePaidBy?: string;
-
-  @Field({ nullable: true })
-  incomePaymentMethod?: string;
-
-  @Field({ nullable: true })
-  incomeType?: string;
-
-  // expense_specific
-  @Field({ nullable: true })
-  expenseType?: string;
-
-  @Field({ nullable: true })
-  expenseSubType?: string;
-
-  @Field({ nullable: true })
-  expensePaymentType?: string;
-
+export class BaseGroupByQueryReturnedFields {
   // global_group_by_category
   @Field({ nullable: true })
   currency?: string;
@@ -122,6 +102,13 @@ export class GroupByQuery {
   @Field({ nullable: true })
   deleted?: string;
 
+  // date_filters_inputted_by_user
+  @Field({ nullable: true })
+  dateStartInc?: Date;
+
+  @Field({ nullable: true })
+  dateEndInc?: Date;
+
   // aggregated_value_types
   @Field({ nullable: true })
   sum?: number;
@@ -131,6 +118,32 @@ export class GroupByQuery {
 
   @Field({ nullable: true })
   count?: number;
+}
+
+@ObjectType()
+export class IncomeGroupByQuery extends BaseGroupByQueryReturnedFields {
+  // income_specific
+  @Field({ nullable: true })
+  incomePaidBy?: string;
+
+  @Field({ nullable: true })
+  incomePaymentMethod?: string;
+
+  @Field({ nullable: true })
+  incomeType?: string;
+}
+
+@ObjectType()
+export class ExpenseGroupByQuery extends BaseGroupByQueryReturnedFields {
+  // expense_specific
+  @Field({ nullable: true })
+  expenseType?: string;
+
+  @Field({ nullable: true })
+  expenseSubType?: string;
+
+  @Field({ nullable: true })
+  expensePaymentType?: string;
 }
 
 // sample_responses
