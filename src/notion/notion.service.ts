@@ -98,14 +98,6 @@ export class NotionService {
           });
         } else if (valueType === 'average') {
           return;
-          // return await this.prisma.income.aggregate({
-          //   where: {
-          //     paymentMethod: true,
-          //   },
-          //   _avg: {
-          //     amount: true,
-          //   },
-          // });
         }
       case 'paidBy':
         if (valueType === 'sum') {

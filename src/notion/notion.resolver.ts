@@ -92,6 +92,8 @@ export class NotionResolver {
               incomePaidBy: income.paidBy,
               incomePaymentMethod: income.paymentMethod,
               incomeType: income.incomeType,
+              dateStartInc: dateStartInc,
+              dateEndInc: dateEndInc,
               sum: income._sum.amount,
             };
           });
@@ -103,6 +105,8 @@ export class NotionResolver {
               incomePaidBy: income.paidBy,
               incomePaymentMethod: income.paymentMethod,
               incomeType: income.incomeType,
+              dateStartInc: dateStartInc,
+              dateEndInc: dateEndInc,
               count:
                 income._count.paymentMethod |
                 income._count.paidBy |
