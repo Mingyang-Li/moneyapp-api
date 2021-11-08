@@ -102,6 +102,13 @@ export class BaseGroupByQueryReturnedFields {
   @Field({ nullable: true })
   deleted?: string;
 
+  // date_filters_inputted_by_user
+  @Field({ nullable: true })
+  dateStartInc?: Date;
+
+  @Field({ nullable: true })
+  dateEndInc?: Date;
+
   // aggregated_value_types
   @Field({ nullable: true })
   sum?: number;

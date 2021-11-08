@@ -45,6 +45,8 @@ type IncomeGroupByQuery {
   dateLastUpdated: String
   dateDeleted: String
   deleted: String
+  dateStartInc: DateTime
+  dateEndInc: DateTime
   sum: Float
   average: Float
   count: Float

@@ -76,12 +76,38 @@ export class NotionResolver {
 
     @Args('dateStartInc', { type: () => Date, nullable: true })
     dateEndInc: Date,
-  ): Promise<IncomeGroupByQuery[]> {
-    return await this.notionService.incomeQueryByGroup({
+  ) {
+    const dbGroupedIncome = await this.notionService.incomeQueryByGroup({
       field,
       valueType,
       dateStartInc,
       dateEndInc,
     });
+    console.log(dbGroupedIncome);
+    switch (valueType) {
+      case 'sum':
+        const groupedIncomeReturnSum: IncomeGroupByQuery[] =
+          dbGroupedIncome.map((income) => {
+            return {
+              incomePaidBy: income.paidBy,
+              incomePaymentMethod: income.paymentMethod,
+              incomeType: income.incomeType,
+              sum: income._sum.amount,
+            };
+          });
+        return groupedIncomeReturnSum;
+      case 'count':
+        const groupedIncomeReturnCount: IncomeGroupByQuery[] =
+          dbGroupedIncome.map((income) => {
+            return {
+              incomePaidBy: income.paidBy,
+              incomePaymentMethod: income.paymentMethod,
+              count: income._count.paymentMethod,
+            };
+          });
+        return groupedIncomeReturnCount;
+      case 'average':
+        return;
+    }
   }
 }

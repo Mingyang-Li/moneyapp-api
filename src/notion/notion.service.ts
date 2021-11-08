@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { ExpenseRow, IncomeGroupByQuery, IncomeRow } from './notion.entity';
+import { ExpenseRow, IncomeRow } from './notion.entity';
 import {
   ExpenseQueryParams,
   IncomeGroupQueryParam,
@@ -13,7 +13,7 @@ dotenv.config({ path: __dirname + '/.env' });
 export class NotionService {
   private prisma = new PrismaClient();
 
-  async findAllIncome(params: IncomeQueryParams): Promise<IncomeRow[]> {
+  public async findAllIncome(params: IncomeQueryParams): Promise<IncomeRow[]> {
     return await this.prisma.income.findMany({
       where: {
         paymentMethod: {
@@ -41,7 +41,9 @@ export class NotionService {
     });
   }
 
-  async findAllExpenses(params: ExpenseQueryParams): Promise<ExpenseRow[]> {
+  public async findAllExpenses(
+    params: ExpenseQueryParams,
+  ): Promise<ExpenseRow[]> {
     return await this.prisma.expense.findMany({
       where: {
         id: params.id,
@@ -75,7 +77,7 @@ export class NotionService {
     });
   }
 
-  async incomeQueryByGroup(params: IncomeGroupQueryParam): Promise<IncomeGroupByQuery[]> {
+  public async incomeQueryByGroup(params: IncomeGroupQueryParam) {
     console.table(params);
     const { field, valueType } = params;
     switch (field) {
@@ -84,7 +86,46 @@ export class NotionService {
           return await this.prisma.income.groupBy({
             by: ['paymentMethod'],
             _sum: {
-              id: true,
+              amount: true,
+            },
+          });
+        } else if (valueType === 'count') {
+          return await this.prisma.income.groupBy({
+            by: ['paymentMethod'],
+            _count: {
+              paymentMethod: true,
+            },
+          });
+        } else if (valueType === 'average') {
+          return;
+          // return await this.prisma.income.aggregate({
+          //   where: {
+          //     paymentMethod: true,
+          //   },
+          //   _avg: {
+          //     amount: true,
+          //   },
+          // });
+        }
+      case 'paidBy':
+        if (valueType === 'sum') {
+          return await this.prisma.income.groupBy({
+            by: ['paidBy'],
+            _sum: {
+              amount: true,
+            },
+          });
+        } else if (valueType === 'count') {
+          return;
+        } else if (valueType === 'average') {
+          return;
+        }
+      case 'incomeType':
+        if (valueType === 'sum') {
+          return await this.prisma.income.groupBy({
+            by: ['incomeType'],
+            _sum: {
+              amount: true,
             },
           });
         } else if (valueType === 'count') {
