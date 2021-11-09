@@ -51,6 +51,7 @@ GraphQL API built on top of [NestJS](https://github.com/nestjs/nest) framework u
 1. Database: [PostgreSQL](https://www.postgresql.org/)
 2. Realtime Cloud DB: [Supabase](https://supabase.io/) free tier
 3. Authentication: [Auth0 SDK](https://auth0.com/)
+4. CD/CI: [CircleCI](https://circleci.com/)
 
 ## 🛫 Running the app
 
