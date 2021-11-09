@@ -79,7 +79,9 @@ export async function seedExpensesTable() {
     async (e) => await prisma.expense.create({ data: e }),
   );
   const promisedSeeding = Promise.all(seeding);
-  console.log(promisedSeeding);
+  console.log(
+    `Expenses seeding done for all ${(await promisedSeeding).length} rows`,
+  );
 }
 
 export async function seedIncomeTable() {
@@ -102,7 +104,6 @@ export async function seedIncomeTable() {
         currency: row.properties['Currency']['select'].name,
         date: new Date(row.properties['Date']['date'].start),
       };
-      console.log(incomeItem);
       allIncome.push(incomeItem);
     });
     if (!next_cursor) {
@@ -114,5 +115,31 @@ export async function seedIncomeTable() {
     async (e) => await prisma.income.create({ data: e }),
   );
   const promisedSeeding = Promise.all(seeding);
-  console.log(promisedSeeding);
+  console.log(
+    `Income seeding done for all ${(await promisedSeeding).length} rows`,
+  );
+}
+
+const toSeedExpenses = false;
+if (toSeedExpenses) {
+  seedExpensesTable()
+    .catch((e) => {
+      console.error(e);
+      process.exit(1);
+    })
+    .finally(async () => {
+      await prisma.$disconnect();
+    });
+}
+
+const toSeedIncome = false;
+if (toSeedIncome) {
+  seedIncomeTable()
+    .catch((e) => {
+      console.error(e);
+      process.exit(1);
+    })
+    .finally(async () => {
+      await prisma.$disconnect();
+    });
 }
