@@ -34,7 +34,6 @@ export class NotionResolver {
     });
   }
 
-  @UseGuards(new AuthzGuard())
   @Query(() => [ExpenseRow])
   async expense(
     @Args('id', { type: () => Int, nullable: true }) id: number,
@@ -67,7 +66,6 @@ export class NotionResolver {
     });
   }
 
-  @UseGuards(new AuthzGuard())
   @Query(() => [IncomeGroupByQuery])
   async incomeGroupBy(
     @Args('field', { type: () => String })
