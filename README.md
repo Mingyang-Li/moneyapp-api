@@ -68,11 +68,9 @@ $ yarn dev
 
 # production mode
 $ yarn start:prod
-```
+
 
 ## Test
-
-```bash
 # unit tests
 $ yarn test
 
@@ -84,4 +82,7 @@ $ yarn test:e2e
 
 # test coverage
 $ yarn test:cov
+
+# database seeding
+$ npx prisma db seed
 ```
