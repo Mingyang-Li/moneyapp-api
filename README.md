@@ -47,9 +47,10 @@ GraphQL API built on top of [NestJS](https://github.com/nestjs/nest) framework u
 2. DB data isn't in sync with data from Notion => need Notion webhook to setup triggers but none available
 3. API is accessible to public (not safe as it contains personal finance data) => Setup authorisation for access (in progress)
 
-## 🛠️ Infrastructure (TBD)
-1. Database: PostgreSQL
-2. Platform: AWS
+## 🛠️ Infrastructure
+1. Database: [PostgreSQL](https://www.postgresql.org/)
+2. Realtime Cloud DB: [Supabase](https://supabase.io/) free tier
+3. Authentication: [Auth0 SDK](https://auth0.com/)
 
 ## 🛫 Running the app
 
@@ -83,6 +84,10 @@ $ yarn test:e2e
 # test coverage
 $ yarn test:cov
 
+## Database
 # database seeding
 $ npx prisma db seed
+
+# See DB using prisma studio
+$ npx prisma studio
 ```
