@@ -2,11 +2,14 @@ import { Resolver, Query, Args, Int } from '@nestjs/graphql';
 import { IncomeRow, ExpenseRow, IncomeGroupByQuery } from './notion.entity';
 import { NotionService } from './notion.service';
 import { IncomeQueryParams, OrderByType, ValueType } from './notion.dto';
+import { UseGuards } from '@nestjs/common';
+import { AuthzGuard } from '@/authz/authz.guard';
 
 @Resolver(() => [])
 export class NotionResolver {
   constructor(private notionService: NotionService) {}
 
+  @UseGuards(new AuthzGuard())
   @Query(() => [IncomeRow])
   async income(
     @Args('paymentMethod', { type: () => String, nullable: true })
@@ -31,6 +34,7 @@ export class NotionResolver {
     });
   }
 
+  @UseGuards(new AuthzGuard())
   @Query(() => [ExpenseRow])
   async expense(
     @Args('id', { type: () => Int, nullable: true }) id: number,
@@ -63,6 +67,7 @@ export class NotionResolver {
     });
   }
 
+  @UseGuards(new AuthzGuard())
   @Query(() => [IncomeGroupByQuery])
   async incomeGroupBy(
     @Args('field', { type: () => String })
