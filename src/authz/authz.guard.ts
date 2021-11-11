@@ -10,7 +10,7 @@ import * as jwt from 'jsonwebtoken';
 
 @Injectable()
 export class AuthzGuard implements CanActivate {
-  async canActivate(context: ExecutionContext) {
+  public async canActivate(context: ExecutionContext) {
     const ctx = GqlExecutionContext.create(context).getContext();
     if (!ctx.headers.authorization) {
       return false;
@@ -18,11 +18,13 @@ export class AuthzGuard implements CanActivate {
     ctx.user = await this.validateToken(ctx.headers.authorization);
   }
 
-  async validateToken(authToken: string) {
-    if (authToken.split('')[0] !== 'Bearer') {
+  public async validateToken(authHeader: string) {
+    if (authHeader.split(' ')[0] !== 'Bearer') {
+      console.log(`❌ authHeader not present!`);
       throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
     }
-    const token = authToken.split('')[1];
+    const token = authHeader.split(' ')[1];
+    console.log(`✔️  token: ${token}`);
     try {
       return await jwt.verify(token, 'secret');
     } catch (err) {
