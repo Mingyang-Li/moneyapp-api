@@ -18,11 +18,11 @@ export class AuthzGuard implements CanActivate {
     ctx.user = await this.validateToken(ctx.headers.authorization);
   }
 
-  async validateToken(auth: string) {
-    if (auth.split('')[0] !== 'Bearer') {
+  async validateToken(authToken: string) {
+    if (authToken.split('')[0] !== 'Bearer') {
       throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
     }
-    const token = auth.split('')[1];
+    const token = authToken.split('')[1];
     try {
       return await jwt.verify(token, 'secret');
     } catch (err) {

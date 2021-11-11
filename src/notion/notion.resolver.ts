@@ -14,7 +14,7 @@ import { AuthzGuard } from '@/authz/authz.guard';
 export class NotionResolver {
   constructor(private notionService: NotionService) {}
 
-  @UseGuards(new AuthzGuard())
+  @UseGuards(AuthzGuard)
   @Query(() => [IncomeRow])
   async income(
     @Args('paymentMethod', { type: () => String, nullable: true })
