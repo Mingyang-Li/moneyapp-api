@@ -21,7 +21,7 @@ export class AuthzGuard implements CanActivate {
   public async validateToken(authHeader: string) {
     if (authHeader.split(' ')[0] !== 'Bearer') {
       console.log(`❌ authHeader not present!`);
-      throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
+      throw new HttpException('Token not received', HttpStatus.UNAUTHORIZED);
     }
     const token = authHeader.split(' ')[1];
     console.log(`✔️  token: ${token}`);
