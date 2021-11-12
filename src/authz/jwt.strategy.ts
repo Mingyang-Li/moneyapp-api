@@ -1,4 +1,5 @@
 import { Strategy, ExtractJwt } from 'passport-jwt';
+// The use of jwks-rsa replaces the need for @nest/jwt
 import { passportJwtSecret } from 'jwks-rsa';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
