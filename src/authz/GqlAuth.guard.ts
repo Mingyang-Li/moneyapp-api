@@ -1,33 +1,28 @@
-import {
-  Injectable,
-  ExecutionContext,
-  CanActivate,
-  BadRequestException,
-  UnauthorizedException,
-} from '@nestjs/common';
-import { AuthService } from './auth.service';
+import { Injectable, ExecutionContext } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { Observable } from 'rxjs';
+import * as jwt from 'jsonwebtoken';
+import { GqlExecutionContext } from '@nestjs/graphql';
+import { ExecutionContextHost } from '@nestjs/core/helpers/execution-context-host';
 
+const secret = 'GRAPHQL_CONFERENCE_SECRET';
 @Injectable()
-export class GqlAuthGuard implements CanActivate {
-  constructor(private readonly auth: AuthService) {}
+export class GqlAuthGuard extends AuthGuard('jwt') {
+  canActivate(
+    context: ExecutionContext,
+  ): boolean | Promise<boolean> | Observable<boolean> {
+    const ctx = GqlExecutionContext.create(context);
+    const request = ctx.getContext();
+    return super.canActivate(new ExecutionContextHost([request]));
+  }
 
-  canActivate(context: ExecutionContext) {
-    // Get the header
-    const authHeader = context.getArgs()[2].req.headers.authorization as string;
-
-    if (!authHeader) {
-      throw new BadRequestException('Authorization header not found.');
+  isValidToken(token: string) {
+    try {
+      const result: any = jwt.verify(token, secret);
+      console.log(result);
+      return result.auth === true;
+    } catch (err) {
+      return false;
     }
-    const [type, token] = authHeader.split(' ');
-    if (type !== 'Bearer') {
-      throw new BadRequestException(
-        `Authentication type \'Bearer\' required. Found \'${type}\'`,
-      );
-    }
-    const validationResult = this.auth.ValidateToken(token);
-    if (validationResult === true) {
-      return true;
-    }
-    throw new UnauthorizedException(validationResult);
   }
 }
