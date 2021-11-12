@@ -17,7 +17,7 @@ export class NotionResolver {
 
   @Query(() => [IncomeRow])
   @UseGuards(AuthzGuard, PermissionsGuard)
-  async income(
+  protected async income(
     @Args('paymentMethod', { type: () => String, nullable: true })
     paymentMethod: string,
     @Args('paidBy', { type: () => String, nullable: true }) paidBy: string,
@@ -42,7 +42,7 @@ export class NotionResolver {
 
   @Query(() => [ExpenseRow])
   @UseGuards(AuthzGuard, PermissionsGuard)
-  async expense(
+  protected async expense(
     @Args('id', { type: () => Int, nullable: true }) id: number,
     @Args('date', { type: () => Date, nullable: true }) date: Date,
     @Args('amount', { type: () => Int, nullable: true }) amount: number,
@@ -75,7 +75,7 @@ export class NotionResolver {
 
   @Query(() => [IncomeGroupByQuery])
   @UseGuards(AuthzGuard, PermissionsGuard)
-  async incomeGroupBy(
+  protected async incomeGroupBy(
     @Args('field', { type: () => String })
     field: IncomeQueryParams,
 

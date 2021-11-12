@@ -15,7 +15,7 @@ import { join } from 'path';
   imports: [
     GraphQLModule.forRoot({
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-      context: ({ req }) => ({ headers: req.headers }),
+      context: ({ req }) => ({ req }),
     }),
     NotionModule,
   ],
