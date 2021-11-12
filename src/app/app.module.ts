@@ -10,6 +10,7 @@ import { NotionModule } from '../notion/notion.module';
 import { AuthenticationMiddleware } from '@common/authentication.middleware';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
+import { AuthModule } from '@/authz/auth.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { join } from 'path';
       context: ({ req }) => ({ req }),
     }),
     NotionModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
