@@ -1,10 +1,10 @@
-import { GqlAuthGuard } from './GqlAuth.guard';
 import { Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
+import { JwtStrategy } from './jwt.strategy';
 
 @Module({
   imports: [PassportModule.register({ defaultStrategy: 'jwt' })],
-  providers: [GqlAuthGuard],
-  exports: [GqlAuthGuard],
+  providers: [JwtStrategy],
+  exports: [PassportModule],
 })
-export class AuthModule {}
+export class AuthzModule {}
