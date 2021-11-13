@@ -8,14 +8,14 @@ import {
 import { NotionService } from './notion.service';
 import { IncomeQueryParams, OrderByType, ValueType } from './notion.dto';
 import { UseGuards } from '@nestjs/common';
-import { GqlAuthGuard } from '@/authz/GqlAuth.guard';
+import { GqlAuth0Guard } from '@/authz/gql-auth0.guard';
 
 @Resolver(() => [OverallUnion])
 export class NotionResolver {
   constructor(private notionService: NotionService) {}
 
   @Query(() => [IncomeRow])
-  @UseGuards(GqlAuthGuard)
+  @UseGuards(GqlAuth0Guard)
   protected async income(
     @Args('paymentMethod', { type: () => String, nullable: true })
     paymentMethod: string,
@@ -40,7 +40,7 @@ export class NotionResolver {
   }
 
   @Query(() => [ExpenseRow])
-  @UseGuards(GqlAuthGuard)
+  @UseGuards(GqlAuth0Guard)
   protected async expense(
     @Args('id', { type: () => Int, nullable: true }) id: number,
     @Args('date', { type: () => Date, nullable: true }) date: Date,
@@ -73,7 +73,7 @@ export class NotionResolver {
   }
 
   @Query(() => [IncomeGroupByQuery])
-  @UseGuards(GqlAuthGuard)
+  @UseGuards(GqlAuth0Guard)
   protected async incomeGroupBy(
     @Args('field', { type: () => String })
     field: IncomeQueryParams,
