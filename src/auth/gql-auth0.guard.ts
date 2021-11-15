@@ -6,7 +6,11 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import * as jwt from 'jsonwebtoken';
+import jwt from 'express-jwt';
+import jwtAuthz from 'express-jwt-authz';
+import * as dotenv from 'dotenv';
+import jwksRsa from 'jwks-rsa';
+dotenv.config({ path: __dirname + '/.env' });
 
 @Injectable()
 export class GqlAuth0Guard implements CanActivate {
@@ -15,7 +19,11 @@ export class GqlAuth0Guard implements CanActivate {
     if (!ctx.headers.authorization) {
       return false;
     }
-    console.log('✨ Token present');
+    // const tempToken = jwt.verify(
+    //   'eyJhbGciOiJIUzI1NiJ9.dGVzdA.Z9QppyGaeY_EPcKk_srfzkntr319UZd97HOhhOmjEcc',
+    //   'secret',
+    // );
+    // console.log(`✨ ${tempToken}`);
     ctx.user = this.validateToken(ctx.headers.authorization);
     return true;
   }
@@ -24,15 +32,38 @@ export class GqlAuth0Guard implements CanActivate {
     if (auth.split(' ')[0] !== 'Bearer') {
       throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
     }
-    const token = auth.split(' ')[1];
-    console.log(`✨ ${token}`);
+    // const token = auth.split(' ')[1];
+
+    const checkJwt = jwt({
+      // Dynamically provide a signing key based on the kid in the header and the signing keys provided by the JWKS endpoint
+      secret: jwksRsa.expressJwtSecret({
+        cache: true,
+        rateLimit: true,
+        jwksRequestsPerMinute: 5,
+        jwksUri: `https://${process.env.AUTH0_DOMAIN}/.well-known/jwks.json`,
+      }),
+
+      // Validate the audience and the issuer
+      audience: `${process.env.AUTH0_AUDIENCE}`, //replace with your API's audience, available at Dashboard > APIs
+      issuer: `${process.env.AUTH0_DOMAIN}`,
+      algorithms: ['RS256'],
+    });
+
+    console.log(checkJwt);
 
     try {
-      const decoded = jwt.verify(token, 'secret');
+      const decoded = true;
       return decoded;
     } catch (err) {
       const message = 'Token error: ' + (err.message || err.name);
       throw new HttpException(message, HttpStatus.UNAUTHORIZED);
     }
+  }
+
+  protected async isAdmin(token: string): Promise<boolean> {
+    console.log(token);
+    const scopes = jwtAuthz(['crud:all']);
+    console.log(`✨ ${scopes}`);
+    return true;
   }
 }

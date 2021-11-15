@@ -4,7 +4,7 @@ import { passportJwtSecret } from 'jwks-rsa';
 import { Strategy, ExtractJwt, VerifiedCallback } from 'passport-jwt';
 
 @Injectable()
-export class GqlAuth0JwtStrategy extends PassportStrategy(Strategy) {
+export class GqlAuth0JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor(options: any) {
     super({
       secretOrKeyProvider: passportJwtSecret({
