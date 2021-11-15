@@ -3,11 +3,9 @@ import { PassportStrategy } from '@nestjs/passport';
 import { passportJwtSecret } from 'jwks-rsa';
 import { Strategy, ExtractJwt, VerifiedCallback } from 'passport-jwt';
 
-import { GqlAuth0ModuleOptions } from './interfaces';
-
 @Injectable()
 export class GqlAuth0JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(options: GqlAuth0ModuleOptions) {
+  constructor(options: any) {
     super({
       secretOrKeyProvider: passportJwtSecret({
         cache: true,
