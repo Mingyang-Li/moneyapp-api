@@ -19,9 +19,9 @@ import {
 import { GqlAuth0JwtStrategy } from './gql-auth0-jwt.strategy';
 
 @Module({
-  // imports: [PassportModule.register({ defaultStrategy: 'jwt' })],
-  // providers: [GqlAuth0JwtStrategy],
-  // exports: [PassportModule],
+  imports: [PassportModule.register({ defaultStrategy: 'jwt' })],
+  providers: [GqlAuth0JwtStrategy],
+  exports: [PassportModule],
 })
 export class GqlAuth0Module {
   public static forRoot(options: GqlAuth0ModuleOptions): DynamicModule {
