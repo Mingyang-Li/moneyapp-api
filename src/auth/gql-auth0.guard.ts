@@ -1,41 +1,38 @@
-// import { Injectable, ExecutionContext } from '@nestjs/common';
-// import { AuthGuard } from '@nestjs/passport';
-// import { Observable } from 'rxjs';
-// import * as jwt from 'jsonwebtoken';
-// import { GqlExecutionContext } from '@nestjs/graphql';
-// import { ExecutionContextHost } from '@nestjs/core/helpers/execution-context-host';
-
-// const secret = 'GRAPHQL_CONFERENCE_SECRET';
-// @Injectable()
-// export class GqlAuthGuard extends AuthGuard('jwt') {
-//   canActivate(
-//     context: ExecutionContext,
-//   ): boolean | Promise<boolean> | Observable<boolean> {
-//     const ctx = GqlExecutionContext.create(context);
-//     const request = ctx.getContext();
-//     return super.canActivate(new ExecutionContextHost([request]));
-//   }
-
-//   isValidToken(token: string) {
-//     try {
-//       const result: any = jwt.verify(token, secret);
-//       console.log(result);
-//       return result.auth === true;
-//     } catch (err) {
-//       return false;
-//     }
-//   }
-// }
-
-import { ExecutionContext, Injectable } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import {
+  ExecutionContext,
+  Injectable,
+  CanActivate,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
+import * as jwt from 'jsonwebtoken';
 
 @Injectable()
-export class GqlAuth0Guard extends AuthGuard('jwt') {
-  getRequest(context: ExecutionContext) {
-    const ctx = GqlExecutionContext.create(context);
+export class GqlAuth0Guard implements CanActivate {
+  public canActivate(context: ExecutionContext) {
+    const ctx = GqlExecutionContext.create(context).getContext();
+    if (!ctx.headers.authorization) {
+      return false;
+    }
+    console.log('✨ Token present');
+    ctx.user = this.validateToken(ctx.headers.authorization);
+    return true;
+  }
 
-    return ctx.getContext().req;
+  protected async validateToken(auth: string) {
+    if (auth.split(' ')[0] !== 'Bearer') {
+      throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
+    }
+    const token = auth.split(' ')[1];
+    console.log(`✨ ${token}`);
+
+    try {
+      const decoded = jwt.verify(token, 'secret');
+      return decoded;
+    } catch (err) {
+      const message = 'Token error: ' + (err.message || err.name);
+      throw new HttpException(message, HttpStatus.UNAUTHORIZED);
+    }
   }
 }
