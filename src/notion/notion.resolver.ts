@@ -8,7 +8,7 @@ import {
 import { NotionService } from './notion.service';
 import { IncomeQueryParams, OrderByType, ValueType } from './notion.dto';
 import { UseGuards } from '@nestjs/common';
-import { GqlAuth0Guard } from '@/authz/gql-auth0.guard';
+import { GqlAuth0Guard } from '@/auth/gql-auth0.guard';
 
 @Resolver(() => [OverallUnion])
 export class NotionResolver {
