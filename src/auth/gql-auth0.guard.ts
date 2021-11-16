@@ -6,10 +6,8 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import jwt from 'express-jwt';
 import jwtAuthz from 'express-jwt-authz';
 import * as dotenv from 'dotenv';
-import jwksRsa from 'jwks-rsa';
 dotenv.config({ path: __dirname + '/.env' });
 
 @Injectable()
