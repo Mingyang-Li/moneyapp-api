@@ -6,21 +6,25 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import jwtAuthz from 'express-jwt-authz';
+import { JwtService } from '@nestjs/jwt';
 import * as dotenv from 'dotenv';
 dotenv.config({ path: __dirname + '/.env' });
 
 @Injectable()
 export class GqlAuth0Guard implements CanActivate {
-  // constructor(private jwtService: JwtService) {}
+  constructor(private jwtService: JwtService) {}
   public canActivate(context: ExecutionContext) {
     const ctx = GqlExecutionContext.create(context).getContext();
+    // Auth checks:
+    // 1. If no auth header => UNAUTHENTICATED
+    // 2. If JWT token is malformed or invalid => UNAUTHENTICATED
+    // 3. If token has valid fornat BUT any of extracted audience OR issuer does not equal to ones specified in env => UNAUTHENTICATED
+    // 4. If token has valid fornat BUT permissions scope from decoded JWT token doesn't have admin scopes => UNAUTHORISED
     const authHeader = ctx.headers.authorization;
     if (!authHeader) {
       return false;
     }
-    console.log(authHeader);
-    // ctx.user = this.validateToken(ctx.headers.authorization);
+    ctx.user = this.validateToken(authHeader);
     return true;
   }
 
@@ -28,38 +32,14 @@ export class GqlAuth0Guard implements CanActivate {
     if (auth.split(' ')[0] !== 'Bearer') {
       throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
     }
-    // const token = auth.split(' ')[1];
-
-    // const checkJwt = jwt({
-    //   // Dynamically provide a signing key based on the kid in the header and the signing keys provided by the JWKS endpoint
-    //   secret: jwksRsa.expressJwtSecret({
-    //     cache: true,
-    //     rateLimit: true,
-    //     jwksRequestsPerMinute: 5,
-    //     jwksUri: `https://${process.env.AUTH0_DOMAIN}/.well-known/jwks.json`,
-    //   }),
-
-    //   // Validate the audience and the issuer
-    //   audience: `${process.env.AUTH0_AUDIENCE}`, //replace with your API's audience, available at Dashboard > APIs
-    //   issuer: `${process.env.AUTH0_DOMAIN}`,
-    //   algorithms: ['RS256'],
-    // });
-
-    // console.log(checkJwt);
+    const token = auth.split(' ')[1];
 
     try {
-      const decoded = true;
+      const decoded = this.jwtService.verify(token);
       return decoded;
     } catch (err) {
       const message = 'Token error: ' + (err.message || err.name);
       throw new HttpException(message, HttpStatus.UNAUTHORIZED);
     }
-  }
-
-  protected async isAdmin(token: string): Promise<boolean> {
-    console.log(token);
-    const scopes = jwtAuthz(['crud:all']);
-    console.log(`✨ ${scopes}`);
-    return true;
   }
 }
