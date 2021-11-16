@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
-import { GqlAuth0Service } from './gql-auth0.service';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
-  providers: [GqlAuth0Service],
-  exports: [GqlAuth0Service],
+  imports: [JwtService],
+  providers: [JwtService],
+  exports: [GqlAuth0Module],
 })
 export class GqlAuth0Module {}

@@ -6,12 +6,13 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
-// import { JwtService } from '@nestjs/jwt';
+import { JwtService } from '@nestjs/jwt';
 import * as dotenv from 'dotenv';
 dotenv.config({ path: __dirname + '/.env' });
 
 @Injectable()
 export class GqlAuth0Guard implements CanActivate {
+  constructor(private readonly jwtService: JwtService) {}
   public canActivate(context: ExecutionContext) {
     const ctx = GqlExecutionContext.create(context).getContext();
     // Auth checks:
@@ -33,7 +34,7 @@ export class GqlAuth0Guard implements CanActivate {
     }
     const token = auth.split(' ')[1];
     try {
-      const decoded = true;
+      const decoded = this.jwtService.verify(token);
       return decoded;
     } catch (err) {
       const message = 'Token error: ' + (err.message || err.name);
