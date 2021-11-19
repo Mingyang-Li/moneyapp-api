@@ -16,8 +16,8 @@ export class GqlAuth0Guard implements CanActivate {
   public canActivate(context: ExecutionContext) {
     const ctx = GqlExecutionContext.create(context).getContext();
     // Auth scenario checks:
-    // 1. If no auth header => UNAUTHENTICATED (done)
-    // 2. If JWT token is malformed or invalid => UNAUTHENTICATED (in progress)
+    // 1. If no auth header => UNAUTHENTICATED
+    // 2. If JWT token is malformed or invalid => UNAUTHENTICATED
     // 3. If token has valid fornat BUT any of extracted audience OR issuer does not equal to ones specified in env => UNAUTHENTICATED
     // 4. If token has valid fornat BUT permissions scope from decoded JWT token doesn't have admin scopes => UNAUTHORISED
     const authHeader = ctx.headers.authorization;
