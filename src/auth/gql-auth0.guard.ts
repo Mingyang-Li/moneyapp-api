@@ -1,12 +1,18 @@
-import { ExecutionContext, Injectable, CanActivate } from '@nestjs/common';
+import {
+  ExecutionContext,
+  Injectable,
+  CanActivate,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
+import * as jwt from 'jsonwebtoken';
 import * as dotenv from 'dotenv';
-import { GqlAuth0Service } from './gql-auth0.service';
 dotenv.config({ path: __dirname + '/.env' });
 
 @Injectable()
 export class GqlAuth0Guard implements CanActivate {
-  constructor(private readonly gqlAuth0Service: GqlAuth0Service) {}
+  private jwt = jwt;
   public canActivate(context: ExecutionContext) {
     const ctx = GqlExecutionContext.create(context).getContext();
     // Auth scenario checks:
@@ -24,7 +30,25 @@ export class GqlAuth0Guard implements CanActivate {
     const token = authHeader.split(' ')[1];
 
     // Scenario 2, 3, 4 checks
-    ctx.user = this.gqlAuth0Service.validateToken(token);
-    return true;
+    const toValidate = this.validateToken(token);
+    return toValidate;
+  }
+
+  public async validateToken(token: string): Promise<boolean> {
+    try {
+      const decoded = this.jwt.decode(token);
+      const permission = decoded['permissions'][0];
+      // console.log(`decoded.permissions: ${permission}`);
+      if (permission !== process.env.AUTH0_ADMIN_PERMISSION_SCOPE) {
+        console.log('No access');
+        return false;
+      } else {
+        console.log('Has access');
+        return true;
+      }
+    } catch (err) {
+      const message = 'Token error: ' + (err.message || err.name);
+      throw new HttpException(message, HttpStatus.UNAUTHORIZED);
+    }
   }
 }
