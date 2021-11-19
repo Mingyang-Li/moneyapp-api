@@ -37,7 +37,7 @@ export interface BaseGroupingType {
   dateCreated?: 'dateCreated';
   dateLastUpdated?: 'dateLastUpdated';
   dateDeleted?: 'dateDeleted';
-  deleted?: 'delated';
+  deleted?: 'deleted';
 }
 
 export interface IncomeGroupingType extends BaseGroupingType {

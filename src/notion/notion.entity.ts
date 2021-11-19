@@ -1,21 +1,12 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { createUnionType, Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
-export class IncomeRow {
+export class BaseIncomeAndExpenseRow {
   @Field({ nullable: true })
   id?: number;
 
   @Field({ nullable: true })
   notionId?: string;
-
-  @Field({ nullable: true })
-  paymentMethod?: string;
-
-  @Field({ nullable: true })
-  paidBy?: string;
-
-  @Field({ nullable: true })
-  incomeType?: string;
 
   @Field({ nullable: true })
   date?: Date;
@@ -36,28 +27,25 @@ export class IncomeRow {
   dateDeleted?: Date;
 
   @Field({ nullable: true })
-  delated?: boolean;
+  deleted?: boolean;
 }
 
 @ObjectType()
-export class ExpenseRow {
+export class IncomeRow extends BaseIncomeAndExpenseRow {
   @Field({ nullable: true })
-  id?: number;
+  paymentMethod?: string;
 
   @Field({ nullable: true })
-  notionId?: string;
+  paidBy?: string;
 
   @Field({ nullable: true })
-  date?: Date;
+  incomeType?: string;
+}
 
+@ObjectType()
+export class ExpenseRow extends BaseIncomeAndExpenseRow {
   @Field({ nullable: true })
   item?: string;
-
-  @Field({ nullable: true })
-  amount?: number;
-
-  @Field({ nullable: true })
-  currency?: string;
 
   @Field({ nullable: true })
   type?: string;
@@ -67,18 +55,6 @@ export class ExpenseRow {
 
   @Field({ nullable: true })
   paymentType?: string;
-
-  @Field({ nullable: true })
-  dateCreated?: Date;
-
-  @Field({ nullable: true })
-  dateLastUpdated?: Date;
-
-  @Field({ nullable: true })
-  dateDeleted?: Date;
-
-  @Field({ nullable: true })
-  delated?: boolean;
 }
 
 @ObjectType()
@@ -145,6 +121,11 @@ export class ExpenseGroupByQuery extends BaseGroupByQueryReturnedFields {
   @Field({ nullable: true })
   expensePaymentType?: string;
 }
+
+export const OverallUnion = createUnionType({
+  name: 'ResultUnion',
+  types: () => [IncomeRow, ExpenseRow, IncomeGroupByQuery, ExpenseGroupByQuery],
+});
 
 // sample_responses
 export const incomePaidBy = [

@@ -1,14 +1,22 @@
 import { Resolver, Query, Args, Int } from '@nestjs/graphql';
-import { IncomeRow, ExpenseRow, IncomeGroupByQuery } from './notion.entity';
+import {
+  IncomeRow,
+  ExpenseRow,
+  IncomeGroupByQuery,
+  OverallUnion,
+} from './notion.entity';
 import { NotionService } from './notion.service';
 import { IncomeQueryParams, OrderByType, ValueType } from './notion.dto';
+import { UseGuards } from '@nestjs/common';
+import { GqlAuth0Guard } from '@/auth/gql-auth0.guard';
 
-@Resolver(() => [])
+@Resolver(() => [OverallUnion])
 export class NotionResolver {
   constructor(private notionService: NotionService) {}
 
   @Query(() => [IncomeRow])
-  async income(
+  @UseGuards(GqlAuth0Guard)
+  protected async income(
     @Args('paymentMethod', { type: () => String, nullable: true })
     paymentMethod: string,
     @Args('paidBy', { type: () => String, nullable: true }) paidBy: string,
@@ -32,7 +40,8 @@ export class NotionResolver {
   }
 
   @Query(() => [ExpenseRow])
-  async expense(
+  @UseGuards(GqlAuth0Guard)
+  protected async expense(
     @Args('id', { type: () => Int, nullable: true }) id: number,
     @Args('date', { type: () => Date, nullable: true }) date: Date,
     @Args('amount', { type: () => Int, nullable: true }) amount: number,
@@ -64,7 +73,8 @@ export class NotionResolver {
   }
 
   @Query(() => [IncomeGroupByQuery])
-  async incomeGroupBy(
+  @UseGuards(GqlAuth0Guard)
+  protected async incomeGroupBy(
     @Args('field', { type: () => String })
     field: IncomeQueryParams,
 

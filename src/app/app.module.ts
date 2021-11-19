@@ -7,18 +7,16 @@ import {
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { NotionModule } from '../notion/notion.module';
-import { AuthenticationMiddleware } from '@common/authentication.middleware';
 import { GraphQLModule } from '@nestjs/graphql';
-import { AuthzModule } from '../authz/authz.module';
 import { join } from 'path';
 
 @Module({
   imports: [
     GraphQLModule.forRoot({
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      context: ({ req }) => ({ headers: req.headers }),
     }),
     NotionModule,
-    AuthzModule,
   ],
   controllers: [AppController],
   providers: [AppService],
@@ -26,7 +24,7 @@ import { join } from 'path';
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): MiddlewareConsumer | void {
     consumer
-      .apply(AuthenticationMiddleware)
+      .apply()
       .forRoutes(
         { method: RequestMethod.GET, path: '/api/get' },
         { method: RequestMethod.POST, path: '/api/post' },

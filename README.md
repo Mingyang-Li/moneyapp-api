@@ -44,12 +44,14 @@ GraphQL API built on top of [NestJS](https://github.com/nestjs/nest) framework u
 
 ## ⁉️ Challenges & workarounds
 1. Rate limit from Notion API => migrate table to real DB (Done)
-2. DB data isn't in sync with data from Notion => need Notion webhook to setup triggers but none available
-3. API is accessible to public (not safe as it contains personal finance data) => Setup authorisation for access (in progress)
+2. DB data isn't in sync with data from Notion => need Notion webhook to setup triggers but none available, current plan is to manually update DB from time to time
+3. Locking GraphQL API access to only accessible by myself (It's hard to find out-of-box auth solutions for Nest + GraphQL + Auth0), need to fully grasp how auth works under the hood
 
-## 🛠️ Infrastructure (TBD)
-1. Database: PostgreSQL
-2. Platform: AWS
+## 🛠️ Infrastructure
+1. Database: [PostgreSQL](https://www.postgresql.org/)
+2. Realtime Cloud DB: [Supabase](https://supabase.io/) free tier
+3. Authentication: [Auth0 SDK](https://auth0.com/)
+4. CD/CI: [CircleCI](https://circleci.com/)
 
 ## 🛫 Running the app
 
@@ -83,6 +85,10 @@ $ yarn test:e2e
 # test coverage
 $ yarn test:cov
 
+## Database
 # database seeding
 $ npx prisma db seed
+
+# See DB using prisma studio
+$ npx prisma studio
 ```

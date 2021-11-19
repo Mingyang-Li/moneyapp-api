@@ -78,7 +78,7 @@ export class NotionService {
   }
 
   public async incomeQueryByGroup(params: IncomeGroupQueryParam) {
-    console.table(params);
+    // console.table(params);
     const { field, valueType } = params;
     switch (field) {
       case 'paymentMethod':

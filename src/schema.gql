@@ -5,16 +5,16 @@
 type IncomeRow {
   id: Float
   notionId: String
-  paymentMethod: String
-  paidBy: String
-  incomeType: String
   date: DateTime
   amount: Float
   currency: String
   dateCreated: DateTime
   dateLastUpdated: DateTime
   dateDeleted: DateTime
-  delated: Boolean
+  deleted: Boolean
+  paymentMethod: String
+  paidBy: String
+  incomeType: String
 }
 
 """
@@ -26,16 +26,16 @@ type ExpenseRow {
   id: Float
   notionId: String
   date: DateTime
-  item: String
   amount: Float
   currency: String
-  type: String
-  subType: String
-  paymentType: String
   dateCreated: DateTime
   dateLastUpdated: DateTime
   dateDeleted: DateTime
-  delated: Boolean
+  deleted: Boolean
+  item: String
+  type: String
+  subType: String
+  paymentType: String
 }
 
 type IncomeGroupByQuery {
