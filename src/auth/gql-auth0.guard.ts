@@ -1,18 +1,12 @@
-import {
-  ExecutionContext,
-  Injectable,
-  CanActivate,
-  HttpException,
-  HttpStatus,
-} from '@nestjs/common';
+import { ExecutionContext, Injectable, CanActivate } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import jwt from 'jsonwebtoken';
 import * as dotenv from 'dotenv';
+import { GqlAuth0Service } from './gql-auth0.service';
 dotenv.config({ path: __dirname + '/.env' });
 
 @Injectable()
 export class GqlAuth0Guard implements CanActivate {
-  // constructor(private readonly jwtService: JwtService) {}
+  constructor(private readonly gqlAuth0Service: GqlAuth0Service) {}
   public canActivate(context: ExecutionContext) {
     const ctx = GqlExecutionContext.create(context).getContext();
     // Auth scenario checks:
@@ -27,25 +21,10 @@ export class GqlAuth0Guard implements CanActivate {
       return false;
     }
 
-    // Scenario 2, 3, 4 checks
-    ctx.user = this.validateToken(authHeader);
-    return true;
-  }
+    const token = authHeader.split(' ')[1];
 
-  protected async validateToken(auth: string) {
-    const token = auth.split(' ')[1];
-    // const verified = jwt.verify(token, 'test');
-    // console.log(`Verified: ${verified}`);
-    if (!token) {
-      throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
-    }
-    // const token = auth.split(' ')[1];
-    try {
-      // const decoded = this.jwtService.verify(token);
-      return true;
-    } catch (err) {
-      const message = 'Token error: ' + (err.message || err.name);
-      throw new HttpException(message, HttpStatus.UNAUTHORIZED);
-    }
+    // Scenario 2, 3, 4 checks
+    ctx.user = this.gqlAuth0Service.validateToken(token);
+    return true;
   }
 }
