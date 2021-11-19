@@ -23,6 +23,8 @@ GraphQL API built on top of [NestJS](https://github.com/nestjs/nest) framework u
 2. Filter all tables by each column
 3. Sorting, pagination, searching
 4. Date range filter on all date-type fields for both tables (Very important)
+5. Rolse-base access-control for GraphQL endpoints on Nest.js Guards
+6. Aggregated queries on all tables [see samples at bottom of file](https://github.com/Mingyang-Li/moneyapp-api/blob/main/src/notion/notion.entity.ts)
 
 
 ## 📝 Development process
@@ -32,26 +34,28 @@ GraphQL API built on top of [NestJS](https://github.com/nestjs/nest) framework u
   c) Apollo Server <br>
   d) dotenv <br>
   e) nodemon <br>
-  f) Prisma ORM
+  f) Prisma ORM <br>
+  g) jsonwebtoken
 2. Setup `code-first` GraphQL module for Notion service, include it into main app module
 3. Setting up controllers, resolvers, services and DTOs using built-in `dependency injection`.
 4. Seeding local `PostgreSQL` DB using `Notion API`
 5. Set up basic filtering on columns with type `string`
 6. Setup sorting by date as query param
-7. Next: Date-range filtering
-8. MUST: Authorisation (Guards & interceptors)
+7. Setup Guards for role-based authentication and authorisation 
+8. Current: Date-range filtering
 9. Nice-to-have: search (user typing on frontend, triggers search query onChange => every new character)
 
 ## ⁉️ Challenges & workarounds
 1. Rate limit from Notion API => migrate table to real DB (Done)
 2. DB data isn't in sync with data from Notion => need Notion webhook to setup triggers but none available, current plan is to manually update DB from time to time
-3. Locking GraphQL API access to only accessible by myself (It's hard to find out-of-box auth solutions for Nest + GraphQL + Auth0), need to fully grasp how auth works under the hood
+3. There are no out-of-box auth solutions for Nest + GraphQL + Auth0 in RBAC => Implemented a [custom guard](https://github.com/Mingyang-Li/moneyapp-api/blob/main/src/auth/gql-auth0.guard.ts) that transforms request context from REST into GraphQL context then authenticate and authorise access based on the `permissions` field of the decoded jwt token payload.
 
 ## 🛠️ Infrastructure
 1. Database: [PostgreSQL](https://www.postgresql.org/)
 2. Realtime Cloud DB: [Supabase](https://supabase.io/) free tier
-3. Authentication: [Auth0 SDK](https://auth0.com/)
-4. CD/CI: [CircleCI](https://circleci.com/)
+3. Authentication: [Auth0](https://auth0.com/docs/security/tokens/access-tokens/validate-access-tokens)
+4. Deployment: [Heroku](https://www.heroku.com/)
+5. CD/CI: [CircleCI](https://circleci.com/)
 
 ## 🛫 Running the app
 
