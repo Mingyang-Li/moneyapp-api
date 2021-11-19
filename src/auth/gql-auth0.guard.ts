@@ -40,10 +40,10 @@ export class GqlAuth0Guard implements CanActivate {
       const permission = decoded['permissions'][0];
       // console.log(`decoded.permissions: ${permission}`);
       if (permission !== process.env.AUTH0_ADMIN_PERMISSION_SCOPE) {
-        console.log('No access');
+        // console.log('No access');
         return false;
       } else {
-        console.log('Has access');
+        // console.log('Has access');
         return true;
       }
     } catch (err) {
