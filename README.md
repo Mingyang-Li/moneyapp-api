@@ -113,10 +113,15 @@ IncomeGroupBy
 # Query grouped income by payment method and calculate sum of income by payment method
 
 ## query
+
+Note: dateEndInc and dateStartInc are optional.
+When date filters are not provided, the query will return all records
 query {
   incomeGroupBy ( 
   	field: "paymentMethod",
     valueType: "sum"
+    dateEndInc: "Sun Nov 21 2021 12:12:28 GMT+1300 (New Zealand Daylight Time)"
+    dateStartInc: "Wed Sep 01 2021 12:12:28 GMT+1200 (New Zealand Standard Time)"
   ) {
     incomePaymentMethod
     sum
@@ -125,7 +130,7 @@ query {
 ```
 
 ```json
-## Response
+# Response
 {
   "data": {
     "incomeGroupBy": [
@@ -163,7 +168,7 @@ query {
 ```
 
 ```json
-## Response
+# Response
 {
   "data": {
     "incomeGroupBy": [
@@ -184,9 +189,9 @@ query {
 }
 ```
 
+```gql
 # Query grouped income by "paidBy" and returning sum of each person/org who paid
 
-```gql
 ## Query
 query {
   incomeGroupBy ( 
@@ -199,7 +204,7 @@ query {
 }
 ```
 ```json
-## Response
+# Response
 
 {
   "data": {
