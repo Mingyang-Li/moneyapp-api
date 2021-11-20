@@ -102,11 +102,17 @@ export class NotionResolver {
               incomePaidBy: income.paidBy,
               incomePaymentMethod: income.paymentMethod,
               incomeType: income.incomeType,
+              date: income.date.toString().slice(0, 15),
               dateStartInc: dateStartInc,
               dateEndInc: dateEndInc,
               sum: income._sum.amount,
             };
           });
+
+        // If grouping sum by date, need to also programmaticlly return dates where sum = 0 (not present on db)
+        if (field === 'date') {
+          console.log('date');
+        }
         return groupedIncomeReturnSum;
       case 'count':
         const groupedIncomeReturnCount: IncomeGroupByQuery[] =
@@ -115,15 +121,19 @@ export class NotionResolver {
               incomePaidBy: income.paidBy,
               incomePaymentMethod: income.paymentMethod,
               incomeType: income.incomeType,
+              date: income.date.toString().slice(0, 15),
               dateStartInc: dateStartInc,
               dateEndInc: dateEndInc,
               count:
                 income._count.paymentMethod |
                 income._count.paidBy |
-                income._count.incomeType,
+                income._count.incomeType |
+                income._count.date,
             };
           });
         return groupedIncomeReturnCount;
+
+      // Only need to calculate average by date, week or month
       case 'average':
         return;
     }

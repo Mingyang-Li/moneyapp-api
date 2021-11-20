@@ -135,6 +135,24 @@ export class NotionService {
         } else if (valueType === 'average') {
           return;
         }
+      case 'date':
+        if (valueType === 'sum') {
+          return await this.prisma.income.groupBy({
+            by: ['date'],
+            _sum: {
+              amount: true,
+            },
+          });
+        } else if (valueType === 'count') {
+          return await this.prisma.income.groupBy({
+            by: ['date'],
+            _count: {
+              date: true,
+            },
+          });
+        } else if (valueType === 'average') {
+          return;
+        }
     }
   }
 }
