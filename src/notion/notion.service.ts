@@ -85,6 +85,12 @@ export class NotionService {
         if (valueType === 'sum') {
           return await this.prisma.income.groupBy({
             by: ['paymentMethod'],
+            where: {
+              date: {
+                gte: params.dateStartInc,
+                lte: params.dateEndInc,
+              },
+            },
             _sum: {
               amount: true,
             },
