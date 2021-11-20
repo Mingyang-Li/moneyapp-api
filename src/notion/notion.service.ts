@@ -142,6 +142,9 @@ export class NotionService {
             _sum: {
               amount: true,
             },
+            orderBy: {
+              date: 'desc',
+            },
           });
         } else if (valueType === 'count') {
           return await this.prisma.income.groupBy({
