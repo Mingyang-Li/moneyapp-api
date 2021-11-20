@@ -87,8 +87,8 @@ export class NotionService {
             by: ['paymentMethod'],
             where: {
               date: {
-                gte: params.dateStartInc,
-                lte: params.dateEndInc,
+                gte: params?.dateStartInc,
+                lte: params?.dateEndInc,
               },
             },
             _sum: {
@@ -98,6 +98,12 @@ export class NotionService {
         } else if (valueType === 'count') {
           return await this.prisma.income.groupBy({
             by: ['paymentMethod'],
+            where: {
+              date: {
+                gte: params?.dateStartInc,
+                lte: params?.dateEndInc,
+              },
+            },
             _count: {
               paymentMethod: true,
             },
@@ -109,6 +115,12 @@ export class NotionService {
         if (valueType === 'sum') {
           return await this.prisma.income.groupBy({
             by: ['paidBy'],
+            where: {
+              date: {
+                gte: params?.dateStartInc,
+                lte: params?.dateEndInc,
+              },
+            },
             _sum: {
               amount: true,
             },
@@ -116,6 +128,12 @@ export class NotionService {
         } else if (valueType === 'count') {
           return await this.prisma.income.groupBy({
             by: ['paidBy'],
+            where: {
+              date: {
+                gte: params?.dateStartInc,
+                lte: params?.dateEndInc,
+              },
+            },
             _count: {
               paidBy: true,
             },
@@ -127,6 +145,12 @@ export class NotionService {
         if (valueType === 'sum') {
           return await this.prisma.income.groupBy({
             by: ['incomeType'],
+            where: {
+              date: {
+                gte: params?.dateStartInc,
+                lte: params?.dateEndInc,
+              },
+            },
             _sum: {
               amount: true,
             },
@@ -134,6 +158,12 @@ export class NotionService {
         } else if (valueType === 'count') {
           return await this.prisma.income.groupBy({
             by: ['incomeType'],
+            where: {
+              date: {
+                gte: params?.dateStartInc,
+                lte: params?.dateEndInc,
+              },
+            },
             _count: {
               incomeType: true,
             },
@@ -145,16 +175,28 @@ export class NotionService {
         if (valueType === 'sum') {
           return await this.prisma.income.groupBy({
             by: ['date'],
+            where: {
+              date: {
+                gte: params?.dateStartInc,
+                lte: params?.dateEndInc,
+              },
+            },
             _sum: {
               amount: true,
             },
             orderBy: {
-              date: 'desc',
+              date: 'asc',
             },
           });
         } else if (valueType === 'count') {
           return await this.prisma.income.groupBy({
             by: ['date'],
+            where: {
+              date: {
+                gte: params?.dateStartInc,
+                lte: params?.dateEndInc,
+              },
+            },
             _count: {
               date: true,
             },

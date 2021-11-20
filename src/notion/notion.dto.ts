@@ -33,10 +33,10 @@ export type OrderByType = 'asc' | 'desc';
 
 export interface BaseGroupingType {
   currency?: 'currency';
-  date?: 'date';
-  dateCreated?: 'dateCreated';
-  dateLastUpdated?: 'dateLastUpdated';
-  dateDeleted?: 'dateDeleted';
+  // date?: 'date';
+  // dateCreated?: 'dateCreated';
+  // dateLastUpdated?: 'dateLastUpdated';
+  // dateDeleted?: 'dateDeleted';
   deleted?: 'deleted';
 }
 
