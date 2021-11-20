@@ -171,10 +171,10 @@ export class NotionService {
         } else if (valueType === 'average') {
           return;
         }
-      case 'date':
+      case 'currency':
         if (valueType === 'sum') {
           return await this.prisma.income.groupBy({
-            by: ['date'],
+            by: ['currency'],
             where: {
               date: {
                 gte: params?.dateStartInc,
@@ -184,25 +184,7 @@ export class NotionService {
             _sum: {
               amount: true,
             },
-            orderBy: {
-              date: 'asc',
-            },
           });
-        } else if (valueType === 'count') {
-          return await this.prisma.income.groupBy({
-            by: ['date'],
-            where: {
-              date: {
-                gte: params?.dateStartInc,
-                lte: params?.dateEndInc,
-              },
-            },
-            _count: {
-              date: true,
-            },
-          });
-        } else if (valueType === 'average') {
-          return;
         }
     }
   }
