@@ -46,17 +46,17 @@ GraphQL API built on top of [NestJS](https://github.com/nestjs/nest) framework u
 9. Nice-to-have: search (user typing on frontend, triggers search query onChange => every new character)
 
 ## ⁉️ Challenges & workarounds
-Problem 1. Rate limit from Notion API + Ugly & Inconsistent response structure from Notion SDK <br>
-Solution: Migrate table to real DB (PostgreSQL)
+<b> Problem 1.</b> Rate limit from Notion API + Ugly & Inconsistent response structure from Notion SDK <br>
+<b>Solution:</b> Migrate table to real DB (PostgreSQL)
 
-Problem 2. DB data isn't in sync with data from Notion<br>
-Solution: Need Notion webhook to setup triggers but none available, current plan is to manually update DB from time to time
+<b>Problem 2.</b> DB data isn't in sync with data from Notion<br>
+<b>Solution:</b> Need Notion webhook to setup triggers but none available, current plan is to manually update DB from time to time
 
-Problem 3. There are no out-of-box auth solutions for Nest + GraphQL + Auth0 in RBAC<br>
-Solution: Implemented a [custom guard](https://github.com/Mingyang-Li/moneyapp-api/blob/main/src/auth/gql-auth0.guard.ts) that transforms request context from REST into GraphQL context then authenticate and authorise access based on the `permissions` field of the decoded jwt token payload.
+<b>Problem 3.</b> There are no out-of-box auth solutions for Nest + GraphQL + Auth0 in RBAC<br>
+<b>Solution:</b> Implemented a [custom guard](https://github.com/Mingyang-Li/moneyapp-api/blob/main/src/auth/gql-auth0.guard.ts) that transforms request context from REST into GraphQL context then authenticate and authorise access based on the `permissions` field of the decoded jwt token payload.
 
-Problem 4. When returning `sum` from `IncomeGroupBy` queries, the `sum` amount does not reflect the differences in `currency` (NZD and USD)<br>
-Solution: Need to either setup currency filter in query layer or auto-calculate all USD amount to NZD by real-time exchange rate on return
+<b>Problem 4.</b> When returning `sum` from `IncomeGroupBy` queries, the `sum` amount does not reflect the differences in `currency` (NZD and USD)<br>
+<b>Solution:</b> Need to either setup currency filter in query layer or auto-calculate all USD amount to NZD by real-time exchange rate on return
 
 ## 🛠️ Infrastructure
 1. Database: [PostgreSQL](https://www.postgresql.org/)
@@ -105,10 +105,10 @@ $ npx prisma db seed
 $ npx prisma studio
 ```
 
-## 🛫 Sample query & response: IncomeGroupBy
+## 🛫 Sample query & response:
+### All queries are protected by guards, meaning only authorised users are able to execute the queries (which is me, myself and I)
 ```bash
-
-All queries are protected by guards, meaning only authorised users are able to execute the queries (which is me, myself and I)
+IncomeGroupBy
 
 # Query grouped income by payment method and calculate sum of income by payment method
 
@@ -169,7 +169,7 @@ query {
         "count": 35
       },
       {
-        "incomePaymentMethod": "Etherum",
+        "incomePaymentMethod": "Ethereum",
         "count": 41
       }
     ]
