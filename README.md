@@ -42,8 +42,9 @@ GraphQL API built on top of [NestJS](https://github.com/nestjs/nest) framework u
 5. Set up basic filtering on columns with type `string`
 6. Setup sorting by date as query param
 7. Setup Guards for role-based authentication and authorisation 
-8. Current: Date-range filtering
-9. Nice-to-have: search (user typing on frontend, triggers search query onChange => every new character)
+8. Setup date-range filtering on aggregated income (excl aggregate by date)
+9. More to come...
+10. Nice-to-have: search (user typing on frontend, triggers search query onChange => every new character)
 
 ## ⁉️ Challenges & workarounds
 <b> Problem 1.</b> Rate limit from Notion API + Ugly & Inconsistent response structure from Notion SDK <br>
@@ -57,6 +58,10 @@ GraphQL API built on top of [NestJS](https://github.com/nestjs/nest) framework u
 
 <b>Problem 4.</b> When returning `sum` from `IncomeGroupBy` queries, the `sum` amount does not reflect the differences in `currency` (NZD and USD)<br>
 <b>Solution:</b> Need to either setup currency filter in query layer or auto-calculate all USD amount to NZD by real-time exchange rate on return
+
+<b>Problem 5.</b> Need to show dates with $0 income for aggregated income queries by dynamic date-range filter for time-series chart display
+<br>
+<b>Solution:</b> Use dates API to populate empty dates
 
 ## 🛠️ Infrastructure
 1. Database: [PostgreSQL](https://www.postgresql.org/)
