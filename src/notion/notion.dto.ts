@@ -48,7 +48,7 @@ export interface ExpenseGroupingType extends BaseGroupingType {
   paymentType?: 'paymentType';
 }
 
-export type ValueType = 'count' | 'sum' | 'average';
+export type ValueType = 'count' | 'sum';
 
 export type TableType = 'Income' | 'Expense';
 

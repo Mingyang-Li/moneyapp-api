@@ -48,7 +48,6 @@ type IncomeGroupByQuery {
   dateStartInc: DateTime
   dateEndInc: DateTime
   sum: Float
-  average: Float
   count: Float
   incomePaidBy: String
   incomePaymentMethod: String

@@ -90,9 +90,6 @@ export class BaseGroupByQueryReturnedFields {
   sum?: number;
 
   @Field({ nullable: true })
-  average?: number;
-
-  @Field({ nullable: true })
   count?: number;
 }
 

@@ -127,10 +127,6 @@ export class NotionResolver {
             };
           });
         return groupedIncomeReturnCount;
-
-      // Only need to calculate average by date, week or month
-      case 'average':
-        return;
     }
   }
 }
