@@ -108,7 +108,7 @@ $ npx prisma studio
 ## 🛫 Sample query & response:
 ### All queries are protected by guards, meaning only authorised users are able to execute the queries (which is me, myself and I)
 
-### Query grouped income by payment method and calculate sum of income by payment method
+### Query income by payment method and calculate sum of income by payment method
 ```graphql
 # Note: dateEndInc and dateStartInc are optional.
 # When date filters are not provided, the query will return all records`
@@ -146,7 +146,7 @@ query {
 }
 ```
 
-### Query grouped income by payment method and returning the number of times income is received by each payment method
+### Query income by payment method and returning the number of times income is received by each payment method
 ```gql
 query {
   incomeGroupBy ( 
@@ -180,7 +180,7 @@ query {
 }
 ```
 
-### Query grouped income by "paidBy" and returning sum of each person/org who paid
+### Query income by "paidBy" and returning sum of each person/org who paid
 ```gql
 query {
   incomeGroupBy ( 
