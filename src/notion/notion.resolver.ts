@@ -96,19 +96,28 @@ export class NotionResolver {
     console.log(dbGroupedIncome);
     switch (valueType) {
       case 'sum':
-        const groupedIncomeReturnSum: IncomeGroupByQuery[] =
-          dbGroupedIncome.map((income) => {
-            return {
-              incomePaidBy: income.paidBy,
-              incomePaymentMethod: income.paymentMethod,
-              incomeType: income.incomeType,
-              currency: income.currency,
-              dateStartInc: dateStartInc,
-              dateEndInc: dateEndInc,
-              sum: income._sum.amount,
-            };
-          });
-        return groupedIncomeReturnSum;
+        if (field === 'date') {
+          // need to populate arr with dates where income = $0 between 1st and last item
+          // try this: https://www.demo2s.com/javascript/javascript-date-finding-missing-dates-within-a-date-range.html
+          const incomeSumByDate: IncomeGroupByQuery[] = [];
+          console.log(incomeSumByDate);
+          return incomeSumByDate;
+        } else {
+          const groupedIncomeReturnSum: IncomeGroupByQuery[] =
+            dbGroupedIncome.map((income) => {
+              return {
+                incomePaidBy: income.paidBy,
+                incomePaymentMethod: income.paymentMethod,
+                incomeType: income.incomeType,
+                currency: income.currency,
+                date: income.date.toISOString(),
+                dateStartInc: dateStartInc,
+                dateEndInc: dateEndInc,
+                sum: income._sum.amount,
+              };
+            });
+          return groupedIncomeReturnSum;
+        }
       case 'count':
         const groupedIncomeReturnCount: IncomeGroupByQuery[] =
           dbGroupedIncome.map((income) => {
@@ -116,7 +125,7 @@ export class NotionResolver {
               incomePaidBy: income.paidBy,
               incomePaymentMethod: income.paymentMethod,
               incomeType: income.incomeType,
-              date: income.date.toString().slice(0, 15),
+              date: income.date.toISOString(),
               dateStartInc: dateStartInc,
               dateEndInc: dateEndInc,
               count:

@@ -180,6 +180,18 @@ export class NotionService {
             },
           });
         }
+      case 'date':
+        if (valueType === 'sum') {
+          return await this.prisma.income.groupBy({
+            by: ['date'],
+            _sum: {
+              amount: true,
+            },
+            orderBy: {
+              date: 'asc',
+            },
+          });
+        }
     }
   }
 }
