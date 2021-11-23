@@ -84,7 +84,7 @@ export class NotionResolver {
     @Args('dateStartInc', { type: () => Date, nullable: true })
     dateStartInc: Date,
 
-    @Args('dateStartInc', { type: () => Date, nullable: true })
+    @Args('dateEndInc', { type: () => Date, nullable: true })
     dateEndInc: Date,
   ) {
     const dbGroupedIncome = await this.notionService.incomeQueryByGroup({
@@ -102,6 +102,7 @@ export class NotionResolver {
               incomePaidBy: income.paidBy,
               incomePaymentMethod: income.paymentMethod,
               incomeType: income.incomeType,
+              currency: income.currency,
               dateStartInc: dateStartInc,
               dateEndInc: dateEndInc,
               sum: income._sum.amount,
@@ -115,15 +116,19 @@ export class NotionResolver {
               incomePaidBy: income.paidBy,
               incomePaymentMethod: income.paymentMethod,
               incomeType: income.incomeType,
+              date: income.date.toString().slice(0, 15),
               dateStartInc: dateStartInc,
               dateEndInc: dateEndInc,
               count:
                 income._count.paymentMethod |
                 income._count.paidBy |
-                income._count.incomeType,
+                income._count.incomeType |
+                income._count.date,
             };
           });
         return groupedIncomeReturnCount;
+
+      // Only need to calculate average by date, week or month
       case 'average':
         return;
     }

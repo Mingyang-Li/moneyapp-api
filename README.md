@@ -38,7 +38,7 @@ GraphQL API built on top of [NestJS](https://github.com/nestjs/nest) framework u
   g) jsonwebtoken
 2. Setup `code-first` GraphQL module for Notion service, include it into main app module
 3. Setting up controllers, resolvers, services and DTOs using built-in `dependency injection`.
-4. Seeding local `PostgreSQL` DB using `Notion API`
+4. Defining DB schema, seeding local `PostgreSQL` DB using `Notion API`
 5. Set up basic filtering on columns with type `string`
 6. Setup sorting by date as query param
 7. Setup Guards for role-based authentication and authorisation 
@@ -46,9 +46,17 @@ GraphQL API built on top of [NestJS](https://github.com/nestjs/nest) framework u
 9. Nice-to-have: search (user typing on frontend, triggers search query onChange => every new character)
 
 ## ⁉️ Challenges & workarounds
-1. Rate limit from Notion API => migrate table to real DB (Done)
-2. DB data isn't in sync with data from Notion => need Notion webhook to setup triggers but none available, current plan is to manually update DB from time to time
-3. There are no out-of-box auth solutions for Nest + GraphQL + Auth0 in RBAC => Implemented a [custom guard](https://github.com/Mingyang-Li/moneyapp-api/blob/main/src/auth/gql-auth0.guard.ts) that transforms request context from REST into GraphQL context then authenticate and authorise access based on the `permissions` field of the decoded jwt token payload.
+<b> Problem 1.</b> Rate limit from Notion API + Ugly & Inconsistent response structure from Notion SDK <br>
+<b>Solution:</b> Migrate table to real DB (PostgreSQL)
+
+<b>Problem 2.</b> DB data isn't in sync with data from Notion<br>
+<b>Solution:</b> Need Notion webhook to setup triggers but none available, current plan is to manually update DB from time to time
+
+<b>Problem 3.</b> There are no out-of-box auth solutions for Nest + GraphQL + Auth0 in RBAC<br>
+<b>Solution:</b> Implemented a [custom guard](https://github.com/Mingyang-Li/moneyapp-api/blob/main/src/auth/gql-auth0.guard.ts) that transforms request context from REST into GraphQL context then authenticate and authorise access based on the `permissions` field of the decoded jwt token payload.
+
+<b>Problem 4.</b> When returning `sum` from `IncomeGroupBy` queries, the `sum` amount does not reflect the differences in `currency` (NZD and USD)<br>
+<b>Solution:</b> Need to either setup currency filter in query layer or auto-calculate all USD amount to NZD by real-time exchange rate on return
 
 ## 🛠️ Infrastructure
 1. Database: [PostgreSQL](https://www.postgresql.org/)
@@ -95,4 +103,112 @@ $ npx prisma db seed
 
 # See DB using prisma studio
 $ npx prisma studio
+```
+
+## 🛫 Sample query & response:
+### All queries are protected by guards, meaning only authorised users are able to execute the queries (which is me, myself and I)
+
+### Query income by payment method and calculate sum of income by payment method
+```graphql
+# Note: dateEndInc and dateStartInc are optional.
+# When date filters are not provided, the query will return all records`
+query {
+  incomeGroupBy ( 
+  	field: "paymentMethod",
+    valueType: "sum"
+    dateEndInc: "Sun Nov 21 2021 12:12:28 GMT+1300 (New Zealand Daylight Time)"
+    dateStartInc: "Wed Sep 01 2021 12:12:28 GMT+1200 (New Zealand Standard Time)"
+  ) {
+    incomePaymentMethod
+    sum
+  }
+}
+```
+
+```json
+{
+  "data": {
+    "incomeGroupBy": [
+      {
+        "incomePaymentMethod": "Cash",
+        "sum": 10070.43
+      },
+      {
+        "incomePaymentMethod": "Paypal",
+        "sum": 10222.8
+      },
+      {
+        "incomePaymentMethod": "Direct Debit",
+        "sum": 32190.28
+      }
+    ]
+  }
+}
+```
+
+### Query income by payment method and returning the number of times income is received by each payment method
+```gql
+query {
+  incomeGroupBy ( 
+  	field: "paymentMethod",
+    valueType: "count"
+  ) {
+    incomePaymentMethod
+    count
+  }
+}
+```
+
+```json
+{
+  "data": {
+    "incomeGroupBy": [
+      {
+        "incomePaymentMethod": "Bitcoin",
+        "count": 28
+      },
+      {
+        "incomePaymentMethod": "Polkadot",
+        "count": 35
+      },
+      {
+        "incomePaymentMethod": "Ethereum",
+        "count": 41
+      }
+    ]
+  }
+}
+```
+
+### Query income by "paidBy" and returning sum of each person/org who paid
+```gql
+query {
+  incomeGroupBy ( 
+  	field: "paidBy",
+    valueType: "sum"
+  ) {
+    incomePaidBy
+    sum
+  }
+}
+```
+```json
+{
+  "data": {
+    "incomeGroupBy": [
+      {
+        "incomePaidBy": "Amazon Inc",
+        "sum": 332830
+      },
+      {
+        "incomePaidBy": "Google Inc",
+        "sum": 312872
+      },
+      {
+        "incomePaidBy": "Salesforce Inc",
+        "sum": 3298770
+      },
+    ]
+  }
+}
 ```

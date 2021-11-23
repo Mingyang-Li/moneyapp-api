@@ -58,5 +58,5 @@ type IncomeGroupByQuery {
 type Query {
   income(count: Int, sortDateBy: String, currency: String, date: DateTime, incomeType: String, paidBy: String, paymentMethod: String): [IncomeRow!]!
   expense(count: Int, sortDateBy: String, paymentType: String, subType: String, type: String, item: String, currency: String, amount: Int, date: DateTime, id: Int): [ExpenseRow!]!
-  incomeGroupBy(dateStartInc: DateTime, valueType: String!, field: String!): [IncomeGroupByQuery!]!
+  incomeGroupBy(dateEndInc: DateTime, dateStartInc: DateTime, valueType: String!, field: String!): [IncomeGroupByQuery!]!
 }
