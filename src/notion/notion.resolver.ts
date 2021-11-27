@@ -6,7 +6,12 @@ import {
   OverallUnion,
 } from './notion.entity';
 import { NotionService } from './notion.service';
-import { IncomeQueryParams, OrderByType, ValueType } from './notion.dto';
+import {
+  AverageIncomeExpensesType,
+  IncomeQueryParams,
+  OrderByType,
+  ValueType,
+} from './notion.dto';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuth0Guard } from '@/auth/gql-auth0.guard';
 import { getMissingDate } from '../util/getMissingDates';
@@ -178,5 +183,21 @@ export class NotionResolver {
           });
         return groupedIncomeReturnCount;
     }
+  }
+
+  @Query(() => [])
+  @UseGuards(GqlAuth0Guard)
+  protected async averageIncome(
+    @Args('type', { type: () => String })
+    type: AverageIncomeExpensesType,
+
+    @Args('dateStartInc', { type: () => Date })
+    dateStartInc: Date,
+
+    @Args('dateEndInc', { type: () => Date })
+    dateEndInc: Date,
+  ) {
+    console.log(type, dateStartInc, dateEndInc);
+    return [];
   }
 }

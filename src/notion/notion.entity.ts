@@ -1,4 +1,5 @@
 import { createUnionType, Field, ObjectType } from '@nestjs/graphql';
+import { AverageIncomeExpensesType } from './notion.dto';
 
 @ObjectType()
 export class BaseIncomeAndExpenseRow {
@@ -119,9 +120,32 @@ export class ExpenseGroupByQuery extends BaseGroupByQueryReturnedFields {
   expensePaymentType?: string;
 }
 
+export class BaseAverage {
+  @Field({ nullable: true })
+  dateStartInc?: Date;
+
+  @Field({ nullable: true })
+  dateEndInc?: Date;
+}
+
+@ObjectType()
+export class AverageIncome extends BaseAverage {
+  @Field()
+  type: AverageIncomeExpensesType;
+
+  @Field()
+  average: number;
+}
+
 export const OverallUnion = createUnionType({
   name: 'ResultUnion',
-  types: () => [IncomeRow, ExpenseRow, IncomeGroupByQuery, ExpenseGroupByQuery],
+  types: () => [
+    IncomeRow,
+    ExpenseRow,
+    IncomeGroupByQuery,
+    ExpenseGroupByQuery,
+    AverageIncome,
+  ],
 });
 
 // sample_responses
