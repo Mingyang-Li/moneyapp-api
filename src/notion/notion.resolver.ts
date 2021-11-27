@@ -6,9 +6,15 @@ import {
   OverallUnion,
 } from './notion.entity';
 import { NotionService } from './notion.service';
-import { IncomeQueryParams, OrderByType, ValueType } from './notion.dto';
+import {
+  AverageIncomeExpensesType,
+  IncomeQueryParams,
+  OrderByType,
+  ValueType,
+} from './notion.dto';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuth0Guard } from '@/auth/gql-auth0.guard';
+import { getMissingDate } from '../util/getMissingDates';
 
 @Resolver(() => [OverallUnion])
 export class NotionResolver {
@@ -93,22 +99,71 @@ export class NotionResolver {
       dateStartInc,
       dateEndInc,
     });
-    console.log(dbGroupedIncome);
     switch (valueType) {
       case 'sum':
-        const groupedIncomeReturnSum: IncomeGroupByQuery[] =
-          dbGroupedIncome.map((income) => {
+        if (field === 'date') {
+          // need to populate arr with dates where income is $0 between 1st and last item
+          // try this: https://gist.github.com/miguelmota/7905510
+          const dates = dbGroupedIncome.map((data) => data.date.toISOString());
+          const start = new Date(dates[0]);
+          const end = new Date(dates[dates.length - 1]);
+
+          // get all dates from start to end inclusive
+          const allDates = getMissingDate(start, end);
+
+          // use separate array for data validation
+          const datesWithIncome = dbGroupedIncome.map((income) =>
+            income.date.toISOString(),
+          );
+
+          // modifying db response for easier data access & modelling
+          const allIncome = dbGroupedIncome.map((income) => {
             return {
-              incomePaidBy: income.paidBy,
-              incomePaymentMethod: income.paymentMethod,
-              incomeType: income.incomeType,
-              currency: income.currency,
-              dateStartInc: dateStartInc,
-              dateEndInc: dateEndInc,
+              date: income.date.toISOString(),
               sum: income._sum.amount,
             };
           });
-        return groupedIncomeReturnSum;
+
+          // Start populating return data
+          const incomeSumByDate: IncomeGroupByQuery[] = [];
+          allDates.forEach((dateStr: string) => {
+            if (datesWithIncome.includes(dateStr)) {
+              // only calculate daily amount if date has income
+              // accumulate all income of that date
+              let dailyAmount = 0;
+              allIncome.forEach((income) => {
+                if (income.date === dateStr) {
+                  dailyAmount += income.sum;
+                }
+              });
+              incomeSumByDate.push({
+                date: dateStr,
+                sum: dailyAmount,
+              });
+            } else {
+              incomeSumByDate.push({
+                date: dateStr,
+                sum: 0,
+              });
+            }
+          });
+          return incomeSumByDate;
+        } else {
+          const groupedIncomeReturnSum: IncomeGroupByQuery[] =
+            dbGroupedIncome.map((income) => {
+              return {
+                incomePaidBy: income.paidBy,
+                incomePaymentMethod: income.paymentMethod,
+                incomeType: income.incomeType,
+                currency: income.currency,
+                date: income.date.toISOString(),
+                dateStartInc: dateStartInc,
+                dateEndInc: dateEndInc,
+                sum: income._sum.amount,
+              };
+            });
+          return groupedIncomeReturnSum;
+        }
       case 'count':
         const groupedIncomeReturnCount: IncomeGroupByQuery[] =
           dbGroupedIncome.map((income) => {
@@ -116,7 +171,7 @@ export class NotionResolver {
               incomePaidBy: income.paidBy,
               incomePaymentMethod: income.paymentMethod,
               incomeType: income.incomeType,
-              date: income.date.toString().slice(0, 15),
+              date: income.date.toISOString(),
               dateStartInc: dateStartInc,
               dateEndInc: dateEndInc,
               count:
@@ -127,10 +182,22 @@ export class NotionResolver {
             };
           });
         return groupedIncomeReturnCount;
-
-      // Only need to calculate average by date, week or month
-      case 'average':
-        return;
     }
+  }
+
+  @Query(() => [])
+  @UseGuards(GqlAuth0Guard)
+  protected async averageIncome(
+    @Args('type', { type: () => String })
+    type: AverageIncomeExpensesType,
+
+    @Args('dateStartInc', { type: () => Date })
+    dateStartInc: Date,
+
+    @Args('dateEndInc', { type: () => Date })
+    dateEndInc: Date,
+  ) {
+    console.log(type, dateStartInc, dateEndInc);
+    return [];
   }
 }

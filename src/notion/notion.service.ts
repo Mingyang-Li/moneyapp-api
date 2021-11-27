@@ -108,8 +108,6 @@ export class NotionService {
               paymentMethod: true,
             },
           });
-        } else if (valueType === 'average') {
-          return;
         }
       case 'paidBy':
         if (valueType === 'sum') {
@@ -138,8 +136,6 @@ export class NotionService {
               paidBy: true,
             },
           });
-        } else if (valueType === 'average') {
-          return;
         }
       case 'incomeType':
         if (valueType === 'sum') {
@@ -168,8 +164,6 @@ export class NotionService {
               incomeType: true,
             },
           });
-        } else if (valueType === 'average') {
-          return;
         }
       case 'currency':
         if (valueType === 'sum') {
@@ -183,6 +177,24 @@ export class NotionService {
             },
             _sum: {
               amount: true,
+            },
+          });
+        }
+      case 'date':
+        if (valueType === 'sum') {
+          return await this.prisma.income.groupBy({
+            by: ['date'],
+            where: {
+              date: {
+                gte: params?.dateStartInc,
+                lte: params?.dateEndInc,
+              },
+            },
+            _sum: {
+              amount: true,
+            },
+            orderBy: {
+              date: 'asc',
             },
           });
         }
