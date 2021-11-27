@@ -217,3 +217,38 @@ query {
   }
 }
 ```
+
+### Query income by date and returning accumulated income including days when income is $0
+```gql
+query {
+  incomeGroupBy ( 
+  	field: "date",
+    valueType: "sum"
+    dateStartInc: "Sun Nov 21 2021 12:12:28 GMT+1300 (New Zealand Daylight Time)"
+    dateEndInc: "Tue Nov 23 2021 13:00:00 GMT+1300 (New Zealand Daylight Time)"
+  ) {
+    date
+    sum
+  }
+}
+```
+```json
+{
+  "data": {
+    "incomeGroupBy": [
+      {
+        "date": "2021-11-21T23:12:28.000Z",
+        "sum": 23443
+      },
+      {
+        "date": "2021-11-22T23:12:28.000Z",
+        "sum": 0
+      },
+      {
+        "date": "2021-11-23T00:00:00.000Z",
+        "sum": 20000
+      },
+    ]
+  }
+}
+```
