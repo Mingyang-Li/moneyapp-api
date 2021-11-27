@@ -9,6 +9,7 @@ import { NotionService } from './notion.service';
 import { IncomeQueryParams, OrderByType, ValueType } from './notion.dto';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuth0Guard } from '@/auth/gql-auth0.guard';
+import { getMissingDate } from '../util/getMissingDates';
 
 @Resolver(() => [OverallUnion])
 export class NotionResolver {
@@ -93,14 +94,54 @@ export class NotionResolver {
       dateStartInc,
       dateEndInc,
     });
-    console.log(dbGroupedIncome);
     switch (valueType) {
       case 'sum':
         if (field === 'date') {
-          // need to populate arr with dates where income = $0 between 1st and last item
-          // try this: https://www.demo2s.com/javascript/javascript-date-finding-missing-dates-within-a-date-range.html
+          // need to populate arr with dates where income is $0 between 1st and last item
+          // try this: https://gist.github.com/miguelmota/7905510
+          const dates = dbGroupedIncome.map((data) => data.date.toISOString());
+          const start = new Date(dates[0]);
+          const end = new Date(dates[dates.length - 1]);
+
+          // get all dates from start to end inclusive
+          const allDates = getMissingDate(start, end);
+
+          // use separate array for data validation
+          const datesWithIncome = dbGroupedIncome.map((income) =>
+            income.date.toISOString(),
+          );
+
+          // modifying db response for easier data access & modelling
+          const allIncome = dbGroupedIncome.map((income) => {
+            return {
+              date: income.date.toISOString(),
+              sum: income._sum.amount,
+            };
+          });
+
+          // Start populating return data
           const incomeSumByDate: IncomeGroupByQuery[] = [];
-          console.log(incomeSumByDate);
+          allDates.forEach((dateStr: string) => {
+            if (datesWithIncome.includes(dateStr)) {
+              // only calculate daily amount if date has income
+              // accumulate all income of that date
+              let dailyAmount = 0;
+              allIncome.forEach((income) => {
+                if (income.date === dateStr) {
+                  dailyAmount += income.sum;
+                }
+              });
+              incomeSumByDate.push({
+                date: dateStr,
+                sum: dailyAmount,
+              });
+            } else {
+              incomeSumByDate.push({
+                date: dateStr,
+                sum: 0,
+              });
+            }
+          });
           return incomeSumByDate;
         } else {
           const groupedIncomeReturnSum: IncomeGroupByQuery[] =
