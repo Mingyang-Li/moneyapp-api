@@ -61,6 +61,12 @@ export interface IncomeGroupQueryParam {
   dateEndInc?: Date;
 }
 
+export interface AverageIncomeExpenseQueryParams {
+  type: AverageIncomeExpensesType;
+  dateStartInc: Date;
+  dateEndInc: Date;
+}
+
 // global global_group_by_fields fields
 export type GlobalGroupByReturnField =
   | 'currency'

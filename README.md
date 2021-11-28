@@ -42,8 +42,8 @@ GraphQL API built on top of [NestJS](https://github.com/nestjs/nest) framework u
 5. Set up basic filtering on columns with type `string`
 6. Setup sorting by date as query param
 7. Setup Guards for role-based authentication and authorisation 
-8. Setup date-range filtering on aggregated income (excl aggregate by date)
-9. More to come...
+8. Setup date-range filtering on aggregated income
+9. Setup endpoints calculating average daily, weekly and monthly income with start and end date filters
 10. Nice-to-have: search (user typing on frontend, triggers search query onChange => every new character)
 
 ## ⁉️ Challenges & workarounds
@@ -248,6 +248,32 @@ query {
         "date": "2021-11-23T00:00:00.000Z",
         "sum": 20000
       },
+    ]
+  }
+}
+```
+
+### Query daily average income given a date range, returning the type of average income queried and the value
+```gql
+query {
+  averageIncome (
+    type: "daily"
+    dateStartInc: "Thu Jul 01 2021 12:00:00 GMT+1200 (New Zealand Standard Time)"
+    dateEndInc: "Tue Sep 28 2021 13:00:00 GMT+1300 (New Zealand Daylight Time)"
+  ) {
+    type
+    average
+  }
+}
+```
+```json
+{
+  "data": {
+    "averageIncome": [
+      {
+        "type": "daily",
+        "average": 5000
+      }
     ]
   }
 }

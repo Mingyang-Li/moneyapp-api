@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ExpenseRow, IncomeRow } from './notion.entity';
 import {
+  AverageIncomeExpenseQueryParams,
   ExpenseQueryParams,
   IncomeGroupQueryParam,
   IncomeQueryParams,
@@ -90,6 +91,9 @@ export class NotionService {
                 gte: params?.dateStartInc,
                 lte: params?.dateEndInc,
               },
+              incomeType: {
+                not: 'Investment Cashout',
+              },
             },
             _sum: {
               amount: true,
@@ -102,6 +106,9 @@ export class NotionService {
               date: {
                 gte: params?.dateStartInc,
                 lte: params?.dateEndInc,
+              },
+              incomeType: {
+                not: 'Investment Cashout',
               },
             },
             _count: {
@@ -118,6 +125,9 @@ export class NotionService {
                 gte: params?.dateStartInc,
                 lte: params?.dateEndInc,
               },
+              incomeType: {
+                not: 'Investment Cashout',
+              },
             },
             _sum: {
               amount: true,
@@ -130,6 +140,9 @@ export class NotionService {
               date: {
                 gte: params?.dateStartInc,
                 lte: params?.dateEndInc,
+              },
+              incomeType: {
+                not: 'Investment Cashout',
               },
             },
             _count: {
@@ -146,6 +159,9 @@ export class NotionService {
                 gte: params?.dateStartInc,
                 lte: params?.dateEndInc,
               },
+              incomeType: {
+                not: 'Investment Cashout',
+              },
             },
             _sum: {
               amount: true,
@@ -158,6 +174,9 @@ export class NotionService {
               date: {
                 gte: params?.dateStartInc,
                 lte: params?.dateEndInc,
+              },
+              incomeType: {
+                not: 'Investment Cashout',
               },
             },
             _count: {
@@ -174,6 +193,9 @@ export class NotionService {
                 gte: params?.dateStartInc,
                 lte: params?.dateEndInc,
               },
+              incomeType: {
+                not: 'Investment Cashout',
+              },
             },
             _sum: {
               amount: true,
@@ -189,6 +211,9 @@ export class NotionService {
                 gte: params?.dateStartInc,
                 lte: params?.dateEndInc,
               },
+              incomeType: {
+                not: 'Investment Cashout',
+              },
             },
             _sum: {
               amount: true,
@@ -199,5 +224,19 @@ export class NotionService {
           });
         }
     }
+  }
+
+  public async incomeByDateRange(params: AverageIncomeExpenseQueryParams) {
+    return await this.prisma.income.findMany({
+      where: {
+        date: {
+          gte: params.dateStartInc,
+          lte: params.dateEndInc,
+        },
+        incomeType: {
+          not: 'Investment Cashout',
+        },
+      },
+    });
   }
 }
