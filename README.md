@@ -252,3 +252,29 @@ query {
   }
 }
 ```
+
+### Query daily average income given a date range, returning the type of average income queried and the value
+```gql
+query {
+  averageIncome (
+    type: "daily"
+    dateStartInc: "Thu Jul 01 2021 12:00:00 GMT+1200 (New Zealand Standard Time)"
+    dateEndInc: "Tue Sep 28 2021 13:00:00 GMT+1300 (New Zealand Daylight Time)"
+  ) {
+    type
+    average
+  }
+}
+```
+```json
+{
+  "data": {
+    "averageIncome": [
+      {
+        "type": "daily",
+        "average": 5000
+      }
+    ]
+  }
+}
+```
