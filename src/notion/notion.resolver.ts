@@ -4,6 +4,7 @@ import {
   ExpenseRow,
   IncomeGroupByQuery,
   OverallUnion,
+  AverageIncome,
 } from './notion.entity';
 import { NotionService } from './notion.service';
 import {
@@ -15,6 +16,7 @@ import {
 import { UseGuards } from '@nestjs/common';
 import { GqlAuth0Guard } from '@/auth/gql-auth0.guard';
 import { getMissingDate } from '../util/getMissingDates';
+import { getNumberOfDaysBetween } from '@/util/getNumberOfDaysBetween';
 
 @Resolver(() => [OverallUnion])
 export class NotionResolver {
@@ -185,7 +187,7 @@ export class NotionResolver {
     }
   }
 
-  @Query(() => [])
+  @Query(() => [AverageIncome])
   @UseGuards(GqlAuth0Guard)
   protected async averageIncome(
     @Args('type', { type: () => String })
@@ -197,7 +199,31 @@ export class NotionResolver {
     @Args('dateEndInc', { type: () => Date })
     dateEndInc: Date,
   ) {
-    console.log(type, dateStartInc, dateEndInc);
+    const income = await this.notionService.incomeByDateRange({
+      type,
+      dateStartInc,
+      dateEndInc,
+    });
+    switch (type) {
+      case 'daily':
+        // 1. Calculate number of days between start and end date
+        // 2. Calculate daily avg, return to 2 decimla places
+        // 3. Return result as {}
+        const days = getNumberOfDaysBetween(dateStartInc, dateEndInc);
+        let amount = 0;
+        income.forEach((income) => (amount += income.amount));
+        const avg = (amount / days).toFixed(2);
+        return [
+          {
+            type: 'daily',
+            average: avg,
+          },
+        ];
+      case 'monthly':
+        console.log(income);
+      case 'weekly':
+        console.log(dateEndInc);
+    }
     return [];
   }
 }

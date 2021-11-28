@@ -54,8 +54,14 @@ type IncomeGroupByQuery {
   incomeType: String
 }
 
+type AverageIncome {
+  type: String!
+  average: Float!
+}
+
 type Query {
   income(count: Int, sortDateBy: String, currency: String, date: DateTime, incomeType: String, paidBy: String, paymentMethod: String): [IncomeRow!]!
   expense(count: Int, sortDateBy: String, paymentType: String, subType: String, type: String, item: String, currency: String, amount: Int, date: DateTime, id: Int): [ExpenseRow!]!
   incomeGroupBy(dateEndInc: DateTime, dateStartInc: DateTime, valueType: String!, field: String!): [IncomeGroupByQuery!]!
+  averageIncome(dateEndInc: DateTime!, dateStartInc: DateTime!, type: String!): [AverageIncome!]!
 }
