@@ -15,8 +15,10 @@ GraphQL API built on top of [NestJS](https://github.com/nestjs/nest) framework u
 2. Provide a flexible way for the front-end to interact with data
 3. Learn about NestJS & GraphQL without following along boring tutorials
 
-## 📚 Frontend repository
-- [HERE](https://github.com/Mingyang-Li/moneyapp-client)
+## 🏗️ Architecture
+TBD
+
+## 📚 Frontend repo: [HERE](https://github.com/Mingyang-Li/moneyapp-client)
 
 ## 💥 Features
 1. Read, create, update and delete all personal finance data hosted in cloud DB
@@ -44,7 +46,8 @@ GraphQL API built on top of [NestJS](https://github.com/nestjs/nest) framework u
 7. Setup Guards for role-based authentication and authorisation 
 8. Setup date-range filtering on aggregated income
 9. Setup endpoints calculating average daily, weekly and monthly income with start and end date filters
-10. Nice-to-have: search (user typing on frontend, triggers search query onChange => every new character)
+10. Setup endpoints calculating average daily, weekly and monthly expenses with start and end date filters
+11. Nice-to-have: search (user typing on frontend, triggers search query onChange => every new character)
 
 ## ⁉️ Challenges & workarounds
 <b> Problem 1.</b> Rate limit from Notion API + Ugly & Inconsistent response structure from Notion SDK <br>
