@@ -16,7 +16,8 @@ GraphQL API built on top of [NestJS](https://github.com/nestjs/nest) framework u
 3. Learn about NestJS & GraphQL without following along boring tutorials
 
 ## 🏗️ Architecture
-TBD
+![image](https://user-images.githubusercontent.com/53138432/143810605-c543c694-214f-4a12-9110-0019dfc66e75.png)
+
 
 ## 📚 Frontend repo: [HERE](https://github.com/Mingyang-Li/moneyapp-client)
 
