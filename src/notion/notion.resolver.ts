@@ -158,7 +158,6 @@ export class NotionResolver {
                 incomePaymentMethod: income.paymentMethod,
                 incomeType: income.incomeType,
                 currency: income.currency,
-                date: income.date.toISOString(),
                 dateStartInc: dateStartInc,
                 dateEndInc: dateEndInc,
                 sum: income._sum.amount,
