@@ -160,7 +160,7 @@ export class NotionResolver {
                 currency: income.currency,
                 dateStartInc: dateStartInc,
                 dateEndInc: dateEndInc,
-                sum: income._sum.amount,
+                sum: income._sum.amount.toFixed(2),
               };
             });
           return groupedIncomeReturnSum;
