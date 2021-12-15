@@ -7,17 +7,35 @@
 
 
 
-# About
-GraphQL API built on top of [NestJS](https://github.com/nestjs/nest) framework using TypeScript, Notion API and a bunch of small tools.
+## 🕵️‍♂️ About
+Versatile GraphQL API built on top of [NestJS](https://github.com/nestjs/nest) framework for ease of use on data-analytics frontends
 
 ## 📍 Purpose
 1. Acting an the API for a finance management app (personal use)
 2. Provide a flexible way for the front-end to interact with data
 3. Learn about NestJS & GraphQL without following along boring tutorials
 
+## 🛠️ Technologies used
+| Purpose | Tool |
+| :--- | :---- |
+| ✅ Language | TypeScript |
+| ✅ Framework | [NestJS](https://nestjs.com/) |
+| ✅ GraphQL API | Apollo Server |
+| ✅ Data source | [Notion API](https://developers.notion.com/) |
+| ✅ Data modelling | [Prisma ORM](https://www.prisma.io/) |
+| ✅ Decode JWT | jsonwebtoken |
+| ✅ Secure API keys | dotenv |
+| ✅ Currency conversion | [Exchange Rates API](https://exchangeratesapi.io/) |
+
+## 🛠️ Infrastructure
+1. Database: [PostgreSQL](https://www.postgresql.org/)
+2. Realtime Cloud DB: [Supabase](https://supabase.io/) free tier
+3. Authentication: [Auth0](https://auth0.com/docs/security/tokens/access-tokens/validate-access-tokens)
+4. Deployment: [Heroku](https://www.heroku.com/)
+5. CD/CI: [CircleCI](https://circleci.com/)
+
 ## 🏗️ Architecture
 ![image](https://user-images.githubusercontent.com/53138432/143810605-c543c694-214f-4a12-9110-0019dfc66e75.png)
-
 
 ## 📚 Frontend repo: [HERE](https://github.com/Mingyang-Li/moneyapp-client)
 
@@ -31,14 +49,7 @@ GraphQL API built on top of [NestJS](https://github.com/nestjs/nest) framework u
 
 
 ## 📝 Development process
-1. Setup project structure including essential tools including <br>
-  a) NestJS: CLI, graphql, Swagger <br>
-  b) Notion Client API <br>
-  c) Apollo Server <br>
-  d) dotenv <br>
-  e) nodemon <br>
-  f) Prisma ORM <br>
-  g) jsonwebtoken
+1. Setup project structure + install dependencies <br>
 2. Setup `code-first` GraphQL module for Notion service, include it into main app module
 3. Setting up controllers, resolvers, services and DTOs using built-in `dependency injection`.
 4. Defining DB schema, seeding local `PostgreSQL` DB using `Notion API`
@@ -66,13 +77,6 @@ GraphQL API built on top of [NestJS](https://github.com/nestjs/nest) framework u
 <b>Problem 5.</b> Need to show dates with $0 income for aggregated income queries by dynamic date-range filter for time-series chart display
 <br>
 <b>Solution:</b> Use dates API to populate empty dates
-
-## 🛠️ Infrastructure
-1. Database: [PostgreSQL](https://www.postgresql.org/)
-2. Realtime Cloud DB: [Supabase](https://supabase.io/) free tier
-3. Authentication: [Auth0](https://auth0.com/docs/security/tokens/access-tokens/validate-access-tokens)
-4. Deployment: [Heroku](https://www.heroku.com/)
-5. CD/CI: [CircleCI](https://circleci.com/)
 
 ## 🛫 Running the app
 
