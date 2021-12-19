@@ -28,11 +28,13 @@ Versatile GraphQL API built on top of [NestJS](https://github.com/nestjs/nest) f
 | ✅ Currency conversion | [Exchange Rates API](https://exchangeratesapi.io/) |
 
 ## 🛠️ Infrastructure
-1. Database: [PostgreSQL](https://www.postgresql.org/)
-2. Realtime Cloud DB: [Supabase](https://supabase.io/) free tier
-3. Authentication: [Auth0](https://auth0.com/docs/security/tokens/access-tokens/validate-access-tokens)
-4. Deployment: [Heroku](https://www.heroku.com/)
-5. CD/CI: [CircleCI](https://circleci.com/)
+| No. | Purpose | Tools |
+| :-- | :-- | :-- |
+| 1 | Databse system | PostgresSQL
+| 2 | Hosting database | [Supabase](https://supabase.io/)
+| 3 | Authentication & Identity management | [Auth0](https://auth0.com/)
+| 4 | API hosting | [Heroku](https://www.heroku.com/)
+| 5 | CD/CI | [CircleCI](https://circleci.com/)
 
 ## 🏗️ Architecture
 ![image](https://user-images.githubusercontent.com/53138432/143810605-c543c694-214f-4a12-9110-0019dfc66e75.png)
@@ -62,21 +64,13 @@ Versatile GraphQL API built on top of [NestJS](https://github.com/nestjs/nest) f
 11. Nice-to-have: search (user typing on frontend, triggers search query onChange => every new character)
 
 ## ⁉️ Challenges & workarounds
-<b> Problem 1.</b> Rate limit from Notion API + Ugly & Inconsistent response structure from Notion SDK <br>
-<b>Solution:</b> Migrate table to real DB (PostgreSQL)
-
-<b>Problem 2.</b> DB data isn't in sync with data from Notion<br>
-<b>Solution:</b> Need Notion webhook to setup triggers but none available, current plan is to manually update DB from time to time
-
-<b>Problem 3.</b> There are no out-of-box auth solutions for Nest + GraphQL + Auth0 in RBAC<br>
-<b>Solution:</b> Implemented a [custom guard](https://github.com/Mingyang-Li/moneyapp-api/blob/main/src/auth/gql-auth0.guard.ts) that transforms request context from REST into GraphQL context then authenticate and authorise access based on the `permissions` field of the decoded jwt token payload.
-
-<b>Problem 4.</b> When returning `sum` from `IncomeGroupBy` queries, the `sum` amount does not reflect the differences in `currency` (NZD and USD)<br>
-<b>Solution:</b> Need to either setup currency filter in query layer or auto-calculate all USD amount to NZD by real-time exchange rate on return
-
-<b>Problem 5.</b> Need to show dates with $0 income for aggregated income queries by dynamic date-range filter for time-series chart display
-<br>
-<b>Solution:</b> Use dates API to populate empty dates
+| No. | Problem | Solution |
+| :-- | :-- | :-- |
+| 1 | Rate limit from Notion API + Ugly & Inconsistent response structure from Notion SDK | Migrate table to real DB (PostgreSQL) |
+| 2 | DB data isn't in sync with data from Notion | Need Notion webhook to setup triggers but none available, current plan is to manually update DB from time to time |
+| 3 | There are no out-of-box auth solutions for Nest + GraphQL + Auth0 in RBAC (Role-based access-control) | Implemented a [custom guard](https://github.com/Mingyang-Li/moneyapp-api/blob/main/src/auth/gql-auth0.guard.ts) that transforms request context from REST into GraphQL context then authenticate and authorise access based on the `permissions` field of the decoded jwt token payload. |
+| 4 | When returning `sum` from `IncomeGroupBy` queries, the `sum` amount does not reflect the differences in `currency` (NZD and USD) | Need to either setup compulsory currency filter in query layer or auto-calculate all USD amount to NZD by real-time exchange rate on return |
+| 5 | Need to show dates with $0 income for aggregated income queries by dynamic date-range filter for time-series chart display | Used dates API to populate empty dates |
 
 ## 🛫 Running the app
 
