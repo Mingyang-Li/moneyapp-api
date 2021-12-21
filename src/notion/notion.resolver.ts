@@ -106,12 +106,12 @@ export class NotionResolver {
         if (field === 'date') {
           // need to populate arr with dates where income is $0 between 1st and last item
           // try this: https://gist.github.com/miguelmota/7905510
-          const dates = dbGroupedIncome.map((data) => data.date.toISOString());
-          const start = new Date(dates[0]);
-          const end = new Date(dates[dates.length - 1]);
+          // const dates = dbGroupedIncome.map((data) => data.date.toISOString());
+          // const start = new Date(dateStartInc);
+          // const end = new Date(dateEndInc);
 
           // get all dates from start to end inclusive
-          const allDates = getMissingDate(start, end);
+          const allDates = getMissingDate(dateStartInc, dateEndInc);
 
           // use separate array for data validation
           const datesWithIncome = dbGroupedIncome.map((income) =>
