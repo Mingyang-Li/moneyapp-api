@@ -143,28 +143,3 @@ if (toSeedIncome) {
       await prisma.$disconnect();
     });
 }
-
-// Testing DB data
-const incomeSum = async () => {
-  const res = await prisma.income.aggregate({
-    _sum: {
-      amount: true,
-    },
-    // where: {
-    //   date: {
-    //     gte: '2021-04-01T00:00:00.000Z',
-    //     lte: '2021-11-01T00:00:00.000Z',
-    //   },
-    // },
-  });
-  console.log(res);
-};
-
-incomeSum()
-  .catch((e) => {
-    console.error(e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
