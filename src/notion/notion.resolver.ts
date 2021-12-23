@@ -245,7 +245,30 @@ export class NotionResolver {
       {
         startDate: startDate.toISOString(),
         endDate: endDate.toISOString(),
-        sum: res._sum.amount,
+        sum: res._sum.amount.toFixed(2),
+      },
+    ];
+  }
+
+  @Query(() => [TotalIncomeAndExpenses])
+  @UseGuards(GqlAuth0Guard)
+  protected async expenseSum(
+    @Args('startDate', { type: () => Date, nullable: true })
+    startDate: Date,
+
+    @Args('endDate', { type: () => Date, nullable: true })
+    endDate: Date,
+  ) {
+    const res = await this.notionService.expenseSumByDateRange({
+      startDate,
+      endDate,
+    });
+    console.log(res._sum.amount);
+    return [
+      {
+        startDate: startDate.toISOString(),
+        endDate: endDate.toISOString(),
+        sum: res._sum.amount.toFixed(2),
       },
     ];
   }

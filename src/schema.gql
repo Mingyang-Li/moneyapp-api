@@ -69,4 +69,5 @@ type Query {
   incomeGroupBy(dateEndInc: DateTime, dateStartInc: DateTime, valueType: String!, field: String!): [IncomeGroupByQuery!]!
   averageIncome(dateEndInc: DateTime!, dateStartInc: DateTime!, type: String!): [AverageIncome!]!
   incomeSum(endDate: DateTime, startDate: DateTime): [TotalIncomeAndExpenses!]!
+  expenseSum(endDate: DateTime, startDate: DateTime): [TotalIncomeAndExpenses!]!
 }

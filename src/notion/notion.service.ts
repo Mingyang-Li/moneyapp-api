@@ -257,4 +257,18 @@ export class NotionService {
       },
     });
   }
+
+  public async expenseSumByDateRange(params: IncomeAndExpensesSumParams) {
+    return await this.prisma.expense.aggregate({
+      _sum: {
+        amount: true,
+      },
+      where: {
+        date: {
+          gte: params.startDate,
+          lte: params.endDate,
+        },
+      },
+    });
+  }
 }
