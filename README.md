@@ -304,7 +304,7 @@ query {
 }
 ```
 
-### Get total income given a date range
+### Get total expenses given a date range
 ```gql
 query {
   expenseSum (
