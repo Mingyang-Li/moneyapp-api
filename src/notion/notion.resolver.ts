@@ -5,6 +5,7 @@ import {
   IncomeGroupByQuery,
   OverallUnion,
   AverageIncome,
+  TotalIncomeAndExpenses,
 } from './notion.entity';
 import { NotionService } from './notion.service';
 import {
@@ -224,5 +225,28 @@ export class NotionResolver {
         console.log(dateEndInc);
     }
     return [];
+  }
+
+  @Query(() => [TotalIncomeAndExpenses])
+  @UseGuards(GqlAuth0Guard)
+  protected async incomeSum(
+    @Args('startDate', { type: () => Date, nullable: true })
+    startDate: Date,
+
+    @Args('endDate', { type: () => Date, nullable: true })
+    endDate: Date,
+  ) {
+    const res = await this.notionService.incomeSumByDateRange({
+      startDate,
+      endDate,
+    });
+    console.log(res._sum.amount);
+    return [
+      {
+        startDate: startDate.toISOString(),
+        endDate: endDate.toISOString(),
+        sum: res._sum.amount,
+      },
+    ];
   }
 }

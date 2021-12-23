@@ -3,6 +3,7 @@ import { ExpenseRow, IncomeRow } from './notion.entity';
 import {
   AverageIncomeExpenseQueryParams,
   ExpenseQueryParams,
+  IncomeAndExpensesSumParams,
   IncomeGroupQueryParam,
   IncomeQueryParams,
 } from './notion.dto';
@@ -232,6 +233,23 @@ export class NotionService {
         date: {
           gte: params.dateStartInc,
           lte: params.dateEndInc,
+        },
+        incomeType: {
+          not: 'Investment Cashout',
+        },
+      },
+    });
+  }
+
+  public async incomeSumByDateRange(params: IncomeAndExpensesSumParams) {
+    return await this.prisma.income.aggregate({
+      _sum: {
+        amount: true,
+      },
+      where: {
+        date: {
+          gte: params.startDate,
+          lte: params.endDate,
         },
         incomeType: {
           not: 'Investment Cashout',
