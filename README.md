@@ -280,3 +280,49 @@ query {
   }
 }
 ```
+
+### Get total income given a date range
+```gql
+query {
+  incomeSum (
+    startDate: "Thu Jul 01 2021 12:00:00 GMT+1200 (New Zealand Standard Time)"
+    endDate: "Tue Sep 28 2021 13:00:00 GMT+1300 (New Zealand Daylight Time)"
+  ) {
+    sum
+  }
+}
+```
+```json
+{
+  "data": {
+    "incomeSum": [
+      {
+        "sum": 152360.76
+      }
+    ]
+  }
+}
+```
+
+### Get total income given a date range
+```gql
+query {
+  expenseSum (
+    startDate: "Thu Jul 01 2021 12:00:00 GMT+1200 (New Zealand Standard Time)"
+    endDate: "Tue Sep 28 2021 13:00:00 GMT+1300 (New Zealand Daylight Time)"
+  ) {
+    sum
+  }
+}
+```
+```json
+{
+  "data": {
+    "expenseSum": [
+      {
+        "sum": 7639.89
+      }
+    ]
+  }
+}
+```
