@@ -102,6 +102,7 @@ export class NotionResolver {
       dateStartInc,
       dateEndInc,
     });
+    // console.table(dbGroupedIncome);
     switch (valueType) {
       case 'sum':
         if (field === 'date') {
@@ -112,45 +113,64 @@ export class NotionResolver {
           // const end = new Date(dateEndInc);
 
           // get all dates from start to end inclusive
-          const allDates = getMissingDate(dateStartInc, dateEndInc);
+          const allDates: string[] = getMissingDate(dateStartInc, dateEndInc);
 
           // use separate array for data validation
-          const datesWithIncome = dbGroupedIncome.map((income) =>
+          const allDatesWithIncome: string[] = dbGroupedIncome.map((income) =>
             income.date.toISOString(),
           );
+          console.table(allDatesWithIncome);
 
           // modifying db response for easier data access & modelling
-          const allIncome = dbGroupedIncome.map((income) => {
-            return {
-              date: income.date.toISOString(),
-              sum: income._sum.amount,
-            };
-          });
+          const allIncome: IncomeGroupByQuery[] = dbGroupedIncome.map(
+            (income) => {
+              return {
+                date: income.date.toISOString(),
+                sum: income._sum.amount,
+              };
+            },
+          );
 
+          // for (let i = 0; i < allDatesWithIncome.length; i++) {
+          //   if (allDatesWithIncome[i] === allIncome[i].date) {
+          //     console.log(`date match, income: $ ${allIncome[i].sum}`);
+          //   }
+          // }
+
+          let ct = 0;
           // Start populating return data
-          const incomeSumByDate: IncomeGroupByQuery[] = [];
-          allDates.forEach((dateStr: string) => {
-            if (datesWithIncome.includes(dateStr)) {
-              // only calculate daily amount if date has income
-              // accumulate all income of that date
-              let dailyAmount = 0;
-              allIncome.forEach((income) => {
-                if (income.date === dateStr) {
-                  dailyAmount += income.sum;
-                }
-              });
-              incomeSumByDate.push({
-                date: dateStr,
-                sum: dailyAmount,
-              });
-            } else {
-              incomeSumByDate.push({
-                date: dateStr,
-                sum: 0,
-              });
+          const res: IncomeGroupByQuery[] = [];
+          for (let i = 0; i < allDates.length; i++) {
+            const currDate = allDates[i];
+            const incomeIndex = allDatesWithIncome.indexOf(currDate);
+            const hasIncome = allDatesWithIncome.includes(currDate);
+            if (hasIncome) {
+              ct += 1;
             }
-          });
-          return incomeSumByDate;
+            // if (currDate === allIncome[incomeIndex]?.date) {
+            //   console.log(
+            //     `date match, income: $ ${allIncome[incomeIndex].sum}`,
+            //   );
+            // }
+            // if (incomeIndex === -1) {
+            //   res.push({ date: currDate, sum: 0 });
+            // } else {
+            //   const currIncome = allIncome[incomeIndex];
+            //   res.push({ date: currDate, sum: currIncome.sum });
+            // }
+          }
+          console.log(ct);
+
+          // console.table(res);
+          // console.log(`num dates with income: ${allIncome.length}`);
+          // let ct = 0;
+          // res.forEach((r) => {
+          //   if (r.sum !== 0) {
+          //     ct += 1;
+          //   }
+          // });
+          // console.log(`calculated num dates with income: ${ct}`);
+          return res;
         } else {
           const groupedIncomeReturnSum: IncomeGroupByQuery[] =
             dbGroupedIncome.map((income) => {
