@@ -235,7 +235,6 @@ export class NotionResolver {
       startDate,
       endDate,
     });
-    console.log(res._sum.amount);
     return [
       {
         startDate: startDate.toISOString(),
@@ -258,7 +257,6 @@ export class NotionResolver {
       startDate,
       endDate,
     });
-    console.log(res._sum.amount);
     return [
       {
         startDate: startDate.toISOString(),
