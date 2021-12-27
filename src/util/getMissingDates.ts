@@ -7,8 +7,10 @@ export const getMissingDate = (start: Date, end: Date): string[] => {
     return date;
   };
   while (currentDate <= end) {
-    dates.push(currentDate);
+    let s = currentDate.toISOString();
+    s = s.slice(0, 10) + 'T00:00:00.000Z';
+    dates.push(s);
     currentDate = addDays.call(currentDate, 1);
   }
-  return dates.map((d) => d.toISOString());
+  return [...new Set(dates)]; // need dates to be absolutely unique
 };

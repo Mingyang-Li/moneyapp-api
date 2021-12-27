@@ -108,18 +108,18 @@ export class NotionResolver {
         if (field === 'date') {
           // need to populate arr with dates where income is $0 between 1st and last item
           // try this: https://gist.github.com/miguelmota/7905510
-          // const dates = dbGroupedIncome.map((data) => data.date.toISOString());
-          // const start = new Date(dateStartInc);
-          // const end = new Date(dateEndInc);
+          // no matter what datetime comex from frontend, always convert thenm to midnight time
+          const start = new Date(dateStartInc.setHours(12, 0, 0));
+          const end = new Date(dateEndInc.setHours(12, 0, 0));
 
           // get all dates from start to end inclusive
-          const allDates: string[] = getMissingDate(dateStartInc, dateEndInc);
+          const allDates: string[] = getMissingDate(start, end);
 
           // use separate array for data validation
           const allDatesWithIncome: string[] = dbGroupedIncome.map((income) =>
             income.date.toISOString(),
           );
-          console.table(allDatesWithIncome);
+          // console.table(allDatesWithIncome);
 
           // modifying db response for easier data access & modelling
           const allIncome: IncomeGroupByQuery[] = dbGroupedIncome.map(
@@ -131,13 +131,6 @@ export class NotionResolver {
             },
           );
 
-          // for (let i = 0; i < allDatesWithIncome.length; i++) {
-          //   if (allDatesWithIncome[i] === allIncome[i].date) {
-          //     console.log(`date match, income: $ ${allIncome[i].sum}`);
-          //   }
-          // }
-
-          let ct = 0;
           // Start populating return data
           const res: IncomeGroupByQuery[] = [];
           for (let i = 0; i < allDates.length; i++) {
@@ -145,31 +138,13 @@ export class NotionResolver {
             const incomeIndex = allDatesWithIncome.indexOf(currDate);
             const hasIncome = allDatesWithIncome.includes(currDate);
             if (hasIncome) {
-              ct += 1;
+              res.push({ date: currDate, sum: allIncome[incomeIndex].sum });
+              // ct += 1;
+            } else {
+              res.push({ date: currDate, sum: 0 });
             }
-            // if (currDate === allIncome[incomeIndex]?.date) {
-            //   console.log(
-            //     `date match, income: $ ${allIncome[incomeIndex].sum}`,
-            //   );
-            // }
-            // if (incomeIndex === -1) {
-            //   res.push({ date: currDate, sum: 0 });
-            // } else {
-            //   const currIncome = allIncome[incomeIndex];
-            //   res.push({ date: currDate, sum: currIncome.sum });
-            // }
           }
-          console.log(ct);
 
-          // console.table(res);
-          // console.log(`num dates with income: ${allIncome.length}`);
-          // let ct = 0;
-          // res.forEach((r) => {
-          //   if (r.sum !== 0) {
-          //     ct += 1;
-          //   }
-          // });
-          // console.log(`calculated num dates with income: ${ct}`);
           return res;
         } else {
           const groupedIncomeReturnSum: IncomeGroupByQuery[] =
