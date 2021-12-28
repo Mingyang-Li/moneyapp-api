@@ -87,7 +87,7 @@ export async function seedExpensesTable() {
   );
 }
 
-export async function seedIncomeTable() {
+export const seedIncomeTable = async () => {
   const notionIncomeDbId = process.env.NOTION_INCOME_DATABASE_ID;
   let cursor = undefined;
   const allIncome = [];
@@ -121,36 +121,12 @@ export async function seedIncomeTable() {
   console.log(
     `Income seeding done for all ${(await promisedSeeding).length} rows`,
   );
-}
+  console.table(allIncome);
+};
 
-const toSeedExpenses = false;
-if (toSeedExpenses) {
-  seedExpensesTable()
-    .catch((e) => {
-      console.error(e);
-      process.exit(1);
-    })
-    .finally(async () => {
-      await prisma.$disconnect();
-    });
-}
-
-const toSeedIncome = false;
-if (toSeedIncome) {
-  seedIncomeTable()
-    .catch((e) => {
-      console.error(e);
-      process.exit(1);
-    })
-    .finally(async () => {
-      await prisma.$disconnect();
-    });
-}
-
-const logNewIncome = async () => {
-  let allIncome = [];
-  let cursor = undefined;
+export const seedNewIncome = async () => {
   const notionIncomeDbId = process.env.NOTION_INCOME_DATABASE_ID;
+  let cursor = undefined;
   while (true) {
     const { results, next_cursor } = await notionClient.databases.query({
       database_id: notionIncomeDbId,
@@ -170,22 +146,24 @@ const logNewIncome = async () => {
           currency: row.properties['Currency']['select'].name,
           date: new Date(row.properties['Date']['date'].start),
         };
-        console.log(`Adding item into allIncome`);
-        allIncome.push(incomeItem);
+        await prisma.income.create({ data: incomeItem });
       }
     });
-
-    if (!next_cursor) break;
+    if (!next_cursor) {
+      break;
+    }
     cursor = next_cursor;
   }
-  console.log(allIncome);
 };
 
-logNewIncome()
-  .catch((e) => {
-    console.error(e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+const toSeedNewIncome = false;
+if (toSeedNewIncome) {
+  seedNewIncome()
+    .catch((e) => {
+      console.error(e);
+      process.exit(1);
+    })
+    .finally(async () => {
+      await prisma.$disconnect();
+    });
+}
