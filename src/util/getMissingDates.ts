@@ -12,5 +12,8 @@ export const getMissingDate = (start: Date, end: Date): string[] => {
     dates.push(s);
     currentDate = addDays.call(currentDate, 1);
   }
-  return [...new Set(dates)]; // need dates to be absolutely unique
+  // need dates to be absolutely unique &
+  // remove first date (not supposed to be there as it's a day before start date)
+  const arr = [...new Set(dates)];
+  return arr.slice(1, arr.length);
 };

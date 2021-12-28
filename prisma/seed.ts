@@ -1,10 +1,13 @@
 import { PrismaClient } from '@prisma/client';
 import { Client } from '@notionhq/client';
 import * as dotenv from 'dotenv';
+import { NotionService } from '../src/notion/notion.service';
+import { DbCount } from '@/notion/notion.dto';
 dotenv.config({ path: __dirname + '/.env' });
 
 const prisma = new PrismaClient();
 const notionClient = new Client({ auth: process.env.NOTION_TOKEN });
+const notionService: NotionService = new NotionService();
 
 export const logExpensesData = async () => {
   const notionExpensesDbId = process.env.NOTION_EXPENSES_DATABASE_ID;
@@ -84,7 +87,7 @@ export async function seedExpensesTable() {
   );
 }
 
-export async function seedIncomeTable() {
+export const seedIncomeTable = async () => {
   const notionIncomeDbId = process.env.NOTION_INCOME_DATABASE_ID;
   let cursor = undefined;
   const allIncome = [];
@@ -118,23 +121,44 @@ export async function seedIncomeTable() {
   console.log(
     `Income seeding done for all ${(await promisedSeeding).length} rows`,
   );
-}
+  console.table(allIncome);
+};
 
-const toSeedExpenses = false;
-if (toSeedExpenses) {
-  seedExpensesTable()
-    .catch((e) => {
-      console.error(e);
-      process.exit(1);
-    })
-    .finally(async () => {
-      await prisma.$disconnect();
+export const seedNewIncome = async () => {
+  const notionIncomeDbId = process.env.NOTION_INCOME_DATABASE_ID;
+  let cursor = undefined;
+  while (true) {
+    const { results, next_cursor } = await notionClient.databases.query({
+      database_id: notionIncomeDbId,
+      start_cursor: cursor,
     });
-}
 
-const toSeedIncome = false;
-if (toSeedIncome) {
-  seedIncomeTable()
+    results.forEach(async (row) => {
+      const notionId = row.id;
+      const res: DbCount = await notionService.incomeExistsInDb(notionId);
+      if (res._count.notionId === 0) {
+        const incomeItem = {
+          notionId: row.id,
+          paymentMethod: row.properties['Payment Method']['select'].name,
+          paidBy: row.properties['Paid By']['select'].name,
+          incomeType: row.properties['Income Type']['select'].name,
+          amount: row.properties['Amount']['number'],
+          currency: row.properties['Currency']['select'].name,
+          date: new Date(row.properties['Date']['date'].start),
+        };
+        await prisma.income.create({ data: incomeItem });
+      }
+    });
+    if (!next_cursor) {
+      break;
+    }
+    cursor = next_cursor;
+  }
+};
+
+const toSeedNewIncome = false;
+if (toSeedNewIncome) {
+  seedNewIncome()
     .catch((e) => {
       console.error(e);
       process.exit(1);

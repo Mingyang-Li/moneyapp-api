@@ -90,3 +90,11 @@ export type ExpenseGroupByReturnField =
   | 'expenseType'
   | 'expenseSubType'
   | 'expensePaymentType';
+
+export interface DbCount {
+  _count: Field;
+}
+
+export interface Field {
+  notionId?: number;
+}

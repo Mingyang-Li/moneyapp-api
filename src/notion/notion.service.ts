@@ -271,4 +271,15 @@ export class NotionService {
       },
     });
   }
+
+  public async incomeExistsInDb(notionId: string) {
+    return await this.prisma.income.aggregate({
+      where: {
+        notionId: notionId,
+      },
+      _count: {
+        notionId: true,
+      },
+    });
+  }
 }

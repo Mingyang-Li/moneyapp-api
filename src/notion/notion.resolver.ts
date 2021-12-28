@@ -139,7 +139,6 @@ export class NotionResolver {
             const hasIncome = allDatesWithIncome.includes(currDate);
             if (hasIncome) {
               res.push({ date: currDate, sum: allIncome[incomeIndex].sum });
-              // ct += 1;
             } else {
               res.push({ date: currDate, sum: 0 });
             }

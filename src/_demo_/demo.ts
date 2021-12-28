@@ -117,3 +117,10 @@ export const incomeByCurrency = [
     sum: 100000,
   },
 ];
+
+export const incomeExistsInDb = {
+  // if exists, return 1, else return 0
+  _count: {
+    notionId: 1,
+  },
+};
