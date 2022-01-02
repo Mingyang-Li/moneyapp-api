@@ -221,6 +221,29 @@ export class NotionResolver {
     return [];
   }
 
+  @Query(() => [AverageIncome])
+  @UseGuards(GqlAuth0Guard)
+  protected async averageExpenses(
+    @Args('startDate', { type: () => Date })
+    startDate: Date,
+
+    @Args('endDate', { type: () => Date })
+    endDate: Date,
+  ) {
+    const expenses = await this.notionService.expenseSumByDateRange({
+      startDate,
+      endDate,
+    });
+    const days = getNumberOfDaysBetween(startDate, endDate);
+    const amount = expenses._sum.amount;
+    const average = (amount / days).toFixed(2);
+    return [
+      {
+        average,
+      },
+    ];
+  }
+
   @Query(() => [TotalIncomeAndExpenses])
   @UseGuards(GqlAuth0Guard)
   protected async incomeSum(

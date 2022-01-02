@@ -68,6 +68,7 @@ type Query {
   expense(count: Int, sortDateBy: String, paymentType: String, subType: String, type: String, item: String, currency: String, amount: Int, date: DateTime, id: Int): [ExpenseRow!]!
   incomeGroupBy(endDate: DateTime, startDate: DateTime, valueType: String!, field: String!): [IncomeGroupByQuery!]!
   averageIncome(endDate: DateTime!, startDate: DateTime!, type: String!): [AverageIncome!]!
+  averageExpenses(endDate: DateTime!, startDate: DateTime!): [AverageIncome!]!
   incomeSum(endDate: DateTime, startDate: DateTime): [TotalIncomeAndExpenses!]!
   expenseSum(endDate: DateTime, startDate: DateTime): [TotalIncomeAndExpenses!]!
   netIncome(endDate: DateTime, startDate: DateTime): [TotalIncomeAndExpenses!]!

@@ -137,6 +137,12 @@ export class AverageIncome extends BaseAverage {
   average: number;
 }
 
+@ObjectType()
+export class AverageExpenses extends BaseAverage {
+  @Field()
+  average: number;
+}
+
 export class BaseSum {
   @Field({ nullable: true })
   startDate?: Date;
