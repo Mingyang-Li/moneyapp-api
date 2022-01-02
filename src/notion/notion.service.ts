@@ -89,8 +89,8 @@ export class NotionService {
             by: ['paymentMethod'],
             where: {
               date: {
-                gte: params?.dateStartInc,
-                lte: params?.dateEndInc,
+                gte: params?.startDate,
+                lte: params?.endDate,
               },
               incomeType: {
                 not: 'Investment Cashout',
@@ -105,8 +105,8 @@ export class NotionService {
             by: ['paymentMethod'],
             where: {
               date: {
-                gte: params?.dateStartInc,
-                lte: params?.dateEndInc,
+                gte: params?.startDate,
+                lte: params?.endDate,
               },
               incomeType: {
                 not: 'Investment Cashout',
@@ -123,8 +123,8 @@ export class NotionService {
             by: ['paidBy'],
             where: {
               date: {
-                gte: params?.dateStartInc,
-                lte: params?.dateEndInc,
+                gte: params?.startDate,
+                lte: params?.endDate,
               },
               incomeType: {
                 not: 'Investment Cashout',
@@ -139,8 +139,8 @@ export class NotionService {
             by: ['paidBy'],
             where: {
               date: {
-                gte: params?.dateStartInc,
-                lte: params?.dateEndInc,
+                gte: params?.startDate,
+                lte: params?.endDate,
               },
               incomeType: {
                 not: 'Investment Cashout',
@@ -157,8 +157,8 @@ export class NotionService {
             by: ['incomeType'],
             where: {
               date: {
-                gte: params?.dateStartInc,
-                lte: params?.dateEndInc,
+                gte: params?.startDate,
+                lte: params?.endDate,
               },
               incomeType: {
                 not: 'Investment Cashout',
@@ -173,8 +173,8 @@ export class NotionService {
             by: ['incomeType'],
             where: {
               date: {
-                gte: params?.dateStartInc,
-                lte: params?.dateEndInc,
+                gte: params?.startDate,
+                lte: params?.endDate,
               },
               incomeType: {
                 not: 'Investment Cashout',
@@ -191,8 +191,8 @@ export class NotionService {
             by: ['currency'],
             where: {
               date: {
-                gte: params?.dateStartInc,
-                lte: params?.dateEndInc,
+                gte: params?.startDate,
+                lte: params?.endDate,
               },
               incomeType: {
                 not: 'Investment Cashout',
@@ -209,8 +209,8 @@ export class NotionService {
             by: ['date'],
             where: {
               date: {
-                gte: params?.dateStartInc,
-                lte: params?.dateEndInc,
+                gte: params?.startDate,
+                lte: params?.endDate,
               },
               incomeType: {
                 not: 'Investment Cashout',
@@ -231,8 +231,8 @@ export class NotionService {
     return await this.prisma.income.findMany({
       where: {
         date: {
-          gte: params.dateStartInc,
-          lte: params.dateEndInc,
+          gte: params.startDate,
+          lte: params.endDate,
         },
         incomeType: {
           not: 'Investment Cashout',

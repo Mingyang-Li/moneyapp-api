@@ -45,8 +45,8 @@ type IncomeGroupByQuery {
   dateLastUpdated: String
   dateDeleted: String
   deleted: String
-  dateStartInc: DateTime
-  dateEndInc: DateTime
+  startDate: DateTime
+  endDate: DateTime
   sum: Float
   count: Float
   incomePaidBy: String
@@ -66,8 +66,9 @@ type TotalIncomeAndExpenses {
 type Query {
   income(count: Int, sortDateBy: String, currency: String, date: DateTime, incomeType: String, paidBy: String, paymentMethod: String): [IncomeRow!]!
   expense(count: Int, sortDateBy: String, paymentType: String, subType: String, type: String, item: String, currency: String, amount: Int, date: DateTime, id: Int): [ExpenseRow!]!
-  incomeGroupBy(dateEndInc: DateTime, dateStartInc: DateTime, valueType: String!, field: String!): [IncomeGroupByQuery!]!
-  averageIncome(dateEndInc: DateTime!, dateStartInc: DateTime!, type: String!): [AverageIncome!]!
+  incomeGroupBy(endDate: DateTime, startDate: DateTime, valueType: String!, field: String!): [IncomeGroupByQuery!]!
+  averageIncome(endDate: DateTime!, startDate: DateTime!, type: String!): [AverageIncome!]!
   incomeSum(endDate: DateTime, startDate: DateTime): [TotalIncomeAndExpenses!]!
   expenseSum(endDate: DateTime, startDate: DateTime): [TotalIncomeAndExpenses!]!
+  netIncome(endDate: DateTime, startDate: DateTime): [TotalIncomeAndExpenses!]!
 }

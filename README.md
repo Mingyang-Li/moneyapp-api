@@ -117,14 +117,14 @@ $ npx prisma studio
 
 ### Query income by payment method and calculate sum of income by payment method
 ```graphql
-# Note: dateEndInc and dateStartInc are optional.
+# Note: endDate and dateStartInc are optional.
 # When date filters are not provided, the query will return all records`
 query {
   incomeGroupBy ( 
   	field: "paymentMethod",
     valueType: "sum"
-    dateEndInc: "Sun Nov 21 2021 12:12:28 GMT+1300 (New Zealand Daylight Time)"
-    dateStartInc: "Wed Sep 01 2021 12:12:28 GMT+1200 (New Zealand Standard Time)"
+    endDate: "Sun Nov 21 2021 12:12:28 GMT+1300 (New Zealand Daylight Time)"
+    startDate: "Wed Sep 01 2021 12:12:28 GMT+1200 (New Zealand Standard Time)"
   ) {
     incomePaymentMethod
     sum
@@ -226,8 +226,8 @@ query {
   incomeGroupBy ( 
   	field: "date",
     valueType: "sum"
-    dateStartInc: "Sun Nov 21 2021 12:12:28 GMT+1300 (New Zealand Daylight Time)"
-    dateEndInc: "Tue Nov 23 2021 13:00:00 GMT+1300 (New Zealand Daylight Time)"
+    startDate: "Sun Nov 21 2021 12:12:28 GMT+1300 (New Zealand Daylight Time)"
+    endDate: "Tue Nov 23 2021 13:00:00 GMT+1300 (New Zealand Daylight Time)"
   ) {
     date
     sum
@@ -260,8 +260,8 @@ query {
 query {
   averageIncome (
     type: "daily"
-    dateStartInc: "Thu Jul 01 2021 12:00:00 GMT+1200 (New Zealand Standard Time)"
-    dateEndInc: "Tue Sep 28 2021 13:00:00 GMT+1300 (New Zealand Daylight Time)"
+    startDate: "Thu Jul 01 2021 12:00:00 GMT+1200 (New Zealand Standard Time)"
+    endDate: "Tue Sep 28 2021 13:00:00 GMT+1300 (New Zealand Daylight Time)"
   ) {
     type
     average
