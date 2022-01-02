@@ -3,6 +3,7 @@ import { ExpenseRow, IncomeRow } from './notion.entity';
 import {
   AverageIncomeExpenseQueryParams,
   ExpenseQueryParams,
+  ExpensesGroupQueryParam,
   IncomeAndExpensesSumParams,
   IncomeGroupQueryParam,
   IncomeQueryParams,
@@ -80,7 +81,6 @@ export class NotionService {
   }
 
   public async incomeQueryByGroup(params: IncomeGroupQueryParam) {
-    // console.table(params);
     const { field, valueType } = params;
     switch (field) {
       case 'paymentMethod':
@@ -214,6 +214,114 @@ export class NotionService {
               },
               incomeType: {
                 not: 'Investment Cashout',
+              },
+            },
+            _sum: {
+              amount: true,
+            },
+            orderBy: {
+              date: 'asc',
+            },
+          });
+        }
+    }
+  }
+
+  public async expensesQueryByGroup(params: ExpensesGroupQueryParam) {
+    const { field, valueType } = params;
+    switch (field) {
+      case 'type':
+        if (valueType === 'sum') {
+          return await this.prisma.expense.groupBy({
+            by: ['type'],
+            where: {
+              date: {
+                gte: params?.startDate,
+                lte: params?.endDate,
+              },
+            },
+            _sum: {
+              amount: true,
+            },
+          });
+        } else if (valueType === 'count') {
+          return await this.prisma.expense.groupBy({
+            by: ['type'],
+            where: {
+              date: {
+                gte: params?.startDate,
+                lte: params?.endDate,
+              },
+            },
+            _count: {
+              type: true,
+            },
+          });
+        }
+      case 'subType':
+        if (valueType === 'sum') {
+          return await this.prisma.expense.groupBy({
+            by: ['subType'],
+            where: {
+              date: {
+                gte: params?.startDate,
+                lte: params?.endDate,
+              },
+            },
+            _sum: {
+              amount: true,
+            },
+          });
+        } else if (valueType === 'count') {
+          return await this.prisma.expense.groupBy({
+            by: ['subType'],
+            where: {
+              date: {
+                gte: params?.startDate,
+                lte: params?.endDate,
+              },
+            },
+            _count: {
+              subType: true,
+            },
+          });
+        }
+      case 'paymentType':
+        if (valueType === 'sum') {
+          return await this.prisma.expense.groupBy({
+            by: ['paymentType'],
+            where: {
+              date: {
+                gte: params?.startDate,
+                lte: params?.endDate,
+              },
+            },
+            _sum: {
+              amount: true,
+            },
+          });
+        } else if (valueType === 'count') {
+          return await this.prisma.expense.groupBy({
+            by: ['paymentType'],
+            where: {
+              date: {
+                gte: params?.startDate,
+                lte: params?.endDate,
+              },
+            },
+            _count: {
+              paymentType: true,
+            },
+          });
+        }
+      case 'date':
+        if (valueType === 'sum') {
+          return await this.prisma.expense.groupBy({
+            by: ['date'],
+            where: {
+              date: {
+                gte: params?.startDate,
+                lte: params?.endDate,
               },
             },
             _sum: {

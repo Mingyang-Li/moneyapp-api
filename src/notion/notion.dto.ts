@@ -61,6 +61,13 @@ export interface IncomeGroupQueryParam {
   endDate?: Date;
 }
 
+export interface ExpensesGroupQueryParam {
+  field: ExpenseQueryParams;
+  valueType: ValueType;
+  startDate?: Date;
+  endDate?: Date;
+}
+
 export interface AverageIncomeExpenseQueryParams {
   type: AverageIncomeExpensesType;
   startDate: Date;
