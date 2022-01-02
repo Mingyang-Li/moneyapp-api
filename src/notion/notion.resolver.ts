@@ -6,10 +6,12 @@ import {
   OverallUnion,
   AverageIncome,
   TotalIncomeAndExpenses,
+  ExpenseGroupByQuery,
 } from './notion.entity';
 import { NotionService } from './notion.service';
 import {
   AverageIncomeExpensesType,
+  ExpenseQueryParams,
   IncomeQueryParams,
   OrderByType,
   ValueType,
@@ -90,17 +92,17 @@ export class NotionResolver {
     @Args('valueType', { type: () => String })
     valueType: ValueType,
 
-    @Args('dateStartInc', { type: () => Date, nullable: true })
-    dateStartInc: Date,
+    @Args('startDate', { type: () => Date, nullable: true })
+    startDate: Date,
 
-    @Args('dateEndInc', { type: () => Date, nullable: true })
-    dateEndInc: Date,
+    @Args('endDate', { type: () => Date, nullable: true })
+    endDate: Date,
   ) {
     const dbGroupedIncome = await this.notionService.incomeQueryByGroup({
       field,
       valueType,
-      dateStartInc,
-      dateEndInc,
+      startDate,
+      endDate,
     });
     // console.table(dbGroupedIncome);
     switch (valueType) {
@@ -109,8 +111,8 @@ export class NotionResolver {
           // need to populate arr with dates where income is $0 between 1st and last item
           // try this: https://gist.github.com/miguelmota/7905510
           // no matter what datetime comex from frontend, always convert thenm to midnight time
-          const start = new Date(dateStartInc.setHours(12, 0, 0));
-          const end = new Date(dateEndInc.setHours(12, 0, 0));
+          const start = new Date(startDate.setHours(12, 0, 0));
+          const end = new Date(endDate.setHours(12, 0, 0));
 
           // get all dates from start to end inclusive
           const allDates: string[] = getMissingDate(start, end);
@@ -153,8 +155,8 @@ export class NotionResolver {
                 incomePaymentMethod: income.paymentMethod,
                 incomeType: income.incomeType,
                 currency: income.currency,
-                dateStartInc: dateStartInc,
-                dateEndInc: dateEndInc,
+                startDate: startDate,
+                endDate: endDate,
                 sum: income._sum.amount.toFixed(2),
               };
             });
@@ -168,8 +170,107 @@ export class NotionResolver {
               incomePaymentMethod: income.paymentMethod,
               incomeType: income.incomeType,
               date: income.date.toISOString(),
-              dateStartInc: dateStartInc,
-              dateEndInc: dateEndInc,
+              startDate: startDate,
+              endDate: endDate,
+              count:
+                income._count.paymentMethod |
+                income._count.paidBy |
+                income._count.incomeType |
+                income._count.date,
+            };
+          });
+        return groupedIncomeReturnCount;
+    }
+  }
+
+  @Query(() => [ExpenseGroupByQuery])
+  @UseGuards(GqlAuth0Guard)
+  protected async expensesGroupBy(
+    @Args('field', { type: () => String })
+    field: ExpenseQueryParams,
+
+    @Args('valueType', { type: () => String })
+    valueType: ValueType,
+
+    @Args('startDate', { type: () => Date, nullable: true })
+    startDate: Date,
+
+    @Args('endDate', { type: () => Date, nullable: true })
+    endDate: Date,
+  ) {
+    const dbGroupedExpenses = await this.notionService.expensesQueryByGroup({
+      field,
+      valueType,
+      startDate,
+      endDate,
+    });
+    switch (valueType) {
+      case 'sum':
+        if (field === 'date') {
+          // need to populate arr with dates where income is $0 between 1st and last item
+          // try this: https://gist.github.com/miguelmota/7905510
+          // no matter what datetime comex from frontend, always convert thenm to midnight time
+          const start = new Date(startDate.setHours(12, 0, 0));
+          const end = new Date(endDate.setHours(12, 0, 0));
+
+          // get all dates from start to end inclusive
+          const allDates: string[] = getMissingDate(start, end);
+
+          // use separate array for data validation
+          const allDatesWithExpenses: string[] = dbGroupedExpenses.map(
+            (expense) => expense.date.toISOString(),
+          );
+          // console.table(allDatesWithIncome);
+
+          // modifying db response for easier data access & modelling
+          const allExpenses: ExpenseGroupByQuery[] = dbGroupedExpenses.map(
+            (expense) => {
+              return {
+                date: expense.date.toISOString(),
+                sum: expense._sum.amount,
+              };
+            },
+          );
+
+          // Start populating return data
+          const res: ExpenseGroupByQuery[] = [];
+          for (let i = 0; i < allDates.length; i++) {
+            const currDate = allDates[i];
+            const incomeIndex = allDatesWithExpenses.indexOf(currDate);
+            const hasIncome = allDatesWithExpenses.includes(currDate);
+            if (hasIncome) {
+              res.push({ date: currDate, sum: allExpenses[incomeIndex].sum });
+            } else {
+              res.push({ date: currDate, sum: 0 });
+            }
+          }
+
+          return res;
+        } else {
+          const groupedExpensesReturnSum: ExpenseGroupByQuery[] =
+            dbGroupedExpenses.map((expense) => {
+              return {
+                expenseType: expense.type,
+                expenseSubType: expense.subType,
+                expensePaymentType: expense.paymentType,
+                currency: expense.currency,
+                startDate: startDate,
+                endDate: endDate,
+                sum: expense._sum.amount.toFixed(2),
+              };
+            });
+          return groupedExpensesReturnSum;
+        }
+      case 'count':
+        const groupedIncomeReturnCount: ExpenseGroupByQuery[] =
+          dbGroupedExpenses.map((income) => {
+            return {
+              incomePaidBy: income.paidBy,
+              incomePaymentMethod: income.paymentMethod,
+              incomeType: income.incomeType,
+              date: income.date.toISOString(),
+              startDate: startDate,
+              endDate: endDate,
               count:
                 income._count.paymentMethod |
                 income._count.paidBy |
@@ -187,23 +288,23 @@ export class NotionResolver {
     @Args('type', { type: () => String })
     type: AverageIncomeExpensesType,
 
-    @Args('dateStartInc', { type: () => Date })
-    dateStartInc: Date,
+    @Args('startDate', { type: () => Date })
+    startDate: Date,
 
-    @Args('dateEndInc', { type: () => Date })
-    dateEndInc: Date,
+    @Args('endDate', { type: () => Date })
+    endDate: Date,
   ) {
     const income = await this.notionService.incomeByDateRange({
       type,
-      dateStartInc,
-      dateEndInc,
+      startDate,
+      endDate,
     });
     switch (type) {
       case 'daily':
         // 1. Calculate number of days between start and end date
         // 2. Calculate daily avg, return to 2 decimla places
         // 3. Return result as {}
-        const days = getNumberOfDaysBetween(dateStartInc, dateEndInc);
+        const days = getNumberOfDaysBetween(startDate, endDate);
         let amount = 0;
         income.forEach((income) => (amount += income.amount));
         const avg = (amount / days).toFixed(2);
@@ -216,9 +317,32 @@ export class NotionResolver {
       case 'monthly':
         console.log(income);
       case 'weekly':
-        console.log(dateEndInc);
+        console.log(endDate);
     }
     return [];
+  }
+
+  @Query(() => [AverageIncome])
+  @UseGuards(GqlAuth0Guard)
+  protected async averageExpenses(
+    @Args('startDate', { type: () => Date })
+    startDate: Date,
+
+    @Args('endDate', { type: () => Date })
+    endDate: Date,
+  ) {
+    const expenses = await this.notionService.expenseSumByDateRange({
+      startDate,
+      endDate,
+    });
+    const days = getNumberOfDaysBetween(startDate, endDate);
+    const amount = expenses._sum.amount;
+    const average = (amount / days).toFixed(2);
+    return [
+      {
+        average,
+      },
+    ];
   }
 
   @Query(() => [TotalIncomeAndExpenses])
@@ -261,6 +385,32 @@ export class NotionResolver {
         startDate: startDate.toISOString(),
         endDate: endDate.toISOString(),
         sum: res._sum.amount.toFixed(2),
+      },
+    ];
+  }
+
+  @Query(() => [TotalIncomeAndExpenses])
+  @UseGuards(GqlAuth0Guard)
+  protected async netIncome(
+    @Args('startDate', { type: () => Date, nullable: true })
+    startDate: Date,
+
+    @Args('endDate', { type: () => Date, nullable: true })
+    endDate: Date,
+  ) {
+    const expenses = await this.notionService.expenseSumByDateRange({
+      startDate,
+      endDate,
+    });
+    const income = await this.notionService.incomeSumByDateRange({
+      startDate,
+      endDate,
+    });
+    const spentAmt = expenses._sum.amount;
+    const earnedAmt = income._sum.amount;
+    return [
+      {
+        sum: (earnedAmt - spentAmt).toFixed(2),
       },
     ];
   }

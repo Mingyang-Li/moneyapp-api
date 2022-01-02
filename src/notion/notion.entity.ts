@@ -81,10 +81,10 @@ export class BaseGroupByQueryReturnedFields {
 
   // date_filters_inputted_by_user
   @Field({ nullable: true })
-  dateStartInc?: Date;
+  startDate?: Date;
 
   @Field({ nullable: true })
-  dateEndInc?: Date;
+  endDate?: Date;
 
   // aggregated_value_types
   @Field({ nullable: true })
@@ -122,10 +122,10 @@ export class ExpenseGroupByQuery extends BaseGroupByQueryReturnedFields {
 
 export class BaseAverage {
   @Field({ nullable: true })
-  dateStartInc?: Date;
+  startDate?: Date;
 
   @Field({ nullable: true })
-  dateEndInc?: Date;
+  endDate?: Date;
 }
 
 @ObjectType()
@@ -133,6 +133,12 @@ export class AverageIncome extends BaseAverage {
   @Field()
   type: AverageIncomeExpensesType;
 
+  @Field()
+  average: number;
+}
+
+@ObjectType()
+export class AverageExpenses extends BaseAverage {
   @Field()
   average: number;
 }

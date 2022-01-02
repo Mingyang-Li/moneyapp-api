@@ -167,3 +167,11 @@ if (toSeedNewIncome) {
       await prisma.$disconnect();
     });
 }
+
+export const clearAllIncome = async () => {
+  await prisma.income.deleteMany();
+};
+
+export const clearAllExpenses = async () => {
+  await prisma.expense.deleteMany();
+};

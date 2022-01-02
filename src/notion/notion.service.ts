@@ -3,6 +3,7 @@ import { ExpenseRow, IncomeRow } from './notion.entity';
 import {
   AverageIncomeExpenseQueryParams,
   ExpenseQueryParams,
+  ExpensesGroupQueryParam,
   IncomeAndExpensesSumParams,
   IncomeGroupQueryParam,
   IncomeQueryParams,
@@ -80,7 +81,6 @@ export class NotionService {
   }
 
   public async incomeQueryByGroup(params: IncomeGroupQueryParam) {
-    // console.table(params);
     const { field, valueType } = params;
     switch (field) {
       case 'paymentMethod':
@@ -89,8 +89,8 @@ export class NotionService {
             by: ['paymentMethod'],
             where: {
               date: {
-                gte: params?.dateStartInc,
-                lte: params?.dateEndInc,
+                gte: params?.startDate,
+                lte: params?.endDate,
               },
               incomeType: {
                 not: 'Investment Cashout',
@@ -105,8 +105,8 @@ export class NotionService {
             by: ['paymentMethod'],
             where: {
               date: {
-                gte: params?.dateStartInc,
-                lte: params?.dateEndInc,
+                gte: params?.startDate,
+                lte: params?.endDate,
               },
               incomeType: {
                 not: 'Investment Cashout',
@@ -123,8 +123,8 @@ export class NotionService {
             by: ['paidBy'],
             where: {
               date: {
-                gte: params?.dateStartInc,
-                lte: params?.dateEndInc,
+                gte: params?.startDate,
+                lte: params?.endDate,
               },
               incomeType: {
                 not: 'Investment Cashout',
@@ -139,8 +139,8 @@ export class NotionService {
             by: ['paidBy'],
             where: {
               date: {
-                gte: params?.dateStartInc,
-                lte: params?.dateEndInc,
+                gte: params?.startDate,
+                lte: params?.endDate,
               },
               incomeType: {
                 not: 'Investment Cashout',
@@ -157,8 +157,8 @@ export class NotionService {
             by: ['incomeType'],
             where: {
               date: {
-                gte: params?.dateStartInc,
-                lte: params?.dateEndInc,
+                gte: params?.startDate,
+                lte: params?.endDate,
               },
               incomeType: {
                 not: 'Investment Cashout',
@@ -173,8 +173,8 @@ export class NotionService {
             by: ['incomeType'],
             where: {
               date: {
-                gte: params?.dateStartInc,
-                lte: params?.dateEndInc,
+                gte: params?.startDate,
+                lte: params?.endDate,
               },
               incomeType: {
                 not: 'Investment Cashout',
@@ -191,8 +191,8 @@ export class NotionService {
             by: ['currency'],
             where: {
               date: {
-                gte: params?.dateStartInc,
-                lte: params?.dateEndInc,
+                gte: params?.startDate,
+                lte: params?.endDate,
               },
               incomeType: {
                 not: 'Investment Cashout',
@@ -209,11 +209,119 @@ export class NotionService {
             by: ['date'],
             where: {
               date: {
-                gte: params?.dateStartInc,
-                lte: params?.dateEndInc,
+                gte: params?.startDate,
+                lte: params?.endDate,
               },
               incomeType: {
                 not: 'Investment Cashout',
+              },
+            },
+            _sum: {
+              amount: true,
+            },
+            orderBy: {
+              date: 'asc',
+            },
+          });
+        }
+    }
+  }
+
+  public async expensesQueryByGroup(params: ExpensesGroupQueryParam) {
+    const { field, valueType } = params;
+    switch (field) {
+      case 'type':
+        if (valueType === 'sum') {
+          return await this.prisma.expense.groupBy({
+            by: ['type'],
+            where: {
+              date: {
+                gte: params?.startDate,
+                lte: params?.endDate,
+              },
+            },
+            _sum: {
+              amount: true,
+            },
+          });
+        } else if (valueType === 'count') {
+          return await this.prisma.expense.groupBy({
+            by: ['type'],
+            where: {
+              date: {
+                gte: params?.startDate,
+                lte: params?.endDate,
+              },
+            },
+            _count: {
+              type: true,
+            },
+          });
+        }
+      case 'subType':
+        if (valueType === 'sum') {
+          return await this.prisma.expense.groupBy({
+            by: ['subType'],
+            where: {
+              date: {
+                gte: params?.startDate,
+                lte: params?.endDate,
+              },
+            },
+            _sum: {
+              amount: true,
+            },
+          });
+        } else if (valueType === 'count') {
+          return await this.prisma.expense.groupBy({
+            by: ['subType'],
+            where: {
+              date: {
+                gte: params?.startDate,
+                lte: params?.endDate,
+              },
+            },
+            _count: {
+              subType: true,
+            },
+          });
+        }
+      case 'paymentType':
+        if (valueType === 'sum') {
+          return await this.prisma.expense.groupBy({
+            by: ['paymentType'],
+            where: {
+              date: {
+                gte: params?.startDate,
+                lte: params?.endDate,
+              },
+            },
+            _sum: {
+              amount: true,
+            },
+          });
+        } else if (valueType === 'count') {
+          return await this.prisma.expense.groupBy({
+            by: ['paymentType'],
+            where: {
+              date: {
+                gte: params?.startDate,
+                lte: params?.endDate,
+              },
+            },
+            _count: {
+              paymentType: true,
+            },
+          });
+        }
+      case 'date':
+        if (valueType === 'sum') {
+          return await this.prisma.expense.groupBy({
+            by: ['date'],
+            where: {
+              date: {
+                gte: params?.startDate,
+                lte: params?.endDate,
               },
             },
             _sum: {
@@ -231,8 +339,8 @@ export class NotionService {
     return await this.prisma.income.findMany({
       where: {
         date: {
-          gte: params.dateStartInc,
-          lte: params.dateEndInc,
+          gte: params.startDate,
+          lte: params.endDate,
         },
         incomeType: {
           not: 'Investment Cashout',

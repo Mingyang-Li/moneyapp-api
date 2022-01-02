@@ -57,14 +57,21 @@ export type AverageIncomeExpensesType = 'daily' | 'weekly' | 'monthly';
 export interface IncomeGroupQueryParam {
   field: IncomeQueryParams;
   valueType: ValueType;
-  dateStartInc?: Date;
-  dateEndInc?: Date;
+  startDate?: Date;
+  endDate?: Date;
+}
+
+export interface ExpensesGroupQueryParam {
+  field: ExpenseQueryParams;
+  valueType: ValueType;
+  startDate?: Date;
+  endDate?: Date;
 }
 
 export interface AverageIncomeExpenseQueryParams {
   type: AverageIncomeExpensesType;
-  dateStartInc: Date;
-  dateEndInc: Date;
+  startDate: Date;
+  endDate: Date;
 }
 
 export interface IncomeAndExpensesSumParams {

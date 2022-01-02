@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DB_LOCAL_URL")
+  url      = env("DB_SUPABASE_URL")
 }
 
 model Income {
