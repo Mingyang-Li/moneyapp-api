@@ -332,6 +332,21 @@ export class NotionService {
             },
           });
         }
+      case 'currency':
+        if (valueType === 'sum') {
+          return await this.prisma.expense.groupBy({
+            by: ['currency'],
+            where: {
+              date: {
+                gte: params?.startDate,
+                lte: params?.endDate,
+              },
+            },
+            _sum: {
+              amount: true,
+            },
+          });
+        }
     }
   }
 
