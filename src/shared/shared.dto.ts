@@ -28,3 +28,5 @@ export interface DbCount {
 export interface Field {
   notionId?: number;
 }
+
+export type AverageIncomeExpensesType = 'daily' | 'weekly' | 'monthly';
