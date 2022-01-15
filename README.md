@@ -2,10 +2,7 @@
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-
+# MoneyApp API
 
 ## 🕵️‍♂️ About
 Versatile GraphQL API built on top of [NestJS](https://github.com/nestjs/nest) framework for ease of use on data-analytics frontends
@@ -13,7 +10,9 @@ Versatile GraphQL API built on top of [NestJS](https://github.com/nestjs/nest) f
 ## 📍 Purpose
 1. Acting an the API for a finance management app (personal use)
 2. Provide a flexible way for the front-end to interact with data
-3. Learn about NestJS & GraphQL without following along boring tutorials
+3. Learn about NestJS & GraphQL without copying from boring tutorials
+
+## 📚 Frontend repo: [HERE](https://github.com/Mingyang-Li/moneyapp-client)
 
 ## 🛠️ Technologies used
 | Purpose | Tool |
@@ -39,29 +38,31 @@ Versatile GraphQL API built on top of [NestJS](https://github.com/nestjs/nest) f
 ## 🏗️ Architecture
 ![image](https://user-images.githubusercontent.com/53138432/143810605-c543c694-214f-4a12-9110-0019dfc66e75.png)
 
-## 📚 Frontend repo: [HERE](https://github.com/Mingyang-Li/moneyapp-client)
-
-## 💥 Features
-1. Read, create, update and delete all personal finance data hosted in cloud DB
-2. Filter all tables by each column
-3. Sorting, pagination, searching
-4. Date range filter on all date-type fields for both tables (Very important)
-5. Rolse-base access-control for GraphQL endpoints on Nest.js Guards
-6. Aggregated queries on all tables [see samples at bottom of file](https://github.com/Mingyang-Li/moneyapp-api/blob/main/src/notion/notion.entity.ts)
-
-
-## 📝 Development process
-1. Setup project structure + install dependencies <br>
-2. Setup `code-first` GraphQL module for Notion service, include it into main app module
-3. Setting up controllers, resolvers, services and DTOs using built-in `dependency injection`.
-4. Defining DB schema, seeding local `PostgreSQL` DB using `Notion API`
-5. Set up basic filtering on columns with type `string`
-6. Setup sorting by date as query param
-7. Setup Guards for role-based authentication and authorisation 
-8. Setup date-range filtering on aggregated income
-9. Setup endpoints calculating average daily, weekly and monthly income with start and end date filters
-10. Setup endpoints calculating average daily, weekly and monthly expenses with start and end date filters
-11. Nice-to-have: search (user typing on frontend, triggers search query onChange => every new character)
+## Product roadmap
+| No. | Description | Status |
+| :-- | :-- | :-- |
+| 1. | Query any income data by any field | ✅ |
+| 2. | Set limit on query amount on income | ✅ |
+| 3. | Query any expenses data by any field | ✅ |
+| 4. | Set limit on query amount on expenses | ✅ |
+| 5. | Group income by any field and calculate sum & counts with date-range filter | ✅ |
+| 6. | Group income by date with date-range filter so that the data returned also includes dates with $0 income for data-visualisation | ✅ |
+| 7. | Group expenses by any field and calculate sum & counts with date-range filter | ✅ |
+| 8. | Group expenses by date with date-range filter so that the data returned also includes dates with $0 expenses for data-visualisation | ✅ |
+| 9. | Query average daily income with date-range filter | ✅ |
+| 10. | Query average daily expenses with date-range filter | ✅ |
+| 11. | Query total income with date-range filter | ✅ |
+| 12. | Query total expenses with date-range filter | ✅ |
+| 13. | Query net income with date-range filter | ✅ |
+| 14. | Prevent authenticated BUT unauthorised users from accessing ALL endpoints | ✅ |
+| 14. | Automatically add new users into a `User` table in DB after they signed up the app using Auth0 | |
+| 15. | Link up `Income` and `Expense` tables with `User` by introducing association rules |
+| 16. | Mutation for creating row for `Income`
+| 17. | Mutation for updating row for `Income`
+| 18. | Mutation for creating row for `Expense`
+| 19. | Mutation for updating row for `Expense`
+| 20. | Pagination for retrieving rows from `Income`
+| 21. | Pagination for retrieving rows from `Expense`
 
 ## ⁉️ Challenges & workarounds
 | No. | Problem | Solution |
