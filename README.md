@@ -38,7 +38,7 @@ Versatile GraphQL API built on top of [NestJS](https://github.com/nestjs/nest) f
 ## 🏗️ Architecture
 ![image](https://user-images.githubusercontent.com/53138432/143810605-c543c694-214f-4a12-9110-0019dfc66e75.png)
 
-## Product roadmap
+## ⛰️ Product roadmap
 | No. | Description | Status |
 | :-- | :-- | :-- |
 | 1. | Query any income data by any field | ✅ |
@@ -113,7 +113,7 @@ $ npx prisma db seed
 $ npx prisma studio
 ```
 
-## 🛫 Sample query & response:
+## 🔭 Sample query & response:
 ### All queries are protected by guards, meaning only authorised users are able to execute the queries (which is me, myself and I)
 
 ### Query income by payment method and calculate sum of income by payment method
