@@ -1,1 +1,4 @@
-export const a = 0;
+import { Injectable } from '@nestjs/common/decorators';
+
+@Injectable()
+export class ExpensesService {}
