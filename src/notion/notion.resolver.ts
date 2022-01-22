@@ -18,12 +18,12 @@ import {
 } from './notion.dto';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuth0Guard } from '@/auth/gql-auth0.guard';
-import { getMissingDate } from '../util/getMissingDates';
-import { getNumberOfDaysBetween } from '@/util/getNumberOfDaysBetween';
+import { SharedService } from '@/shared/shared.service';
 
 @Resolver(() => [OverallUnion])
 export class NotionResolver {
-  constructor(private notionService: NotionService) {}
+  private notionService: NotionService;
+  private sharedService: SharedService;
 
   @Query(() => [IncomeRow])
   @UseGuards(GqlAuth0Guard)
@@ -115,7 +115,10 @@ export class NotionResolver {
           const end = new Date(endDate.setHours(12, 0, 0));
 
           // get all dates from start to end inclusive
-          const allDates: string[] = getMissingDate(start, end);
+          const allDates: string[] = this.sharedService.getMissingDate(
+            start,
+            end,
+          );
 
           // use separate array for data validation
           const allDatesWithIncome: string[] = dbGroupedIncome.map((income) =>
@@ -214,7 +217,10 @@ export class NotionResolver {
           const end = new Date(endDate.setHours(12, 0, 0));
 
           // get all dates from start to end inclusive
-          const allDates: string[] = getMissingDate(start, end);
+          const allDates: string[] = this.sharedService.getMissingDate(
+            start,
+            end,
+          );
 
           // use separate array for data validation
           const allDatesWithExpenses: string[] = dbGroupedExpenses.map(
@@ -304,7 +310,10 @@ export class NotionResolver {
         // 1. Calculate number of days between start and end date
         // 2. Calculate daily avg, return to 2 decimla places
         // 3. Return result as {}
-        const days = getNumberOfDaysBetween(startDate, endDate);
+        const days = this.sharedService.getNumberOfDaysBetween(
+          startDate,
+          endDate,
+        );
         let amount = 0;
         income.forEach((income) => (amount += income.amount));
         const avg = (amount / days).toFixed(2);
@@ -335,7 +344,7 @@ export class NotionResolver {
       startDate,
       endDate,
     });
-    const days = getNumberOfDaysBetween(startDate, endDate);
+    const days = this.sharedService.getNumberOfDaysBetween(startDate, endDate);
     const amount = expenses._sum.amount;
     const average = (amount / days).toFixed(2);
     return [

@@ -61,8 +61,8 @@ Versatile GraphQL API built on top of [NestJS](https://github.com/nestjs/nest) f
 | 17. | Mutation for updating row for `Income`
 | 18. | Mutation for creating row for `Expense`
 | 19. | Mutation for updating row for `Expense`
-| 20. | Pagination for retrieving rows from `Income`
-| 21. | Pagination for retrieving rows from `Expense`
+| 20. | Subscription with pagination for retrieving rows from `Income`
+| 21. | Subscription with pagination for retrieving rows from `Expense`
 
 ## ⁉️ Challenges & workarounds
 | No. | Problem | Solution |
