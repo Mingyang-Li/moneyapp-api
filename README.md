@@ -15,7 +15,7 @@ Versatile GraphQL API built on top of [NestJS](https://github.com/nestjs/nest) f
 ## 📚 Frontend repo: [HERE](https://github.com/Mingyang-Li/moneyapp-client)
 
 ## 🛠️ Technologies used
-| Purpose | Tool |
+| Purpose | Tools |
 | :--- | :---- |
 | ✅ Language | TypeScript |
 | ✅ Framework | [NestJS](https://nestjs.com/) |
