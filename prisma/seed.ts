@@ -156,17 +156,14 @@ export const seedNewIncome = async () => {
   }
 };
 
-const toSeedNewIncome = false;
-if (toSeedNewIncome) {
-  seedNewIncome()
-    .catch((e) => {
-      console.error(e);
-      process.exit(1);
-    })
-    .finally(async () => {
-      await prisma.$disconnect();
-    });
-}
+seedExpensesTable()
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });
 
 export const clearAllIncome = async () => {
   await prisma.income.deleteMany();
