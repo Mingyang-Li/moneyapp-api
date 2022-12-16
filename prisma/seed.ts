@@ -9,6 +9,24 @@ const prisma = new PrismaClient();
 const notionClient = new Client({ auth: process.env.NOTION_TOKEN });
 const notionService: NotionService = new NotionService();
 
+export const checkIfInDb = async (
+  notionId: string,
+  table: 'Income' | 'Expense',
+): Promise<boolean> => {
+  switch (table) {
+    case 'Income':
+      const incomes = await prisma.income.findMany({
+        where: { notionId },
+      });
+      return incomes.length === 1;
+    case 'Expense':
+      const expenses = await prisma.expense.findMany({
+        where: { notionId },
+      });
+      return expenses.length === 1;
+  }
+};
+
 export const logExpensesData = async () => {
   const notionExpensesDbId = process.env.NOTION_EXPENSES_DATABASE_ID;
   const { results } = await notionClient.databases.query({
@@ -61,17 +79,20 @@ export async function seedExpensesTable() {
     });
 
     results.forEach(async (row) => {
-      const expenseItem = {
-        notionId: row.id,
-        amount: row.properties['Amount']['number'],
-        currency: row.properties['Currency']['select'].name,
-        date: new Date(row.properties['Date']['date'].start),
-        item: row.properties['Item']['title'][0].text.content,
-        type: row.properties['Type']['select'].name,
-        subType: row.properties['Sub-type']['select'].name,
-        paymentType: row.properties['Payment Type']['select'].name,
-      };
-      allExpenses.push(expenseItem);
+      const isInDb = await checkIfInDb(row.id, 'Expense');
+      if (!isInDb) {
+        const expenseItem = {
+          notionId: row.id,
+          amount: row.properties['Amount']['number'],
+          currency: row.properties['Currency']['select'].name,
+          date: new Date(row.properties['Date']['date'].start),
+          item: row.properties['Item']['title'][0].text.content,
+          type: row.properties['Type']['select'].name,
+          subType: row.properties['Sub-type']['select'].name,
+          paymentType: row.properties['Payment Type']['select'].name,
+        };
+        allExpenses.push(expenseItem);
+      }
     });
     if (!next_cursor) {
       break;
@@ -156,7 +177,7 @@ export const seedNewIncome = async () => {
   }
 };
 
-seedExpensesTable()
+seedNewIncome()
   .catch((e) => {
     console.error(e);
     process.exit(1);
